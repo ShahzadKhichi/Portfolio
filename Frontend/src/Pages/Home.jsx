@@ -10,8 +10,20 @@ import { HiOutlineArrowNarrowDown } from "react-icons/hi";
 const Home = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const text = Typewriter({
-    words: ["Web Developer"],
-    loop: 1,
+    words: [
+      "Web Developer",
+      "Software Engineer",
+      "MERN Stack Developer",
+      "React Developer",
+      "Full Stack Developer",
+      "Frontend Developer",
+      "Java Developer",
+      "Backend Developer",
+      "Node.js Developer",
+      "Spring Boot Developer",
+      "JavaScript Developer",
+    ],
+    loop: 0,
     cursor: true,
     typeSpeed: 60,
     deleteSpeed: 20,

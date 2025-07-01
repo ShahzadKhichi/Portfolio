@@ -21,7 +21,7 @@ const About = ({ setIsAboutOpen, isAboutOpen }) => {
   return (
     <div
       ref={panelRef}
-      className={`border-2 duration-100 rounded-t-xl  top-[10%] left-[20%] rounded-b-xl w-[60vw] h-[80vh] bg-gray-700 fixed inset-0   z-40 ${
+      className={` border-s-cyan-50 duration-100 rounded-t-xl  top-[10%] left-[20%] rounded-b-xl w-[60vw] h-[80vh] bg-[#262627d2] fixed inset-0   z-40 ${
         isAboutOpen ? "" : "hidden"
       }`}
     >
@@ -42,7 +42,7 @@ const About = ({ setIsAboutOpen, isAboutOpen }) => {
         className=" absolute top-0 p-1 right-1    rounded-full scale-105 transition-colors"
         onClick={() => setIsAboutOpen(false)}
       >
-        <RxCrossCircled className="font-extrabold text-4xl hover:animate-ping  delay-20" />
+        <RxCrossCircled className="font-extrabold text-red-500 text-4xl hover:animate-ping  delay-20" />
       </button>
     </div>
   );
