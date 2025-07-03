@@ -5,7 +5,7 @@ import image from "../assets/me.jpg";
 const Navbar = () => {
   return (
     <div className="text-white w-full flex items-center   lg:justify-center justify-around h-[60px] lg:pt-6 pt-4 ">
-      <div className="lg:w-[35%] w-fit p-3 rounded-l-2xl rounded-r-2xl justify-around flex items-center  gap-2 lg:text-lg text-[10px]  bg-[#262627d2] pr-10 ">
+      <div className="lg:w-[35%] outline-1  outline-blue-400 w-fit p-3 rounded-l-2xl rounded-r-2xl justify-around flex items-center  gap-2 lg:text-lg text-[10px]  bg-[#262627d2] pr-10 ">
         <div className="w-10 h-10 flex justify-center items-center">
           <img
             className="rounded-t-xl rounded-b-xl w-8 h-8 hover:scale-110 active:scale-120 transition-all duration-200 "

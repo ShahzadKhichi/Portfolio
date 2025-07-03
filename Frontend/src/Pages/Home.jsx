@@ -76,7 +76,12 @@ const Home = () => {
           />
         </div>
       </div>
+
       {/* This is the projects section */}
+      <div
+        className={`lg:w-[100vw]  w-[100vw] h-[100vh]    transition-all duration-300 bg-[#000000f3] relative gap-20 overflow-x-hidden 
+          }`}
+      ></div>
     </>
   );
 };
