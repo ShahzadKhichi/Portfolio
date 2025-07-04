@@ -38,8 +38,8 @@ const Home = () => {
       >
         <Navbar></Navbar>
         <div className="w-[100vw] lg:w-full h-fit lg:h-[70vh]  flex flex-col-reverse items-center sm:flex-col-reverse  lg:flex-row lg:justify-center lg:items-start gap-10 lg:gap-30 pb-8 pl-4  lg:mt-40 mt-10">
-          <div className="flex lg:flex-none flex-col justify-center h-fit items-center lg:w-[500px] lg:gap-10 lg:h-fit ">
-            <h4 className="text-white font-extrabold text-2xl lg:text-[45px] font-mono inline-flex animate-pulse">
+          <div className="flex lg:flex-none flex-col justify-center h-fit items-center lg:w-[500px] lg:gap-10 lg:h-fit bg-transparent ">
+            <h4 className="text-white font-extrabold text-2xl lg:text-[45px] font-mono inline-flex animate-pulse   ">
               Shahzad Khichi
             </h4>
             <h3 className="text-white m font-mono font-bold lg:text-[30px] lg:w-full w-[80%] py-4">
@@ -70,7 +70,7 @@ const Home = () => {
           </div>
 
           <img
-            className="bg-amber-50 w-[120px] h-[120px] lg:w-[300px] lg:h-[300px] hover:scale-110 active:scale-110 transition-all duration-500 rounded-t-xl rounded-b-xl"
+            className="bg-amber-50 mt-5 w-[120px] h-[120px] lg:w-[300px] lg:h-[300px] hover:scale-110 active:scale-110 transition-all duration-100 rounded-t-xl rounded-b-xl shadow-sm border-blue-500 border-2 shadow-blue-500 transform-stroke animate-pulse "
             src={image}
             alt="image"
           />
