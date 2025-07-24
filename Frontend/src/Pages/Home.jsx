@@ -2,11 +2,9 @@ import React from "react";
 import SideBar from "../components/SideBar";
 import image from "../assets/me.jpg";
 import Navbar from "../components/Navbar";
-import { useState, useEffect } from "react";
 import { Typewriter } from "react-simple-typewriter";
 import { HiOutlineArrowNarrowDown } from "react-icons/hi";
 const Home = () => {
-  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const text = Typewriter({
     words: [
       "Web Developer",
@@ -27,13 +25,12 @@ const Home = () => {
     deleteSpeed: 20,
     delaySpeed: 500,
   });
-  console.log(isAboutOpen);
 
   return (
     <>
       {/* This is the main container for the home page */}
       <div
-        className={`lg:w-[100vw]  w-[100vw] h-[100vh]   transition-all duration-300 bg-[#000000f3] relative gap-20 overflow-x-hidden 
+        className={`lg:w-full  w-[100vw] h-[100vh]   transition-all duration-300 bg-[#000000f3] relative gap-20  
           }`}
       >
         <Navbar></Navbar>
@@ -79,7 +76,7 @@ const Home = () => {
 
       {/* This is the projects section */}
       <div
-        className={`lg:w-[100vw]  w-[100vw] h-[100vh]    transition-all duration-300 bg-[#000000f3] relative gap-20 overflow-x-hidden 
+        className={`lg:w-full w-[100vw]     transition-all duration-300 bg-[#000000f3] relative gap-20 overflow-x-hidden 
           }`}
       ></div>
     </>
