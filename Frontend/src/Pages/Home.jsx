@@ -76,7 +76,7 @@ const Home = () => {
 
       {/* This is the projects section */}
       <div
-        className={`lg:w-full w-[100vw] h-[10vh]    transition-all duration-300 bg-[#000000f3] relative gap-20 overflow-x-hidden 
+        className={`lg:w-full w-[100vw] h-[80vh]    transition-all duration-300 bg-[#000000f3] relative gap-20 overflow-x-hidden 
           }`}
       ></div>
     </>
