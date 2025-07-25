@@ -1,7 +1,5 @@
-import React from "react";
 import SideBar from "../components/SideBar";
 import image from "../assets/me.jpg";
-import Navbar from "../components/Navbar";
 import { Typewriter } from "react-simple-typewriter";
 import { HiOutlineArrowNarrowDown } from "react-icons/hi";
 import Button from "../components/Button";
@@ -10,7 +8,8 @@ import { FaGithub } from "react-icons/fa6";
 import { IoLogoLinkedin } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
 import Input from "../components/Input";
-
+import { LuLoaderCircle } from "react-icons/lu";
+import axios from "axios";
 import { IoIosSend } from "react-icons/io";
 
 import { HashLink as Link } from "react-router-hash-link";
@@ -20,8 +19,47 @@ import { HashLink as Link } from "react-router-hash-link";
 import image1 from "../assets/ProjectImages/StudyNotion.png";
 import image2 from "../assets/ProjectImages/Uber.png";
 import image3 from "../assets/ProjectImages/OS.png";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const Home = () => {
+  const [data, setData] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const mailUrl =
+    "https://portfolio-production-07db.up.railway.app/public/sendMail";
+
+  async function submitHandler() {
+    if (loading) {
+      toast.error("please wait ...");
+      return;
+    }
+    if (data.email && data.firstname && data.lastname && data.message) {
+      setLoading(true);
+      const res = await axios.post(mailUrl, { ...data });
+      if (res?.status === 200) {
+        toast.success("mail sent successfully");
+        setData({
+          firstname: "",
+          lastname: "",
+          email: "",
+          message: "",
+        });
+      } else {
+        toast.error("failed to send mail");
+      }
+      setLoading(false);
+    } else {
+      toast.error("All fields are requird");
+    }
+  }
+
+  useEffect(() => {}, []);
+
   const text = Typewriter({
     words: [
       "Web Developer",
@@ -168,15 +206,19 @@ const Home = () => {
           <HiOutlineArrowNarrowDown className="text-amber-50 font-bold w-17 h-10  " />
         </Link>
 
-        <div className="lg:w-[25%] w-full px-4 shadow-2xl bg-[#080808f3]  border-2 border-[#2b2b2b] rounded-2xl py-4  flex flex-col items-center gap-6">
+        <div className="lg:w-[500px] md:w-[70%] sm:w-[65%] w-full px-4 shadow-2xl bg-[#080808f3]  border-2 border-[#2b2b2b] rounded-2xl py-4  flex flex-col items-center gap-6">
           <div className="text-white font-bold text-2xl">Let's connect</div>
           <div className="w-full flex  flex-col  items-center justify-center   gap-2">
             <Input
+              onChange={(e) => setData({ ...data, firstname: e.target.value })}
+              value={data.firstname}
               label={"First Name"}
               placeholder={"Enter first name"}
               required={true}
             />
             <Input
+              onChange={(e) => setData({ ...data, lastname: e.target.value })}
+              value={data.lastname}
               label={"Last Name"}
               placeholder={"Enter Last name"}
               required={true}
@@ -184,6 +226,8 @@ const Home = () => {
           </div>
           <div className="w-full">
             <Input
+              onChange={(e) => setData({ ...data, email: e.target.value })}
+              value={data.email}
               label={"Email Address"}
               placeholder={"Enter email address"}
               required={true}
@@ -191,6 +235,8 @@ const Home = () => {
           </div>
           <div className="w-full">
             <Input
+              onChange={(e) => setData({ ...data, message: e.target.value })}
+              value={data.message}
               type={"text-area"}
               rows={"8"}
               label={"Message"}
@@ -198,9 +244,11 @@ const Home = () => {
               required={true}
             />
           </div>
-          <div className="mt-8 text-white ">
+          <div className="mt-8 text-white " onClick={submitHandler}>
             <Button text={"Send Message"}>
-              <IoIosSend size={20} />
+              <div className={`${loading ? "animate-spin duration-200" : ""}`}>
+                {loading ? <LuLoaderCircle /> : <IoIosSend size={20} />}
+              </div>
             </Button>
           </div>
         </div>
