@@ -4,6 +4,22 @@ import image from "../assets/me.jpg";
 import Navbar from "../components/Navbar";
 import { Typewriter } from "react-simple-typewriter";
 import { HiOutlineArrowNarrowDown } from "react-icons/hi";
+import Button from "../components/Button";
+import ProjectCard from "../components/ProjectCard";
+import { FaGithub } from "react-icons/fa6";
+import { IoLogoLinkedin } from "react-icons/io";
+import { MdEmail } from "react-icons/md";
+
+import { IoIosSend } from "react-icons/io";
+
+import { HashLink as Link } from "react-router-hash-link";
+
+//projects images
+
+import image1 from "../assets/ProjectImages/StudyNotion.png";
+import image2 from "../assets/ProjectImages/Uber.png";
+import Input from "../components/Input";
+
 const Home = () => {
   const text = Typewriter({
     words: [
@@ -26,15 +42,48 @@ const Home = () => {
     delaySpeed: 500,
   });
 
+  const projectDetails = [
+    {
+      image: image1,
+      description:
+        "Study Notion is a full-featured LMS platform built with the MERN stack, supporting role-based access for Students, Instructors, and Admins. It includes course creation, enrollment, and management features with a responsive UI.",
+      Tecnologies: [
+        "React",
+        "Node",
+        "Express",
+        "MongoDB",
+        "JWT",
+        "Tailwind",
+        "Axios",
+        "Stripe",
+      ],
+    },
+    {
+      image: image2,
+      description:
+        "An Uber clone built with the MERN stack, featuring real-time ride tracking and communication using WebSockets, optimized for mobile devices.",
+      Tecnologies: [
+        "React",
+        "Node",
+        "Express",
+        "MongoDB",
+        "Socket.IO",
+        "JWT",
+        "Tailwind",
+        "Axios",
+      ],
+    },
+  ];
+
   return (
     <>
-      {/* This is the main container for the home page */}
-      <div
-        className={`lg:w-full  w-[100vw] h-full   transition-all duration-300 bg-[#000000f3] relative gap-20  
+      {/* This is about section */}
+      <section
+        id="about"
+        className={`lg:w-full  w-[100vw] h-full bg-[#000000f3]   transition-all duration-300  relative gap-20  lg:pt-42 pb-16 lg:pb-0
           }`}
       >
-        <Navbar></Navbar>
-        <div className="w-[100vw] lg:w-full h-fit lg:h-[74vh]  flex flex-col-reverse items-center sm:flex-col-reverse  lg:flex-row lg:justify-center lg:items-start gap-10 lg:gap-30 pb-8 pl-4  lg:mt-40 mt-10">
+        <div className="w-[100vw] lg:w-full h-fit lg:h-[74vh]  flex flex-col-reverse items-center sm:flex-col-reverse  lg:flex-row lg:justify-center lg:items-start gap-10 lg:gap-30 pb-8 pl-4   pt-8">
           <div className="flex lg:flex-none  flex-col justify-center h-fit items-center lg:w-[500px] lg:gap-10 lg:h-fit  ">
             <h4 className="text-white font-extrabold text-2xl lg:text-[45px] font-mono inline-flex animate-pulse   ">
               Shahzad Khichi
@@ -56,14 +105,6 @@ const Home = () => {
               <span className="text-blue-300">{"</>"}</span>
               <SideBar></SideBar>
             </h6>
-            <div className="h-fit z-10 lg:w-[50%] lg:ml-96 w-[40%] flex items-center  lg:mt-30 mt-20 flex-col  gap-4 ">
-              <button className="lg:mx-13  w-fit hover:scale-105 transition-all duration-200 flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-                <span className="  font-extrabold p  font-mono hover:scale-105  px-10 py-3.5 transition-all ease-in duration-200 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-                  Projects
-                </span>
-              </button>
-              <HiOutlineArrowNarrowDown className="text-amber-50 font-bold w-17 h-10  " />
-            </div>
           </div>
 
           <img
@@ -72,13 +113,103 @@ const Home = () => {
             alt="image"
           />
         </div>
-      </div>
+      </section>
 
       {/* This is the projects section */}
-      <div
-        className={`lg:w-full w-[100vw] h-[50vh]    transition-all duration-300 bg-[#000000f3] relative gap-20 overflow-x-hidden 
+      <section
+        id="project"
+        className={`lg:w-full w-[100vw]  flex flex-col justify-center py-4   transition-all duration-300 bg-[#000000f3] relative gap-10 overflow-x-hidden 
           }`}
-      ></div>
+      >
+        <div className="h-fit  flex items-center justify-center   flex-col  gap-4 ">
+          <Link
+            className="inline-block text-gray-500 hover:text-white active:text-white  hover:scale-105  transition-all duration-200 font-extrabold   font-sans"
+            to="/#project"
+          >
+            <Button text={"Projects"} />
+          </Link>
+          <HiOutlineArrowNarrowDown className="text-amber-50 font-bold w-17 h-10  " />
+        </div>
+
+        <div className="flex flex-col gap-4 items-center lg:px-8 px-2">
+          {projectDetails.map((project, id) => (
+            <ProjectCard
+              key={id}
+              image={project.image}
+              Technologies={project.Tecnologies}
+              description={project.description}
+            />
+          ))}
+        </div>
+      </section>
+
+      <section
+        id="contact"
+        className="bg-[#000000f3] w-full flex flex-col py-16 gap-8 items-center justify-center "
+      >
+        <Button text={"Contact me"} />
+
+        <div className="lg:w-1/3 w-full px-8 flex flex-col items-center gap-4">
+          <div className="w-full flex  flex-col border-2 items-center justify-center lg:flex-row gap-2">
+            <Input
+              label={"First Name"}
+              placeholder={"Enter first name"}
+              required={true}
+            />
+            <Input
+              label={"Last Name"}
+              placeholder={"Enter Last name"}
+              required={true}
+            />
+          </div>
+          <div className="w-full">
+            <Input
+              label={"Email Address"}
+              placeholder={"Enter email address"}
+              required={true}
+            />
+          </div>
+          <div className="w-full">
+            <Input
+              type={"text-area"}
+              rows={"8"}
+              label={"Message"}
+              placeholder={"Enter your message"}
+              required={true}
+            />
+          </div>
+          <div className="mt-8 text-white ">
+            <Button text={"Send Message"}>
+              <IoIosSend size={20} />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <footer className="flex flex-col bg-[#000000f3] gap-10 items-center justify-center py-8 text-amber-50">
+        <div className="lg:text-4xl font-semibold">Shahzad Khichi © 2025</div>
+        <div className="text-4xl font-semibold flex gap-4">
+          {" "}
+          <Link
+            className="h-full"
+            to="https://github.com/ShahzadKhichi "
+            target="_blank"
+          >
+            <FaGithub className="xl:text-4xl md:text-2xl  lg:text-3xl text-3xl  h-full hover:scale-110 transition-all duration-200  text-gray-500  active:text-white hover:text-white" />
+          </Link>
+          <Link
+            className="h-full"
+            to="https://www.linkedin.com/in/shahzad-khichi-3931372a5/"
+            target="_blank"
+          >
+            {" "}
+            <IoLogoLinkedin className="xl:text-4xl md:text-2xl lg:text-3xl text-3xl h-full hover:scale-110 transition-all duration-300 text-gray-500  active:text-white hover:text-white" />
+          </Link>
+          <Link className="h-full" to="mailto:ShahzadKhichi996@gmail.com">
+            <MdEmail className="xl:text-4xl md:text-2xl lg:text-3xl text-3xl h-full hover:scale-110 transition-all duration-300 text-gray-500  active:text-white hover:text-white" />
+          </Link>
+        </div>
+      </footer>
     </>
   );
 };
