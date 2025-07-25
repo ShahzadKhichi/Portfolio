@@ -170,7 +170,7 @@ const Home = () => {
 
         <div className="lg:w-[25%] w-full px-4 shadow-2xl bg-[#080808f3]  border-2 border-[#2b2b2b] rounded-2xl py-4  flex flex-col items-center gap-6">
           <div className="text-white font-bold text-2xl">Let's connect</div>
-          <div className="w-full flex  flex-col border-2 items-center justify-center   gap-2">
+          <div className="w-full flex  flex-col  items-center justify-center   gap-2">
             <Input
               label={"First Name"}
               placeholder={"Enter first name"}
