@@ -30,7 +30,7 @@ const Home = () => {
     <>
       {/* This is the main container for the home page */}
       <div
-        className={`lg:w-full  w-[100vw] h-[100vh]   transition-all duration-300 bg-[#000000f3] relative gap-20  
+        className={`lg:w-full  w-[100vw] h-full   transition-all duration-300 bg-[#000000f3] relative gap-20  
           }`}
       >
         <Navbar></Navbar>
