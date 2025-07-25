@@ -1,17 +1,22 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const db_connect = require("./src/DB/Connect_DB");
+
 dotenv.config({});
+
+//routers
+
+const publicRouter = require("./src/Routes/public.route");
 const PORT = process.env.PORT || 4000;
 const app = express();
 
 const cors = require("cors");
 app.use(cors());
 app.use(express.json());
-app.use(express.static("/home/msk/Desktop/vs_code/Portfolio/Frontend/dist"));
 
-// app.use("/api/Admin");
-// app.use("api/user");
+//routers used
+app.use("public/", publicRouter);
+
 app.get("*", (req, res) => {
   res.status(200).json({
     message: "Hello from server",
