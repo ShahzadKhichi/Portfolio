@@ -142,7 +142,7 @@ const Home = () => {
           ))}
         </div>
       </section>
-
+      {/* contact section */}
       <section
         id="contact"
         className="bg-[#000000f3] w-full flex flex-col py-16 gap-8 items-center justify-center "
@@ -185,6 +185,8 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* footer section */}
 
       <footer className="flex flex-col mt-[3px] bg-[#000000f3] gap-10 items-center justify-center py-8 text-amber-50">
         <div className="font-semibold text-[#747474f3] ">
