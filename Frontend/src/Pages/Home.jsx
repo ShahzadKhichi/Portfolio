@@ -9,6 +9,7 @@ import ProjectCard from "../components/ProjectCard";
 import { FaGithub } from "react-icons/fa6";
 import { IoLogoLinkedin } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
+import Input from "../components/Input";
 
 import { IoIosSend } from "react-icons/io";
 
@@ -18,7 +19,7 @@ import { HashLink as Link } from "react-router-hash-link";
 
 import image1 from "../assets/ProjectImages/StudyNotion.png";
 import image2 from "../assets/ProjectImages/Uber.png";
-import Input from "../components/Input";
+import image3 from "../assets/ProjectImages/OS.png";
 
 const Home = () => {
   const text = Typewriter({
@@ -71,6 +72,21 @@ const Home = () => {
         "JWT",
         "Tailwind",
         "Axios",
+      ],
+    },
+    {
+      image: image3,
+      description:
+        "An OS simulation built with C++ and Raylib,featuring real Unix OS functionalites of multithreading and process synchronization in operating systems",
+      Tecnologies: [
+        "Threads",
+        "OS",
+        "C++",
+        "Linux",
+        "Ubuntu",
+        "Process synchronization",
+        "Raylib",
+        "Multithreading",
       ],
     },
   ];
@@ -145,12 +161,16 @@ const Home = () => {
       {/* contact section */}
       <section
         id="contact"
-        className="bg-[#000000f3] w-full flex flex-col py-16 gap-8 items-center justify-center "
+        className="bg-[#000000f3] w-full flex flex-col py-16 gap-8 items-center justify-center px-2 "
       >
-        <Button text={"Contact me"} />
+        <Link to="/#contact" className="mb-2 flex flex-col items-center gap-4">
+          <Button text={"Contact me"} />
+          <HiOutlineArrowNarrowDown className="text-amber-50 font-bold w-17 h-10  " />
+        </Link>
 
-        <div className="lg:w-1/3 w-full px-8 flex flex-col items-center gap-4">
-          <div className="w-full flex  flex-col border-2 items-center justify-center lg:flex-row gap-2">
+        <div className="lg:w-[25%] w-full px-4 shadow-2xl bg-[#080808f3]  border-2 border-[#2b2b2b] rounded-2xl py-4  flex flex-col items-center gap-6">
+          <div className="text-white font-bold text-2xl">Let's connect</div>
+          <div className="w-full flex  flex-col border-2 items-center justify-center   gap-2">
             <Input
               label={"First Name"}
               placeholder={"Enter first name"}
