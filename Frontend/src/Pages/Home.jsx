@@ -186,8 +186,10 @@ const Home = () => {
         </div>
       </section>
 
-      <footer className="flex flex-col bg-[#000000f3] gap-10 items-center justify-center py-8 text-amber-50">
-        <div className="lg:text-4xl font-semibold">Shahzad Khichi © 2025</div>
+      <footer className="flex flex-col mt-[3px] bg-[#000000f3] gap-10 items-center justify-center py-8 text-amber-50">
+        <div className="font-semibold text-[#747474f3] ">
+          Shahzad Khichi © 2025
+        </div>
         <div className="text-4xl font-semibold flex gap-4">
           {" "}
           <Link
