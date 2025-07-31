@@ -19,7 +19,11 @@ exports.sendMail = async (req, res) => {
       "message: " + message
     );
 
-    await Mail.create({ from: email, name: firstname + lastname, message });
+    await Mail.create({
+      from: email,
+      name: firstname + " " + lastname,
+      message,
+    });
 
     return res.status(200).json({
       message: "mail sent",
