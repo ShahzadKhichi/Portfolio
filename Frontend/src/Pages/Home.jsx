@@ -30,8 +30,7 @@ const Home = () => {
     message: "",
   });
   const [loading, setLoading] = useState(false);
-  const mailUrl =
-    "portfoliobackednd-81u50n5xl-shahzadkhichis-projects.vercel.app/public/sendMail";
+  const mailUrl = "https://portfoliobackednd.vercel.app/public/sendMail";
 
   async function submitHandler() {
     if (loading) {
@@ -40,19 +39,25 @@ const Home = () => {
     }
     if (data.email && data.firstname && data.lastname && data.message) {
       setLoading(true);
-      const res = await axios.post(mailUrl, { ...data });
-      if (res?.status === 200) {
-        toast.success("mail sent successfully");
-        setData({
-          firstname: "",
-          lastname: "",
-          email: "",
-          message: "",
-        });
-      } else {
+      try {
+        const res = await axios.post(mailUrl, { ...data });
+        if (res?.status === 200) {
+          toast.success("mail sent successfully");
+          setData({
+            firstname: "",
+            lastname: "",
+            email: "",
+            message: "",
+          });
+        } else {
+          toast.error("failed to send mail");
+        }
+        setLoading(false);
+      } catch (error) {
         toast.error("failed to send mail");
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     } else {
       toast.error("All fields are requird");
     }
