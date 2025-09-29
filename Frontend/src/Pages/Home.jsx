@@ -31,7 +31,7 @@ const Home = () => {
   });
   const [loading, setLoading] = useState(false);
   const mailUrl =
-    "https://portfolio-production-07db.up.railway.app/public/sendMail";
+    "portfoliobackednd-81u50n5xl-shahzadkhichis-projects.vercel.app/public/sendMail";
 
   async function submitHandler() {
     if (loading) {
