@@ -15,12 +15,13 @@ app.use(cors());
 app.use(express.json());
 
 //routers used
+
 app.use("/public/", publicRouter);
 
 app.get("*", (req, res) => {
   res.status(200).json({
-    message: "Hello from server",
-    success: true,
+    active: true,
+    error: false,
   });
 });
 (async () => {
