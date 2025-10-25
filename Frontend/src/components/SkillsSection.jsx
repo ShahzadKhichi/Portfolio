@@ -31,6 +31,7 @@ import {
   SiReact,
   SiFlutter,
   SiDart,
+  SiPrisma,
 } from "react-icons/si";
 
 const skills = [
@@ -46,10 +47,10 @@ const skills = [
   { Icon: SiMongodb, name: "MongoDB", color: "text-green-500" },
   { Icon: SiPostgresql, name: "PostgreSQL", color: "text-blue-400" },
   { Icon: SiMysql, name: "MySQL", color: "text-blue-400" },
-  { Icon: SiMysql, name: "MySQL", color: "text-blue-400" },
+  { Icon: SiPrisma, name: "Prisma ORM", color: "text-gray-100" },
   { Icon: SiSpring, name: "Spring", color: "text-green-500" },
   { Icon: SiSpringboot, name: "Spring Boot", color: "text-green-500" },
-  { Icon: SiHibernate, name: "Hibernate", color: "text-gray-700" },
+  { Icon: SiHibernate, name: "Hibernate ORM", color: "text-gray-700" },
   { Icon: SiKubernetes, name: "Kubernetes", color: "text-blue-500" },
   { Icon: FaDocker, name: "Docker", color: "text-blue-400" },
   { Icon: SiApachekafka, name: "Kafka", color: "text-white-400" },
