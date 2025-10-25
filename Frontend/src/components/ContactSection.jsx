@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FiSend, FiCheckCircle, FiXCircle } from "react-icons/fi";
+import { FiSend } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -8,41 +9,36 @@ export default function ContactSection() {
     email: "",
     message: "",
   });
-  const [status, setStatus] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const FORMSPREE_URL = import.meta.env.VITE_FORMSPREE_URL;
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!FORMSPREE_URL) {
-      setStatus("error");
+    if (!BACKEND_URL) {
+      toast.error("Backend URL is not configured!");
       return;
     }
 
     setIsSubmitting(true);
-    setStatus("");
-
     try {
-      const res = await fetch(FORMSPREE_URL, {
+      const res = await fetch(BACKEND_URL + "public/sendMail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       if (res.ok) {
-        setStatus("success");
+        toast.success("Message sent successfully!");
         setFormData({ name: "", email: "", message: "" });
-        setTimeout(() => setStatus(""), 5000);
       } else {
-        setStatus("error");
+        toast.error("Failed to send message. Please try again.");
       }
-    } catch (err) {
-      setStatus("error");
+    } catch {
+      toast.error("Network error. Try again later.");
     } finally {
       setIsSubmitting(false);
     }
@@ -58,6 +54,7 @@ export default function ContactSection() {
       <div className="!absolute bottom-20 right-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl animate-pulse delay-700" />
 
       <div className="max-w-5xl mx-auto px-4 relative z-10">
+        {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -72,6 +69,7 @@ export default function ContactSection() {
           </p>
         </motion.div>
 
+        {/* Form */}
         <motion.form
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -80,11 +78,7 @@ export default function ContactSection() {
           className="bg-gradient-to-br from-[#1a1a1a]/80 via-[#0f0f0f]/90 to-[#111]/80 backdrop-blur-2xl border border-cyan-700/40 rounded-3xl p-8 lg:p-12 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-400/40 transition-all duration-500"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-            >
+            <div>
               <label className="block text-cyan-300 font-semibold mb-3 text-sm tracking-wider">
                 Full Name
               </label>
@@ -95,16 +89,12 @@ export default function ContactSection() {
                 onChange={handleChange}
                 required
                 disabled={isSubmitting}
-                className="w-full px-5 py-4 bg-gradient-to-r from-gray-900/80 to-gray-800/80 border border-cyan-600/50 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all duration-300 shadow-inner"
+                className="w-full px-5 py-4 bg-[#101010]/80 border border-cyan-600/40 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all duration-300"
                 placeholder="John Doe"
               />
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-            >
+            <div>
               <label className="block text-cyan-300 font-semibold mb-3 text-sm tracking-wider">
                 Email Address
               </label>
@@ -115,18 +105,13 @@ export default function ContactSection() {
                 onChange={handleChange}
                 required
                 disabled={isSubmitting}
-                className="w-full px-5 py-4 bg-gradient-to-r from-gray-900/80 to-gray-800/80 border border-cyan-600/50 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all duration-300 shadow-inner"
+                className="w-full px-5 py-4 bg-[#101010]/80 border border-cyan-600/40 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all duration-300"
                 placeholder="john@example.com"
               />
-            </motion.div>
+            </div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mb-8"
-          >
+          <div className="mb-8">
             <label className="block text-cyan-300 font-semibold mb-3 text-sm tracking-wider">
               Your Message
             </label>
@@ -137,76 +122,57 @@ export default function ContactSection() {
               required
               rows="6"
               disabled={isSubmitting}
-              className="w-full px-5 py-4 bg-gradient-to-r from-gray-900/80 to-gray-800/80 border border-cyan-600/50 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all duration-300 resize-none shadow-inner"
+              className="w-full px-5 py-4 bg-[#101010]/80 border border-cyan-600/40 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all duration-300 resize-none"
               placeholder="Tell me about your project..."
             />
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="flex justify-center"
-          >
+          {/* Submit Button */}
+          <div className="flex justify-center">
             <motion.button
               type="submit"
               disabled={isSubmitting}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`group relative px-10 py-4 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white font-bold text-lg rounded-2xl shadow-xl overflow-hidden transition-all duration-500 ${
-                isSubmitting ? "opacity-70 cursor-not-allowed" : "hover:shadow-cyan-500/60"
+              whileHover={!isSubmitting ? { scale: 1.05 } : {}}
+              whileTap={!isSubmitting ? { scale: 0.95 } : {}}
+              className={`group relative px-10 py-4 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white font-bold text-lg rounded-2xl shadow-xl transition-all duration-500 flex items-center justify-center gap-3 ${
+                isSubmitting
+                  ? "opacity-70 cursor-not-allowed"
+                  : "hover:shadow-cyan-500/60"
               }`}
             >
-              <span className="relative z-10 flex items-center gap-3">
-                {isSubmitting ? (
-                  <>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
-                    />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    <FiSend className="group-hover:translate-x-1 transition-transform" />
-                    Send Message
-                  </>
-                )}
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
+              {isSubmitting ? (
+                <>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                    className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                  />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <FiSend className="group-hover:translate-x-1 transition-transform" />
+                  Send Message
+                </>
+              )}
             </motion.button>
-          </motion.div>
-
-          {status && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="flex items-center justify-center gap-3 mt-6"
-            >
-              {status === "success" ? (
-                <>
-                  <FiCheckCircle className="w-6 h-6 text-green-400" />
-                  <p className="text-green-400 font-medium">Message sent successfully!</p>
-                </>
-              ) : status === "error" ? (
-                <>
-                  <FiXCircle className="w-6 h-6 text-red-400" />
-                  <p className="text-red-400 font-medium">Failed to send. Please try again.</p>
-                </>
-              ) : null}
-            </motion.div>
-          )}
+          </div>
         </motion.form>
-
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-32 bg-gradient-to-t from-cyan-500/20 to-transparent blur-3xl -z-10" />
       </div>
 
       <style jsx>{`
         @keyframes gradient-x {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
+          0%,
+          100% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
         }
         .animate-gradient-x {
           background-size: 200% 200%;

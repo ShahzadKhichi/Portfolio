@@ -6,22 +6,69 @@ export default function GitHubContributionsGraph() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const username = "ShahzadKhichi";
+
   useEffect(() => {
-    fetch("https://github-contributions-api.jogruber.de/v4/ShahzadKhichi?y=all")
-      .then(res => res.json())
-      .then(data => {
-        setData(data);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Fetch error:", err);
+    const fetchContributions = async () => {
+      try {
+        const response = await fetch("https://api.github.com/graphql", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${import.meta.env.VITE_GIT_TOKEN}`,
+          },
+          body: JSON.stringify({
+            query: `
+              query {
+                user(login: "${username}") {
+                  contributionsCollection {
+                    contributionCalendar {
+                      totalContributions
+                      weeks {
+                        contributionDays {
+                          date
+                          contributionCount
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `,
+          }),
+        });
+
+        const result = await response.json();
+
+        const calendar =
+          result.data?.user?.contributionsCollection?.contributionCalendar;
+
+        if (calendar) {
+          const contributions = calendar.weeks.flatMap(
+            (week) => week.contributionDays
+          );
+
+          setData({
+            total: calendar.totalContributions,
+            contributions, // flat list (ordered by date)
+            weeks: calendar.weeks, // original weeks structure (array of weeks)
+          });
+        } else {
+          setError(true);
+        }
+      } catch (err) {
+        console.error("GitHub API error:", err);
         setError(true);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchContributions();
   }, []);
 
   const getLevel = (count) => {
-    if (count === 0) return 0;
+    if (!count || count === 0) return 0;
     if (count <= 2) return 1;
     if (count <= 5) return 2;
     if (count <= 10) return 3;
@@ -29,51 +76,82 @@ export default function GitHubContributionsGraph() {
   };
 
   const getColor = (level) => {
+    // 💙 Original blueish palette preserved
     const colors = ["#0f172a", "#1e3a8a", "#2563eb", "#3b82f6", "#60a5fa"];
     return colors[level] || colors[0];
   };
 
-  if (loading) {
+  if (loading)
     return (
-      <section id="github" className="w-full py-20 bg-gradient-to-b from-slate-950 to-slate-900">
+      <section
+        id="github"
+        className="w-full py-20 bg-gradient-to-b from-slate-950 to-slate-900"
+      >
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-blue-400 mb-8">GitHub Contributions</h2>
+          <h2 className="text-4xl font-bold text-blue-400 mb-8">
+            GitHub Contributions
+          </h2>
           <p className="text-gray-400">Loading...</p>
         </div>
       </section>
     );
-  }
 
-  if (error || !data) {
+  if (error || !data)
     return (
-      <section id="github" className="w-full py-20 bg-gradient-to-b from-slate-950 to-slate-900">
+      <section
+        id="github"
+        className="w-full py-20 bg-gradient-to-b from-slate-950 to-slate-900"
+      >
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-blue-400 mb-8">GitHub Contributions</h2>
+          <h2 className="text-4xl font-bold text-blue-400 mb-8">
+            GitHub Contributions
+          </h2>
           <p className="text-gray-400">
-            <a href="https://github.com/ShahzadKhichi" className="text-blue-400 underline">View on GitHub</a>
+            <a
+              href={`https://github.com/${username}`}
+              className="text-blue-400 underline"
+            >
+              View on GitHub
+            </a>
           </p>
         </div>
       </section>
     );
-  }
 
-  const lastYear = data.total.lastYear;
-  const contributions = data.contributions
-    .filter(c => {
-      const date = new Date(c.date);
-      const now = new Date();
-      const yearAgo = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
-      return date > yearAgo;
-    })
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
+  // Keep contributions sorted by date
+  const contributions = data.contributions.sort(
+    (a, b) => new Date(a.date) - new Date(b.date)
+  );
 
-  const weeks = [];
-  for (let i = 0; i < contributions.length; i += 7) {
-    weeks.push(contributions.slice(i, i + 7));
-  }
+  // Use the weeks structure returned by GitHub (each week is an array of 7 days)
+  // This ensures column alignment matches the GitHub calendar layout.
+  const weeks = data.weeks.map((w) => w.contributionDays);
+
+  // Build month labels per week column (label only when month/year changes compared to previous week)
+  const monthLabels = weeks.map((week, idx) => {
+    const firstDay = week && week[0];
+    if (!firstDay) return "";
+    const d = new Date(firstDay.date);
+    const month = d.toLocaleString("default", { month: "short" });
+    const year = d.getFullYear();
+    if (idx === 0) return `${month} ${year}`;
+    const prevFirst = weeks[idx - 1] && weeks[idx - 1][0];
+    if (!prevFirst) return `${month} ${year}`;
+    const pd = new Date(prevFirst.date);
+    if (
+      pd.getMonth() !== d.getMonth() ||
+      pd.getFullYear() !== d.getFullYear()
+    ) {
+      return `${month} ${year}`;
+    }
+    return "";
+  });
 
   return (
-    <section id="github" className="w-full py-20 bg-gradient-to-b from-slate-950 to-slate-900">
+    <section
+      id="github"
+      className="w-full py-20 bg-gradient-to-b from-slate-950 to-slate-900"
+    >
       <div className="max-w-7xl mx-auto px-4">
         <motion.h2
           initial={{ opacity: 0, y: -20 }}
@@ -82,12 +160,13 @@ export default function GitHubContributionsGraph() {
         >
           GitHub Contributions
         </motion.h2>
+
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           className="text-center text-gray-400 mb-8"
         >
-          Total last year: {lastYear} contributions
+          Total last year: {data.total} contributions
         </motion.p>
 
         <motion.div
@@ -95,19 +174,27 @@ export default function GitHubContributionsGraph() {
           whileInView={{ opacity: 1 }}
           className="bg-slate-900/70 backdrop-blur-lg border border-blue-800/30 rounded-2xl p-6 lg:p-8 shadow-2xl overflow-x-auto"
         >
-          <div className="flex justify-between text-xs text-gray-400 mb-2 px-8">
-            {weeks.filter((_, i) => i % 4 === 0).map((_, i) => (
-              <span key={i}>
-                {new Date(contributions[i * 28]?.date || Date.now()).toLocaleString('default', { month: 'short' })}
-              </span>
+          {/* Month labels row aligned with week columns */}
+          <div className="flex gap-1 min-w-max mb-2 px-8">
+            {monthLabels.map((label, i) => (
+              <div key={i} className="w-3 lg:w-4">
+                {label ? (
+                  <span className="text-xs text-gray-400 whitespace-nowrap -translate-x-2">
+                    {label}
+                  </span>
+                ) : (
+                  <span className="block h-3" />
+                )}
+              </div>
             ))}
           </div>
 
+          {/* Contributions grid (unchanged UI) */}
           <div className="flex gap-1 min-w-max pb-4">
             {weeks.map((week, i) => (
               <div key={i} className="flex flex-col gap-1">
                 {week.map((day, j) => {
-                  const level = getLevel(day.count);
+                  const level = getLevel(day.contributionCount);
                   return (
                     <motion.div
                       key={`${i}-${j}`}
@@ -116,26 +203,26 @@ export default function GitHubContributionsGraph() {
                       transition={{ delay: (i * 7 + j) * 0.005 }}
                       className="w-3 h-3 lg:w-4 lg:h-4 rounded-sm cursor-pointer transition-transform hover:scale-150"
                       style={{ backgroundColor: getColor(level) }}
-                      title={`${day.date}: ${day.count} contribution${day.count !== 1 ? 's' : ''}`}
+                      title={`${day.date}: ${
+                        day.contributionCount
+                      } contribution${day.contributionCount !== 1 ? "s" : ""}`}
                     />
                   );
                 })}
-                {Array.from({ length: 7 - week.length }).map((_, j) => (
-                  <div
-                    key={`empty-${j}`}
-                    className="w-3 h-3 lg:w-4 lg:h-4 rounded-sm"
-                    style={{ backgroundColor: getColor(0) }}
-                  />
-                ))}
               </div>
             ))}
           </div>
 
+          {/* Color scale */}
           <div className="flex justify-end items-center gap-2 mt-4 text-xs text-gray-400">
             <span>Less</span>
             <div className="flex gap-1">
-              {[0,1,2,3,4].map(l => (
-                <div key={l} className="w-3 h-3 lg:w-4 lg:h-4 rounded-sm" style={{ backgroundColor: getColor(l) }} />
+              {[0, 1, 2, 3, 4].map((l) => (
+                <div
+                  key={l}
+                  className="w-3 h-3 lg:w-4 lg:h-4 rounded-sm"
+                  style={{ backgroundColor: getColor(l) }}
+                />
               ))}
             </div>
             <span>More</span>
@@ -143,7 +230,7 @@ export default function GitHubContributionsGraph() {
         </motion.div>
 
         <motion.a
-          href="https://github.com/ShahzadKhichi"
+          href={`https://github.com/${username}`}
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.05 }}

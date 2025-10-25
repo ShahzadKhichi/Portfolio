@@ -184,7 +184,7 @@ export default function Navbar({ profileImage }) {
       <div id="home" className="h-0" />
 
       {/* Custom CSS */}
-      <style jsx>{`
+      <style jsx={"true"}>{`
         .bg-size-200 {
           background-size: 200% 200%;
         }
