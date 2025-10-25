@@ -109,9 +109,11 @@ export default function AboutSection({ image, bio }) {
             transition={{ delay: 0.6 }}
             className="bg-gradient-to-br from-[#1a1a1a]/80 via-[#0f0f0f]/90 to-[#111]/80 backdrop-blur-xl border border-cyan-700/40 rounded-3xl p-6 lg:p-10 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-400/40 transition-all duration-500 "
           >
-            <p className="text-gray-200 text-base lg:text-lg leading-relaxed font-light ">
+            <span className="my-2 text-blue-400">{"<>"}</span>
+            <p className="text-gray-200 text-base lg:text-lg leading-relaxed  font-light ">
               {bio}
             </p>
+            <span className="my-2 text-blue-400">{"</>"}</span>
           </motion.div>
 
           {/* Social Links */}
