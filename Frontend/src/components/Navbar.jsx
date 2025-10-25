@@ -16,8 +16,8 @@ const navLinks = [
   { name: "About", href: "#about", icon: FaUser },
   { name: "Projects", href: "#projects", icon: FaCode },
   { name: "Skills", href: "#skills", icon: FaTools },
-  { name: "Contact", href: "#contact", icon: FaEnvelope },
   { name: "GitHub", href: "#github", icon: FaGithub },
+  { name: "Contact", href: "#contact", icon: FaEnvelope },
 ];
 
 export default function Navbar({ profileImage }) {
