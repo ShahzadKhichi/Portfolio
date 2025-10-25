@@ -4,9 +4,9 @@ const mailSender = require("../Utils/mailSender");
 
 exports.sendMail = async (req, res) => {
   try {
-    const { email, firstname, lastname, message } = req.body;
+    const { email, name, message } = req.body;
 
-    if (!email || !firstname || !lastname || !message) {
+    if (!email || !name || !message) {
       return res.status(401).json({
         message: "ALl fields are required",
         success: false,
@@ -21,7 +21,7 @@ exports.sendMail = async (req, res) => {
 
     await Mail.create({
       from: email,
-      name: firstname + " " + lastname,
+      name,
       message,
     });
 
