@@ -1,4 +1,17 @@
 @import "tailwindcss";
-html{
-    scroll-behavior: smooth;
+
+html {
+  scroll-behavior: smooth;
+  background: #0f172a;
+  color: #f1f5f9;
+}
+
+::selection {
+  background: #3b82f6;
+  color: #fff;
+}
+
+body {
+  background: linear-gradient(to bottom, #0f172a, #1e293b);
+  min-height: 100vh;
 }
