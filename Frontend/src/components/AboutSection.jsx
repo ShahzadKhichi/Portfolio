@@ -7,12 +7,12 @@ export default function AboutSection({ image, bio }) {
   return (
     <section
       id="about"
-      className="min-h-screen w-full bg-gradient-to-b from-black via-[#0a0a0a] to-[#111] flex flex-col items-center justify-center px-4 py-20 lg:py-0 relative overflow-hidden "
+      className="min-h-screen w-full bg-gradient-to-b from-black via-[#0a0a0a] to-[#111] flex flex-col items-center justify-center px-4 py-20 lg:py-0 relative overflow-hidden  "
     >
       {/* Animated Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-blue-600/10 blur-3xl animate-pulse" />
 
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 md:mt-40">
+      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10 md:mt-30 pb-10">
         {/* Image Section */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
