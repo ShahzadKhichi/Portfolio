@@ -200,7 +200,7 @@ export default function GitHubContributionsGraph() {
                       key={`${i}-${j}`}
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
-                      transition={{ delay: (i * 7 + j) * 0.005 }}
+                      transition={{ delay: (i * 2 + j) * 0.005 }}
                       className="w-3 h-3 lg:w-4 lg:h-4 rounded-sm cursor-pointer transition-transform hover:scale-150"
                       style={{ backgroundColor: getColor(level) }}
                       title={`${day.date}: ${

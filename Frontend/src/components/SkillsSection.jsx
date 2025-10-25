@@ -73,7 +73,7 @@ export default function SkillsSection() {
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.2 }}
         className="text-4xl lg:text-5xl font-extrabold text-blue-400 animate-pulse"
       >
         Skills
@@ -84,7 +84,7 @@ export default function SkillsSection() {
             key={i}
             initial={{ opacity: 0, scale: 0.5 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.05, type: "spring", stiffness: 300 }}
+            transition={{ delay: i * 0.005, type: "spring", stiffness: 300 }}
             whileHover={{ scale: 1.2 }}
             className="flex flex-col items-center gap-3 group"
           >
