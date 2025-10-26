@@ -55,7 +55,6 @@ export default function ContactSection() {
       <div className="absolute bottom-20 right-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl animate-pulse delay-700" />
 
       <div className="max-w-5xl mx-auto px-4 relative z-10">
-        仇
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
