@@ -12,7 +12,7 @@ export default function AboutSection({ image, bio }) {
       {/* Animated Background Gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-blue-600/10 blur-3xl animate-pulse" />
 
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center relative z-10 lg:mt-30">
+      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center relative z-10 lg:mt-30 mb-10">
         {/* Image Section */}
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
