@@ -9,7 +9,6 @@ import {
   FaGitAlt,
   FaJava,
   FaLinux,
-  FaCartPlus,
 } from "react-icons/fa";
 import {
   SiNextdotjs,
@@ -68,32 +67,39 @@ export default function SkillsSection() {
   return (
     <section
       id="skills"
-      className="w-full py-20 bg-gradient-to-b from-[#000000f3] to-[#0a0a0af3] flex flex-col items-center gap-12 px-4"
+      className="w-full py-16 sm:py-20 bg-gradient-to-b from-[#000000f3] to-[#0a0a0af3] flex flex-col items-center gap-10 sm:gap-12 px-4"
     >
       <motion.h2
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.2 }}
-        className="text-4xl lg:text-5xl font-extrabold text-blue-400 animate-pulse"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        viewport={{ once: true }}
+        className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-blue-400"
       >
         Skills
       </motion.h2>
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-8 lg:gap-12 max-w-6xl">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-6 sm:gap-8 lg:gap-10 max-w-6xl w-full">
         {skills.map(({ Icon, name, color }, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 0, scale: 0.6 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.005, type: "spring", stiffness: 300 }}
-            whileHover={{ scale: 1.2 }}
-            className="flex flex-col items-center gap-3 group"
+            transition={{
+              delay: i * 0.02,
+              type: "spring",
+              stiffness: 400,
+              damping: 25,
+            }}
+            viewport={{ once: true }}
+            whileHover={{ scale: 1.15 }}
+            className="flex flex-col items-center gap-2 group"
           >
             <div
-              className={`bg-[#1a1a1af3] p-5 rounded-3xl shadow-xl border border-blue-900/30 text-5xl lg:text-6xl ${color} transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/30`}
+              className={`bg-[#1a1a1af3] p-4 sm:p-5 rounded-2xl sm:rounded-3xl shadow-lg border border-blue-900/30 text-4xl sm:text-5xl lg:text-6xl ${color} transition-all duration-200 group-hover:shadow-xl group-hover:shadow-blue-500/40`}
             >
               <Icon />
             </div>
-            <span className="text-xs lg:text-sm font-medium text-cyan-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            <span className="text-xs sm:text-sm font-medium text-cyan-200 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
               {name}
             </span>
           </motion.div>

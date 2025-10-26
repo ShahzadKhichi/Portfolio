@@ -25,7 +25,7 @@ export default function ContactSection() {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch(BACKEND_URL + "public/sendMail", {
+      const res = await fetch(`${BACKEND_URL}public/sendMail`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -50,15 +50,15 @@ export default function ContactSection() {
       className="w-full py-24 lg:py-32 bg-gradient-to-b from-[#0a0a0a] via-[#0f0f0f] to-[#111] relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-600/5 blur-3xl" />
-      <div className="!absolute top-20 left-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
-      <div className="!absolute bottom-20 right-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl animate-pulse delay-700" />
+      <div className="absolute top-20 left-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-20 right-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl animate-pulse delay-700" />
 
       <div className="max-w-5xl mx-auto px-4 relative z-10">
-        {/* Heading */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
           className="text-center mb-16"
         >
           <h2 className="text-5xl lg:text-7xl font-extrabold bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent animate-gradient-x">
@@ -69,49 +69,49 @@ export default function ContactSection() {
           </p>
         </motion.div>
 
-        {/* Form */}
         <motion.form
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
           onSubmit={handleSubmit}
           className="bg-gradient-to-br from-[#1a1a1a]/80 via-[#0f0f0f]/90 to-[#111]/80 backdrop-blur-2xl border border-cyan-700/40 rounded-3xl p-8 lg:p-12 shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-400/40 transition-all duration-500"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div>
-              <label className="block text-cyan-300 font-semibold mb-3 text-sm tracking-wider">
-                Full Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                disabled={isSubmitting}
-                className="w-full px-5 py-4 bg-[#101010]/80 border border-cyan-600/40 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all duration-300"
-                placeholder="John Doe"
-              />
-            </div>
-
-            <div>
-              <label className="block text-cyan-300 font-semibold mb-3 text-sm tracking-wider">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                disabled={isSubmitting}
-                className="w-full px-5 py-4 bg-[#101010]/80 border border-cyan-600/40 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all duration-300"
-                placeholder="john@example.com"
-              />
-            </div>
+            {["name", "email"].map((field, i) => (
+              <motion.div
+                key={field}
+                initial={{ opacity: 0, x: i === 0 ? -20 : 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+              >
+                <label className="block text-cyan-300 font-semibold mb-3 text-sm tracking-wider">
+                  {field === "name" ? "Full Name" : "Email Address"}
+                </label>
+                <input
+                  type={field === "email" ? "email" : "text"}
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                  required
+                  disabled={isSubmitting}
+                  className="w-full px-5 py-4 bg-[#101010]/80 border border-cyan-600/40 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all duration-300"
+                  placeholder={
+                    field === "name" ? "John Doe" : "john@example.com"
+                  }
+                />
+              </motion.div>
+            ))}
           </div>
 
-          <div className="mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="mb-8"
+          >
             <label className="block text-cyan-300 font-semibold mb-3 text-sm tracking-wider">
               Your Message
             </label>
@@ -125,10 +125,15 @@ export default function ContactSection() {
               className="w-full px-5 py-4 bg-[#101010]/80 border border-cyan-600/40 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all duration-300 resize-none"
               placeholder="Tell me about your project..."
             />
-          </div>
+          </motion.div>
 
-          {/* Submit Button */}
-          <div className="flex justify-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="flex justify-center"
+          >
             <motion.button
               type="submit"
               disabled={isSubmitting}
@@ -160,7 +165,7 @@ export default function ContactSection() {
                 </>
               )}
             </motion.button>
-          </div>
+          </motion.div>
         </motion.form>
       </div>
 
