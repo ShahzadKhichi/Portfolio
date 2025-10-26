@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FiSend } from "react-icons/fi";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -25,20 +26,20 @@ export default function ContactSection() {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch(`${BACKEND_URL}public/sendMail`, {
-        method: "POST",
+      const res = await axios.post(`${BACKEND_URL}public/sendMail`, formData, {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
       });
 
-      if (res.ok) {
+      if (res.status === 200) {
         toast.success("Message sent successfully!");
         setFormData({ name: "", email: "", message: "" });
       } else {
         toast.error("Failed to send message. Please try again.");
       }
-    } catch {
-      toast.error("Network error. Try again later.");
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message || "Network error. Try again later."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -54,6 +55,7 @@ export default function ContactSection() {
       <div className="absolute bottom-20 right-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl animate-pulse delay-700" />
 
       <div className="max-w-5xl mx-auto px-4 relative z-10">
+        仇
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -68,7 +70,6 @@ export default function ContactSection() {
             Have a project in mind? I'd love to hear from you.
           </p>
         </motion.div>
-
         <motion.form
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -106,7 +107,7 @@ export default function ContactSection() {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y2: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
 
 export default function GitHubContributionsGraph() {
   const [data, setData] = useState(null);
@@ -11,13 +12,9 @@ export default function GitHubContributionsGraph() {
   useEffect(() => {
     const fetchContributions = async () => {
       try {
-        const response = await fetch("https://api.github.com/graphql", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `bearer ${import.meta.env.VITE_GIT_TOKEN}`,
-          },
-          body: JSON.stringify({
+        const response = await axios.post(
+          "https://api.github.com/graphql",
+          {
             query: `
               query {
                 user(login: "${username}") {
@@ -35,12 +32,18 @@ export default function GitHubContributionsGraph() {
                 }
               }
             `,
-          }),
-        });
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `bearer ${import.meta.env.VITE_GIT_TOKEN}`,
+            },
+          }
+        );
 
-        const result = await response.json();
         const calendar =
-          result.data?.user?.contributionsCollection?.contributionCalendar;
+          response.data?.data?.user?.contributionsCollection
+            ?.contributionCalendar;
 
         if (calendar) {
           setData({
