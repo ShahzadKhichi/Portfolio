@@ -150,7 +150,7 @@ export default function AboutSection({ image, bio }) {
             className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3 sm:gap-4"
           >
             <motion.a
-              href="/resume.pdf"
+              href="/Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.06, rotate: 1.5 }}
