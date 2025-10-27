@@ -126,9 +126,9 @@ const ProjectCard = ({
             ) : (
               <motion.div
                 whileHover={{ scale: 1.03 }}
-                className="flex-1 flex items-center justify-center gap-2 sm:gap-3 px-5 py-3 sm:px-6 sm:py-3.5 bg-gradient-to-r from-gray-700 to-gray-800 text-gray-400 font-medium text-xs sm:text-sm rounded-2xl cursor-default shadow-md"
+                className="flex-1 flex items-center justify-center gap-2 sm:gap-1 px-2 py-1 sm:px-6 sm:py-3.5 bg-gradient-to-r from-gray-700 to-gray-800 text-gray-400 font-medium text-xs sm:text-sm rounded-2xl cursor-default shadow-md"
               >
-                <FiFrown className="w-4 h-4 sm:w-5 sm:h-5" />
+                <FiFrown className="w-5 h-4 sm:w-5 sm:h-5" />
                 <span>Coming Soon</span>
               </motion.div>
             )}
