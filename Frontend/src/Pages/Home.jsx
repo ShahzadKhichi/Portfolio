@@ -19,7 +19,7 @@ const Home = () => {
       description:
         "An ed-tech platform enabling students and instructors to create, consume, and rate educational content with real-time collaboration.",
       Technologies: [
-        "React",
+        "React.js",
         "Node.js",
         "MongoDB",
         "Express",
@@ -34,13 +34,13 @@ const Home = () => {
     {
       title: "Uber Clone",
       description:
-        "A ride-hailing app with real-time tracking, driver-passenger matching, and secure payments using Mapbox and Stripe.",
+        "A ride-hailing app with real-time tracking using socket.io and location using google api, driver-passenger matching, ",
       Technologies: [
-        "React js",
+        "React.js",
         "Node.js",
+        "Express.js",
         "Socket.io",
         "MongoDB",
-        " Express",
         "Geolocation API",
       ],
       image: "/assets/ProjectImages/Uber.png",
