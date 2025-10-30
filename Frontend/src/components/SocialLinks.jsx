@@ -11,7 +11,7 @@ export default function SocialLinks() {
         target="_blank"
         rel="noopener noreferrer"
         whileHover={{ scale: 1.1, rotate: 5 }}
-        className="p-3 bg-blue-600 text-white rounded-full shadow-lg hover:shadow-blue-500/50 transition-all"
+        className="p-3 bg-blue-500 text-white rounded-full shadow-lg hover:shadow-blue-500/50 transition-all"
       >
         <FaLinkedin size={24} />
       </motion.a>
