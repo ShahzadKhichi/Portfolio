@@ -84,7 +84,10 @@ const SkillCard = ({ Icon, name, color }) => (
     <div className="p-5 rounded-2xl bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-sm border border-gray-700/50 shadow-lg transition-all duration-300 group-hover:border-cyan-500 group-hover:shadow-2xl group-hover:shadow-cyan-500/20">
       <Icon className={`text-4xl ${color} drop-shadow-md`} />
     </div>
-    <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none text-xs font-semibold text-cyan-300 bg-gray-900/95 px-3 py-1.5 rounded-full border border-cyan-600/50 whitespace-nowrap z-10">
+    <span
+      className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 
+    group-active:opacity-100 transition-opacity duration-200 pointer-events-none text-xs font-semibold text-cyan-300 bg-gray-900/95 px-3 py-1.5 rounded-full border border-cyan-600/50 whitespace-nowrap z-10"
+    >
       {name}
     </span>
   </motion.div>
