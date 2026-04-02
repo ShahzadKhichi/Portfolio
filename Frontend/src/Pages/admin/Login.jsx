@@ -2,19 +2,39 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
+import * as authApi from "../../api/auth.api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (email && password) {
-      toast.success("Login successful!");
-      navigate("/admin");
-    } else {
+    if (!email || !password) {
       toast.error("Please fill in both fields");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await authApi.login(email, password);
+      if (response.data.success) {
+        localStorage.setItem("accessToken", response.data.accessToken);
+        // refreshToken is usually handled by HTTP-only cookies in backend, 
+        // but let's store it if it comes back in the body for simpler demo logic if needed
+        if (response.data.refreshToken) {
+          localStorage.setItem("refreshToken", response.data.refreshToken);
+        }
+        toast.success("Login successful!");
+        navigate("/admin");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error(error.response?.data?.message || "Invalid credentials");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,9 +84,10 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all transform hover:scale-[1.02] shadow-lg shadow-cyan-500/20"
+            disabled={loading}
+            className={`w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all transform hover:scale-[1.02] shadow-lg shadow-cyan-500/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
       </motion.div>

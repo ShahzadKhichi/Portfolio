@@ -2,11 +2,13 @@ import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
+import * as authApi from "../../api/auth.api";
 
 export default function ResetPassword() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // OTP State
@@ -14,13 +16,25 @@ export default function ResetPassword() {
   const [isSuccess, setIsSuccess] = useState(false);
   const inputRefs = useRef([]);
 
-  const handleSendOtp = (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
-    if (email) {
-      toast.success("OTP sent to your email.");
-      setStep(2);
-    } else {
+    if (!email) {
       toast.error("Please enter your email.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await authApi.forgotPassword(email);
+      if (response.data.success) {
+        toast.success("OTP sent to your email.");
+        setStep(2);
+      }
+    } catch (error) {
+      console.error("Forgot password error:", error);
+      toast.error(error.response?.data?.message || "Failed to send OTP.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,27 +86,56 @@ export default function ResetPassword() {
     inputRefs.current[focusIndex]?.focus();
   };
 
-  const handleVerifyOtp = (e) => {
+  const handleVerifyOtp = async (e) => {
     e.preventDefault();
-    if (otp.join("").length === 6) {
-      setIsSuccess(true);
-      setTimeout(() => {
-        toast.success("OTP verified.");
-        setStep(3);
-        setIsSuccess(false);
-      }, 1000); // 600ms for animation + 400ms buffer
-    } else {
+    const otpString = otp.join("");
+    if (otpString.length !== 6) {
       toast.error("Please enter a valid 6-digit OTP.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await authApi.verifyOtp(email, otpString);
+      if (response.data.success) {
+        setIsSuccess(true);
+        setTimeout(() => {
+          toast.success("OTP verified.");
+          setStep(3);
+          setIsSuccess(false);
+          setLoading(false);
+        }, 1000); 
+      }
+    } catch (error) {
+      console.error("Verify OTP error:", error);
+      toast.error(error.response?.data?.message || "Invalid or expired OTP.");
+      setLoading(false);
     }
   };
 
-  const handleResetPassword = (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
-    if (newPassword.length >= 6) {
-      toast.success("Password reset successfully! Please log in.");
-      navigate("/admin/login");
-    } else {
+    if (newPassword.length < 6) {
       toast.error("Password must be at least 6 characters.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await authApi.resetPassword({ 
+        email, 
+        otp: otp.join(""), 
+        newPassword 
+      });
+      if (response.data.success) {
+        toast.success("Password reset successfully! Please log in.");
+        navigate("/admin/login");
+      }
+    } catch (error) {
+           console.error("Reset password error:", error);
+      toast.error(error.response?.data?.message || "Failed to reset password.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -130,9 +173,10 @@ export default function ResetPassword() {
             </div>
             <button
               type="submit"
-              className="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/20"
+              disabled={loading}
+              className={`w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
-              Send OTP
+              {loading ? "Sending..." : "Send OTP"}
             </button>
           </form>
         )}
@@ -157,6 +201,7 @@ export default function ResetPassword() {
                         : "bg-white/5 border border-white/10 text-white focus:border-cyan-500/50"
                       }
                     `}
+                    disabled={loading || isSuccess}
                     style={{
                       transitionDelay: isSuccess ? `${index * 100}ms` : "0ms",
                     }}
@@ -166,15 +211,15 @@ export default function ResetPassword() {
             </div>
             <button
               type="submit"
-              disabled={isSuccess}
+              disabled={loading || isSuccess}
               className={`w-full py-3 text-white rounded-lg font-bold transition-all duration-500 shadow-lg 
                 ${isSuccess 
                   ? "bg-green-600 shadow-green-500/30 scale-[1.02]" 
-                  : "bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 shadow-cyan-500/20"
+                  : (loading ? "bg-cyan-600 opacity-70 cursor-not-allowed" : "bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 shadow-cyan-500/20")
                 }
               `}
             >
-              {isSuccess ? "Verified!" : "Verify OTP"}
+              {isSuccess ? "Verified!" : (loading ? "Verifying..." : "Verify OTP")}
             </button>
           </form>
         )}
@@ -189,13 +234,15 @@ export default function ResetPassword() {
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-gray-500"
                 placeholder="••••••••"
+                disabled={loading}
               />
             </div>
             <button
               type="submit"
-              className="w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/20"
+              disabled={loading}
+              className={`w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
-              Reset Password
+              {loading ? "Resetting..." : "Reset Password"}
             </button>
           </form>
         )}
