@@ -13,6 +13,7 @@ import Messages from "./Pages/admin/Messages";
 import ManageProjects from "./Pages/admin/ManageProjects";
 import ManageSkills from "./Pages/admin/ManageSkills";
 import ManageProfile from "./Pages/admin/ManageProfile";
+import AccountSettings from "./Pages/admin/AccountSettings";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -49,6 +50,7 @@ function App() {
                 <Route path="projects" element={<ManageProjects />} />
                 <Route path="skills" element={<ManageSkills />} />
                 <Route path="profile" element={<ManageProfile />} />
+                <Route path="settings" element={<AccountSettings />} />
               </Route>
             </Routes>
           </div>

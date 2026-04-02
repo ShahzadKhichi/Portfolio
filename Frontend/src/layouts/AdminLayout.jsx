@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaTachometerAlt, FaEnvelope, FaProjectDiagram, FaCode, FaUserEdit, FaSignOutAlt } from "react-icons/fa";
+import { FaTachometerAlt, FaEnvelope, FaProjectDiagram, FaCode, FaUserEdit, FaSignOutAlt, FaCog } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 export default function AdminLayout() {
@@ -19,6 +19,7 @@ export default function AdminLayout() {
     { name: "Projects", path: "/admin/projects", icon: <FaProjectDiagram /> },
     { name: "Skills", path: "/admin/skills", icon: <FaCode /> },
     { name: "Profile", path: "/admin/profile", icon: <FaUserEdit /> },
+    { name: "Settings", path: "/admin/settings", icon: <FaCog /> },
   ];
 
   return (
