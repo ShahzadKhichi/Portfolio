@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const container_1 = require("../container");
+const types_1 = require("../interfaces/types");
+const validateBody_1 = require("../Middlewares/validateBody");
+const validator_1 = require("../Utils/Validators/validator");
+const router = (0, express_1.Router)();
+const userController = container_1.container.resolve(types_1.TYPES.UserController);
+router.post("/register", (0, validateBody_1.validateBody)(validator_1.registerSchema), userController.register);
+router.post("/verify-registration", (0, validateBody_1.validateBody)(validator_1.verifyRegistrationSchema), userController.verifyRegistration);
+router.post("/login", (0, validateBody_1.validateBody)(validator_1.loginSchema), userController.login);
+router.post("/forgot-password", (0, validateBody_1.validateBody)(validator_1.forgotPasswordSchema), userController.forgotPassword);
+router.post("/verify-otp", (0, validateBody_1.validateBody)(validator_1.verifyOtpSchema), userController.verifyOtp);
+router.post("/reset-password", (0, validateBody_1.validateBody)(validator_1.resetPasswordSchema), userController.resetPassword);
+exports.default = router;
