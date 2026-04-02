@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaEdit, FaTrash, FaPlus, FaTimes, FaCloudUploadAlt } from "react-icons/fa";
+import { FaEdit, FaTrash, FaPlus, FaTimes, FaCloudUploadAlt, FaSearch } from "react-icons/fa";
 import toast from "react-hot-toast";
 import * as projectApi from "../../api/project.api";
 
@@ -9,6 +9,7 @@ export default function ManageProjects() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   
   // Form State
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ export default function ManageProjects() {
     live: "",
   });
   const [selectedFile, setSelectedFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
 
   useEffect(() => {
@@ -49,6 +51,7 @@ export default function ManageProjects() {
         github: project.links.github || "",
         live: project.links.live || "",
       });
+      setImagePreview(project.image);
     } else {
       setEditingProject(null);
       setFormData({
@@ -59,9 +62,23 @@ export default function ManageProjects() {
         live: "",
       });
       setSelectedFile(null);
+      setImagePreview(null);
     }
     setIsModalOpen(true);
   };
+
+  const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+          setSelectedFile(file);
+          setImagePreview(URL.createObjectURL(file));
+      }
+  };
+
+  const filteredProjects = projects.filter(p => 
+    p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    p.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this project?")) return;
@@ -124,22 +141,34 @@ export default function ManageProjects() {
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">Manage Projects</h1>
           <p className="text-gray-400">Add, edit, or delete projects from your portfolio.</p>
         </div>
-        <button
-          onClick={() => handleOpenModal()}
-          className="flex items-center space-x-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-5 py-2.5 rounded-lg font-bold hover:shadow-lg hover:shadow-cyan-500/20 transition-all"
-        >
-          <FaPlus />
-          <span>Add Project</span>
-        </button>
+        <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+          <div className="relative w-full md:w-64">
+            <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+            <input 
+              type="text"
+              placeholder="Search projects..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+            />
+          </div>
+          <button
+            onClick={() => handleOpenModal()}
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-5 py-2 rounded-lg font-bold hover:shadow-lg hover:shadow-cyan-500/20 transition-all"
+          >
+            <FaPlus />
+            <span>Add New</span>
+          </button>
+        </div>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {projects.map((project, idx) => (
+        {filteredProjects.map((project, idx) => (
           <motion.div
             key={project._id}
             initial={{ opacity: 0, scale: 0.95 }}
@@ -269,14 +298,23 @@ export default function ManageProjects() {
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-300">Project Image</label>
-                  <label className="flex flex-col items-center justify-center w-full h-32 bg-white/5 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:bg-white/10 hover:border-cyan-500/30 transition-all">
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <FaCloudUploadAlt className="text-2xl text-cyan-400 mb-2" />
-                      <p className="text-xs text-gray-400">
-                        {selectedFile ? selectedFile.name : "Click to upload or drag and drop"}
-                      </p>
-                    </div>
-                    <input type="file" className="hidden" onChange={(e) => setSelectedFile(e.target.files[0])} accept="image/*" />
+                  <label className="relative flex flex-col items-center justify-center w-full h-48 bg-white/5 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:bg-white/10 hover:border-cyan-500/30 transition-all overflow-hidden">
+                    {imagePreview ? (
+                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <FaCloudUploadAlt className="text-2xl text-cyan-400 mb-2" />
+                          <p className="text-xs text-gray-400">
+                             Click to upload or drag and drop
+                          </p>
+                        </div>
+                    )}
+                    <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
+                    {imagePreview && (
+                        <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span className="text-white text-xs font-bold">Change Image</span>
+                        </div>
+                    )}
                   </label>
                 </div>
 

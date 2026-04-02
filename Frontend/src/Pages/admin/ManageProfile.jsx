@@ -27,8 +27,17 @@ export default function ManageProfile() {
     try {
       const response = await profileApi.getProfile();
       if (response.data.success) {
-        setProfile(response.data.profile);
-        setPreviewUrl(response.data.profile.image);
+        setProfile(response.data.profile||{
+    bio: "",
+    image: "",
+    socialLinks: {
+      github: "",
+      linkedin: "",
+      twitter: "",
+      email: ""
+    }
+  });
+        setPreviewUrl(response.data.profile.profileImage);
       }
     } catch (error) {
       console.error("Fetch profile error:", error);

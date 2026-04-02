@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaTrash, FaPlus, FaCode, FaServer, FaDatabase, FaTools, FaCloudUploadAlt } from "react-icons/fa";
+import { FaTrash, FaPlus, FaCode, FaServer, FaDatabase, FaTools, FaCloudUploadAlt, FaSearch, FaEdit, FaTimes } from "react-icons/fa";
 import toast from "react-hot-toast";
 import * as skillApi from "../../api/skill.api";
 
-const CATEGORIES = ["Frontend", "Backend", "Database", "DevOps", "Mobile", "Other"];
+const CATEGORIES = ["Frontend", "Backend", "DevOps", "Database", "Mobile", "Other"];
 
 export default function ManageSkills() {
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [editingSkill, setEditingSkill] = useState(null);
   const [newSkill, setNewSkill] = useState({
     name: "",
     level: 80,
@@ -44,7 +46,14 @@ export default function ManageSkills() {
     }
   };
 
-  const handleAddSkill = async (e) => {
+  const resetForm = () => {
+    setNewSkill({ name: "", level: 80, category: "Frontend" });
+    setIconFile(null);
+    setIconPreview(null);
+    setEditingSkill(null);
+  };
+
+  const handleAddOrUpdateSkill = async (e) => {
     e.preventDefault();
     if (!newSkill.name) return;
 
@@ -58,17 +67,23 @@ export default function ManageSkills() {
     }
 
     try {
-      const response = await skillApi.createSkill(formData);
-      if (response.data.success) {
-        toast.success(`${newSkill.name} added!`);
-        setNewSkill({ name: "", level: 80, category: "Frontend" });
-        setIconFile(null);
-        setIconPreview(null);
-        fetchSkills();
+      let response;
+      if (editingSkill) {
+        response = await skillApi.updateSkill(editingSkill._id, formData);
+        if (response.data.success) {
+          toast.success(`${newSkill.name} updated!`);
+        }
+      } else {
+        response = await skillApi.createSkill(formData);
+        if (response.data.success) {
+          toast.success(`${newSkill.name} added!`);
+        }
       }
+      resetForm();
+      fetchSkills();
     } catch (error) {
-           console.error("Add skill error:", error);
-      toast.error(error.response?.data?.message || "Failed to add skill");
+      console.error("Submit skill error:", error);
+      toast.error(error.response?.data?.message || "Operation failed");
     } finally {
       setFormLoading(false);
     }
@@ -88,9 +103,20 @@ export default function ManageSkills() {
     }
   };
 
+  const startEdit = (skill) => {
+    setEditingSkill(skill);
+    setNewSkill({
+      name: skill.name,
+      level: skill.level,
+      category: skill.category
+    });
+    setIconPreview(skill.icon);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const getSkillIcon = (skill) => {
     if (skill.icon) {
-        return <img src={skill.icon} alt={skill.name} className="w-6 h-6 object-contain" />;
+      return <img src={skill.icon} alt={skill.name} className="w-6 h-6 object-contain" />;
     }
     switch (skill.category) {
       case "Frontend": return <FaCode className="text-cyan-400" />;
@@ -100,13 +126,30 @@ export default function ManageSkills() {
     }
   };
 
+  const filteredSkills = skills.filter(skill => 
+    skill.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    skill.category.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (loading) return <div className="text-white text-center py-20">Loading skills...</div>;
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-3xl font-bold text-white mb-2">Manage Skills</h1>
-        <p className="text-gray-400">Update the technical skills displayed on your portfolio.</p>
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-white mb-2">Manage Skills</h1>
+          <p className="text-gray-400">Update the technical skills displayed on your portfolio.</p>
+        </div>
+        <div className="relative w-full md:w-64">
+          <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+          <input 
+            type="text"
+            placeholder="Search skills..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+          />
+        </div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -114,8 +157,15 @@ export default function ManageSkills() {
         {/* Form Section */}
         <div className="lg:col-span-1">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm sticky top-8 shadow-xl shadow-black/50">
-            <h2 className="text-xl font-bold text-white mb-4">Add New Skill</h2>
-            <form onSubmit={handleAddSkill} className="space-y-4">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-white">{editingSkill ? "Edit Skill" : "Add New Skill"}</h2>
+              {editingSkill && (
+                <button onClick={resetForm} className="text-gray-500 hover:text-white transition-colors">
+                  <FaTimes />
+                </button>
+              )}
+            </div>
+            <form onSubmit={handleAddOrUpdateSkill} className="space-y-4">
               
               <div className="flex justify-center mb-4">
                 <div className="relative group">
@@ -175,10 +225,10 @@ export default function ManageSkills() {
                 disabled={formLoading}
                 className="w-full flex justify-center items-center space-x-2 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/20 disabled:opacity-70"
               >
-                {formLoading ? <span>Adding...</span> : (
+                {formLoading ? <span>Processing...</span> : (
                   <>
-                    <FaPlus />
-                    <span>Add Skill</span>
+                    {editingSkill ? <FaEdit /> : <FaPlus />}
+                    <span>{editingSkill ? "Update Skill" : "Add Skill"}</span>
                   </>
                 )}
               </button>
@@ -191,12 +241,12 @@ export default function ManageSkills() {
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-white">Current Skills</h2>
-              <div className="text-gray-500 text-sm">{skills.length} skills total</div>
+              <div className="text-gray-500 text-sm">{filteredSkills.length} skills found</div>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <AnimatePresence>
-                {skills.map((skill, idx) => (
+                {filteredSkills.map((skill, idx) => (
                   <motion.div
                     key={skill._id}
                     layout
@@ -206,7 +256,7 @@ export default function ManageSkills() {
                     transition={{ delay: idx * 0.05 }}
                     className="flex items-center justify-between p-4 bg-black/40 border border-white/5 rounded-xl hover:border-cyan-500/30 transition-colors group"
                   >
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-4 cursor-pointer" onClick={() => startEdit(skill)}>
                       <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 group-hover:border-cyan-500/30 transition-colors">
                         {getSkillIcon(skill)}
                       </div>
@@ -214,21 +264,30 @@ export default function ManageSkills() {
                         <h3 className="font-semibold text-white">{skill.name}</h3>
                         <div className="flex items-center space-x-2">
                             <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                <div 
+                                <motion.div 
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${skill.level}%` }}
                                     className="h-full bg-gradient-to-r from-cyan-500 to-blue-500" 
-                                    style={{ width: `${skill.level}%` }}
                                 />
                             </div>
                             <span className="text-[10px] text-gray-500 uppercase font-medium">{skill.category}</span>
                         </div>
                       </div>
                     </div>
-                    <button
-                      onClick={() => handleDelete(skill._id)}
-                      className="p-2 text-red-400 bg-red-400/10 hover:bg-red-400/20 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
-                    >
-                      <FaTrash />
-                    </button>
+                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => startEdit(skill)}
+                        className="p-2 text-cyan-400 bg-cyan-400/10 hover:bg-cyan-400/20 rounded-lg transition-colors"
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(skill._id)}
+                        className="p-2 text-red-400 bg-red-400/10 hover:bg-red-400/20 rounded-lg transition-colors"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
                   </motion.div>
                 ))}
               </AnimatePresence>

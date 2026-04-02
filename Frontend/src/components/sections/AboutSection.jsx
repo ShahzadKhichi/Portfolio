@@ -3,7 +3,7 @@ import Typewriter from "typewriter-effect";
 import { motion } from "framer-motion";
 import SocialLinks from "../ui/SocialLinks";
 
-export default function AboutSection({ image, bio }) {
+export default function AboutSection({ image, bio, socialLinks }) {
   return (
     <section
       id="about"
@@ -25,7 +25,7 @@ export default function AboutSection({ image, bio }) {
             <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity duration-300" />
             <div className="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-4xl overflow-hidden border-4 border-cyan-500 shadow-2xl shadow-cyan-500/50">
               <img
-                src={image}
+                src={image || "/profile.png"}
                 alt="Shahzad Khichi"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -80,12 +80,12 @@ export default function AboutSection({ image, bio }) {
           {/* image */}
           <div className="bg-gradient-to-br from-[#1a1a1a]/80 via-[#0f0f0f]/90 to-[#111]/80 backdrop-blur-xl border border-cyan-700/40 rounded-2xl p-5 sm:p-7 lg:p-8 shadow-2xl text-sm sm:text-base">
             <span className="text-blue-400 font-mono">{"<>"}</span>
-            <p className="text-gray-200 leading-relaxed mt-2 mb-3">{bio}</p>
+            <p className="text-gray-200 leading-relaxed mt-2 mb-3">{bio || "Loading description..."}</p>
             <span className="text-blue-400 font-mono">{"</>"}</span>
           </div>
 
           <div className="flex justify-center lg:justify-start">
-            <SocialLinks />
+            <SocialLinks links={socialLinks} />
           </div>
 
           <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3">

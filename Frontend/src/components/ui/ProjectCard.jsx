@@ -5,11 +5,17 @@ import { FiFrown, FiLock, FiExternalLink, FiGithub } from "react-icons/fi";
 const ProjectCard = ({
   title,
   description,
+  tags,
   Technologies,
   image,
+  live,
   liveLink,
+  github,
   githubLink,
 }) => {
+  const techStack = tags || Technologies || [];
+  const liveUrl = live || liveLink;
+  const githubUrl = github || githubLink;
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -86,7 +92,7 @@ const ProjectCard = ({
 
           {/* Tech Stack - Responsive */}
           <div className="flex flex-wrap gap-2 sm:gap-3 mb-6 sm:mb-7 lg:mb-8">
-            {Technologies.map((tech, i) => (
+            {techStack.map((tech, i) => (
               <motion.span
                 key={i}
                 initial={{ opacity: 0, scale: 0.7 }}
@@ -108,9 +114,9 @@ const ProjectCard = ({
 
           {/* Action Buttons - Responsive */}
           <div className="flex gap-3 sm:gap-4 lg:gap-5">
-            {liveLink ? (
+            {liveUrl ? (
               <motion.a
-                href={liveLink}
+                href={liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{
@@ -133,9 +139,9 @@ const ProjectCard = ({
               </motion.div>
             )}
 
-            {githubLink ? (
+            {githubUrl ? (
               <motion.a
-                href={githubLink}
+                href={githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{
