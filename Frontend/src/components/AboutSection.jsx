@@ -7,7 +7,7 @@ export default function AboutSection({ image, bio }) {
   return (
     <section
       id="about"
-      className="min-h-screen w-full bg-gradient-to-b from-black via-[#0a0a0a] to-[#111] flex flex-col items-center justify-center px-4 py-16 sm:py-20 lg:py-0 relative overflow-hidden"
+      className="min-h-screen w-full bg-gradient-to-b from-black via-[#0a0a0a] to-[#111] flex flex-col items-center justify-center px-4  py-16 sm:py-20 lg:py-0 relative overflow-hidden"
     >
       {/* Static Background (No Animation) */}
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-600/5 blur-3xl" />
@@ -43,7 +43,7 @@ export default function AboutSection({ image, bio }) {
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           viewport={{ once: true, margin: "-100px" }}
-          className="text-center lg:text-left space-y-5"
+          className="text-center lg:text-left pt-15 space-y-5"
         >
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
             Shahzad Khichi

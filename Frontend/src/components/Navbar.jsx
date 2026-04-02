@@ -45,7 +45,7 @@ export default function Navbar({ profileImage }) {
         initial={{ y: -120 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 120, damping: 20 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
+        className={`fixed  top-0 left-0 right-0 z-50 transition-all duration-700 ${
           scrolled
             ? "bg-black/95 backdrop-blur-2xl shadow-2xl shadow-cyan-500/30 border-b border-cyan-800/30"
             : "bg-transparent"
