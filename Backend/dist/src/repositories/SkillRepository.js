@@ -9,21 +9,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MailRepository = void 0;
+exports.SkillRepository = void 0;
 const tsyringe_1 = require("tsyringe");
-const Mail_Model_1 = __importDefault(require("../Models/Mail.Model"));
-let MailRepository = class MailRepository {
-    async createMail(from, name, message) {
-        return await Mail_Model_1.default.create({ from, name, message });
+const Skill_Model_1 = __importDefault(require("../Models/Skill.Model"));
+let SkillRepository = class SkillRepository {
+    async getAllSkills() {
+        return await Skill_Model_1.default.find().sort({ name: 1 });
     }
-    async getAllMails() {
-        return await Mail_Model_1.default.find().sort({ createdAt: -1 });
+    async createSkill(data) {
+        return await Skill_Model_1.default.create(data);
     }
-    async deleteMail(id) {
-        return await Mail_Model_1.default.findByIdAndDelete(id);
+    async updateSkill(id, data) {
+        return await Skill_Model_1.default.findByIdAndUpdate(id, data, { new: true });
+    }
+    async deleteSkill(id) {
+        return await Skill_Model_1.default.findByIdAndDelete(id);
     }
 };
-exports.MailRepository = MailRepository;
-exports.MailRepository = MailRepository = __decorate([
+exports.SkillRepository = SkillRepository;
+exports.SkillRepository = SkillRepository = __decorate([
     (0, tsyringe_1.injectable)()
-], MailRepository);
+], SkillRepository);

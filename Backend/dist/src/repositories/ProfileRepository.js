@@ -9,21 +9,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MailRepository = void 0;
+exports.ProfileRepository = void 0;
 const tsyringe_1 = require("tsyringe");
-const Mail_Model_1 = __importDefault(require("../Models/Mail.Model"));
-let MailRepository = class MailRepository {
-    async createMail(from, name, message) {
-        return await Mail_Model_1.default.create({ from, name, message });
+const Profile_Model_1 = __importDefault(require("../Models/Profile.Model"));
+let ProfileRepository = class ProfileRepository {
+    async getProfile() {
+        return await Profile_Model_1.default.findOne();
     }
-    async getAllMails() {
-        return await Mail_Model_1.default.find().sort({ createdAt: -1 });
-    }
-    async deleteMail(id) {
-        return await Mail_Model_1.default.findByIdAndDelete(id);
+    async updateProfile(data) {
+        let profile = await Profile_Model_1.default.findOne();
+        if (profile) {
+            return await Profile_Model_1.default.findOneAndUpdate({}, data, { new: true });
+        }
+        else {
+            return await Profile_Model_1.default.create(data);
+        }
     }
 };
-exports.MailRepository = MailRepository;
-exports.MailRepository = MailRepository = __decorate([
+exports.ProfileRepository = ProfileRepository;
+exports.ProfileRepository = ProfileRepository = __decorate([
     (0, tsyringe_1.injectable)()
-], MailRepository);
+], ProfileRepository);

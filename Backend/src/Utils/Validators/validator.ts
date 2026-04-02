@@ -50,3 +50,36 @@ export const projectSchema = z.object({
     live: z.string().url().optional().or(z.literal("")),
 });
 
+export const profileSchema = z.object({
+    bio: z.string().min(10),
+    phoneNumber: z.string().optional(),
+    location: z.string().optional(),
+    resumeUrl: z.string().url().optional().or(z.literal("")),
+    socialLinks: z.preprocess(
+        (val) => {
+            if (typeof val === "string") {
+                try { return JSON.parse(val); } catch { return val; }
+            }
+            return val;
+        },
+        z.object({
+            github: z.string().url().optional().or(z.literal("")),
+            linkedin: z.string().url().optional().or(z.literal("")),
+            twitter: z.string().url().optional().or(z.literal("")),
+            instagram: z.string().url().optional().or(z.literal("")),
+        }).optional()
+    ),
+});
+
+export const skillSchema = z.object({
+    name: z.string().min(2),
+    level: z.coerce.number().min(0).max(100),
+    category: z.enum(["Frontend", "Backend", "Database", "DevOps", "Mobile", "Other"]),
+    icon: z.string().optional(),
+});
+
+export const updateProfileSchema = z.object({
+    firstname: z.string().min(3).optional(),
+    lastname: z.string().min(3).optional(),
+    email: z.string().email().optional(),
+});

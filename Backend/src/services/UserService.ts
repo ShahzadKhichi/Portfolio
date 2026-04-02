@@ -48,6 +48,7 @@ export class UserService implements IUserService {
                 "Your Password Reset OTP",
                 `<p>Your OTP for password reset is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`
             );
+            
         } catch (error) {
             console.error("Failed to send forgot password email:", error);
             return false;
@@ -134,21 +135,31 @@ export class UserService implements IUserService {
     }
 
     public async verifyRegistration(email: string, otp: string): Promise<boolean> {
-        const user = await this.userRepository.findByEmail(email);
-        // Only verify if user exists, is NOT verified already, OTP matches, and hasn't expired.
-        if (!user || user.isVerified || user.registrationOtp !== otp || !user.registrationOtpExpiry) return false;
-
-        if (new Date() > user.registrationOtpExpiry) {
-            return false; // OTP Expired
+        const admin = await this.userRepository.findByEmail(email);
+        if (!admin || admin.isVerified || admin.registrationOtp !== otp || (admin.registrationOtpExpiry && admin.registrationOtpExpiry < new Date())) {
+            return false;
         }
 
-        // Complete Verification
         await this.userRepository.updateAdmin(email, {
             isVerified: true,
             registrationOtp: undefined,
             registrationOtpExpiry: undefined
         });
-
         return true;
+    }
+
+    public async getAdminById(id: string): Promise<any> {
+        return await this.userRepository.findById(id);
+    }
+
+    public async updateAdmin(id: string, adminData: any): Promise<any> {
+        const admin = await this.userRepository.findById(id);
+        if (!admin) return null;
+
+        if (adminData.email) admin.email = adminData.email;
+        if (adminData.firstname) admin.name.firstname = adminData.firstname;
+        if (adminData.lastname) admin.name.lastname = adminData.lastname;
+
+        return await admin.save();
     }
 }

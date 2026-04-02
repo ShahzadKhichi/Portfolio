@@ -50,7 +50,7 @@ export class UserController {
     try {
       const { email } = req.body;
       const success = await this.userService.forgotPassword(email);
-
+      
       if (!success) {
         res.status(404).json({ message: "User with this email not found.", success: false });
         return;
@@ -124,6 +124,36 @@ export class UserController {
       res.status(200).json({ message: "Registration verified successfully. You can now login.", success: true });
     } catch (error) {
       console.error("Verify Registration Error:", error);
+      res.status(500).json({ message: "internal server error", success: false });
+    }
+  };
+
+  public getMe = async (req: any, res: Response): Promise<void> => {
+    try {
+      const id = req.user.id;
+      const admin = await this.userService.getAdminById(id);
+      if (!admin) {
+        res.status(404).json({ message: "Admin not found", success: false });
+        return;
+      }
+      res.status(200).json({ success: true, admin });
+    } catch (error) {
+      console.error("Get Me Error:", error);
+      res.status(500).json({ message: "internal server error", success: false });
+    }
+  };
+
+  public updateProfile = async (req: any, res: Response): Promise<void> => {
+    try {
+      const id = req.user.id;
+      const updated = await this.userService.updateAdmin(id, req.body);
+      if (!updated) {
+        res.status(404).json({ message: "Admin not found", success: false });
+        return;
+      }
+      res.status(200).json({ success: true, admin: updated });
+    } catch (error) {
+      console.error("Update Profile Error:", error);
       res.status(500).json({ message: "internal server error", success: false });
     }
   };

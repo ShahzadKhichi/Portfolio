@@ -11,4 +11,15 @@ export const TYPES = {
     IProjectRepository: Symbol.for("IProjectRepository"),
     IProjectService: Symbol.for("IProjectService"),
     ProjectController: Symbol.for("ProjectController"),
+
+    IProfileRepository: Symbol.for("IProfileRepository"),
+    IProfileService: Symbol.for("IProfileService"),
+    ProfileController: Symbol.for("ProfileController"),
+
+    ISkillRepository: Symbol.for("ISkillRepository"),
+    ISkillService: Symbol.for("ISkillService"),
+    SkillController: Symbol.for("SkillController"),
+
+    IMessageService: Symbol.for("IMessageService"),
+    MessageController: Symbol.for("MessageController"),
 };

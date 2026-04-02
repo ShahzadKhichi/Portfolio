@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const container_1 = require("../container");
+const types_1 = require("../interfaces/types");
+const auth_middleware_1 = require("../Middlewares/auth.middleware");
+const validateBody_1 = require("../Middlewares/validateBody");
+const validator_1 = require("../Utils/Validators/validator");
+const multer_middleware_1 = require("../Middlewares/multer.middleware");
+const router = (0, express_1.Router)();
+const profileController = container_1.container.resolve(types_1.TYPES.ProfileController);
+router.get("/", profileController.getProfile);
+router.put("/", auth_middleware_1.authenticate, multer_middleware_1.upload.single("image"), (0, validateBody_1.validateBody)(validator_1.profileSchema), profileController.updateProfile);
+exports.default = router;

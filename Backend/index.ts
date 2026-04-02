@@ -7,23 +7,29 @@ import db_connect from "./src/DB/Connect_DB"
 
 dotenv.config({});
 
-import publicRouter from "./src/Routes/public.route";
-import userRouter from "./src/Routes/user.route";
-import projectRouter from "./src/Routes/project.route";
+import publicRoutes from "./src/Routes/public.route";
+import userRoutes from "./src/Routes/user.route";
+import projectRoutes from "./src/Routes/project.route";
+import profileRoutes from "./src/Routes/profile.route";
+import skillRoutes from "./src/Routes/skill.route";
+import messageRoutes from "./src/Routes/message.route";
 
-const PORT: number = parseInt(process.env.PORT || "4000", 10);
-const app = express();
+const app: express.Application = express();
+const port = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
 // routers
-app.use("/public/", publicRouter);
-app.use("/api/user", userRouter);
-app.use("/api/projects", projectRouter);
+app.use("/api", publicRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/skills", skillRoutes);
+app.use("/api/messages", messageRoutes);
 
-app.get("*", (req, res) => {
+app.get("*", (req: express.Request, res: express.Response) => {
   res.status(200).json({
     active: true,
     error: false,
@@ -32,7 +38,7 @@ app.get("*", (req, res) => {
 
 (async () => {
   await db_connect();
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`server started on port:${PORT}`);
+  app.listen(port, () => {
+    console.log(`server started on port:${port}`);
   });
 })();
