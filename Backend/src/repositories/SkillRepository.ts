@@ -8,6 +8,10 @@ export class SkillRepository implements ISkillRepository {
         return await Skill.find().sort({ name: 1 });
     }
 
+    public async getSkillById(id: string): Promise<ISkill | null> {
+        return await Skill.findById(id);
+    }
+
     public async createSkill(data: Partial<ISkill>): Promise<ISkill> {
         return await Skill.create(data);
     }

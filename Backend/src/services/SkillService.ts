@@ -14,6 +14,10 @@ export class SkillService implements ISkillService {
         return await this.skillRepository.getAllSkills();
     }
 
+    public async getSkillById(id: string): Promise<ISkill | null> {
+        return await this.skillRepository.getSkillById(id);
+    }
+
     public async createSkill(data: Partial<ISkill>): Promise<ISkill> {
         return await this.skillRepository.createSkill(data);
     }

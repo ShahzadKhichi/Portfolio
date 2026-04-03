@@ -62,9 +62,7 @@ export default function ManageSkills() {
     formData.append("name", newSkill.name);
     formData.append("level", newSkill.level);
     formData.append("category", newSkill.category);
-    if (iconFile) {
-        formData.append("icon", iconFile);
-    }
+    formData.append("icon", iconFile);
 
     try {
       let response;

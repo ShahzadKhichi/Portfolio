@@ -4,6 +4,7 @@ export interface IProject extends Document {
   title: string;
   description: string;
   image?: string;
+  imagePublicId?: string;
   tags?: string[];
   github?: string;
   live?: string;
@@ -21,6 +22,10 @@ const ProjectSchema = new Schema<IProject>(
       required: true,
     },
     image: {
+      type: String,
+      required: false,
+    },
+    imagePublicId: {
       type: String,
       required: false,
     },

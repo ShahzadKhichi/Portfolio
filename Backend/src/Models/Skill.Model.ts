@@ -5,6 +5,7 @@ export interface ISkill extends Document {
   level: number; // 0 to 100
   category: "Frontend" | "Backend" | "Database" | "DevOps" | "Mobile" | "Other";
   icon?: string;
+  iconPublicId?: string;
 }
 
 const skillSchema = new Schema<ISkill>(
@@ -26,6 +27,10 @@ const skillSchema = new Schema<ISkill>(
       enum: ["Frontend", "Backend", "Database", "DevOps", "Mobile", "Other"],
     },
     icon: {
+      type: String,
+      trim: true,
+    },
+    iconPublicId: {
       type: String,
       trim: true,
     },

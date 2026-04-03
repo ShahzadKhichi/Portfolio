@@ -25,7 +25,7 @@ export class UserService implements IUserService {
         
         const payload = { id: user._id, email: user.email };
 
-        const accessToken = jwt.sign(payload, JWTSec, { expiresIn: "15m" });
+        const accessToken = jwt.sign(payload, JWTSec, { expiresIn: "1d" });
         const refreshToken = jwt.sign(payload, JWTRefreshSec, { expiresIn: "7d" });
 
         return { accessToken, refreshToken };

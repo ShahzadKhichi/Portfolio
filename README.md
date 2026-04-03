@@ -110,6 +110,79 @@ All user routes use `Zod` validation. Upon successful login, an access token is 
 
 ---
 
+### 🛠️ Skills Routes (`/api/skills`)
+
+#### `GET /api/skills`
+- **Description**: Fetch all technical skills categorized by (Frontend, Backend, etc.).
+- **Access**: Public
+
+#### `POST /api/skills`
+- **Description**: Add a new skill. Supports `multipart/form-data` for icon uploads (Cloudinary).
+- **Access**: 🔒 Protected (Requires Bearer Token)
+- **Body**: 
+  - `name`: string
+  - `level`: number (0-100)
+  - `category`: string
+  - `icon`: file (binary, optional)
+
+#### `PUT /api/skills/:id`
+- **Description**: Update an existing skill.
+- **Access**: 🔒 Protected
+
+#### `DELETE /api/skills/:id`
+- **Description**: Remove a skill.
+- **Access**: 🔒 Protected
+
+---
+
+### 👤 Profile Routes (`/api/profile`)
+
+#### `GET /api/profile`
+- **Description**: Fetch the public portfolio profile (bio, image, socials).
+- **Access**: Public
+
+#### `PUT /api/profile`
+- **Description**: Update the portfolio profile. Supports `multipart/form-data` for profile image.
+- **Access**: 🔒 Protected
+- **Body**: 
+  - `bio`: string
+  - `socialLinks`: JSON object (github, linkedin, twitter, instagram)
+  - `image`: file (binary, optional)
+
+---
+
+### 📩 Message Routes (`/api/messages`)
+
+#### `GET /api/messages`
+- **Description**: Fetch all customer inquiries sent via the contact form.
+- **Access**: 🔒 Protected
+
+#### `DELETE /api/messages/:id`
+- **Description**: Delete an inquiry.
+- **Access**: 🔒 Protected
+
+---
+
+### ⚙️ Account Management (`/api/user`)
+
+#### `GET /api/user/me`
+- **Description**: Fetch current logged-in admin details (name, email).
+- **Access**: 🔒 Protected
+
+#### `PUT /api/user/profile`
+- **Description**: Update admin account details.
+- **Access**: 🔒 Protected
+- **Body**:
+  - `firstname`: string (optional)
+  - `lastname`: string (optional)
+  - `email`: string (optional)
+
+---
+
+## 🛠 Tech Stack
+- **Frontend**: React, Tailwind CSS, Framer Motion, Axios, React Hot Toast.
+- **Backend**: Node.js, Express, TypeScript, TSyringe (DI), Mongoose (MongoDB), Cloudinary (Images), NodeMailer (Emails), Zod (Validation).
+
 ## Environment Variables
 The backend requires the following variables in the `.env` file:
 ```env

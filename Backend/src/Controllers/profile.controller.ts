@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
 import { TYPES } from "../interfaces/types";
 import { IProfileService } from "../interfaces/IProfileService";
-import { uploadToCloudinary } from "../Utils/cloudinary";
+import { uploadToCloudinary, deleteFromCloudinary } from "../Utils/cloudinary";
 
 @injectable()
 export class ProfileController {
@@ -22,12 +22,19 @@ export class ProfileController {
 
   public updateProfile = async (req: Request, res: Response): Promise<void> => {
     try {
+      const existingProfile = await this.profileService.getProfile();
       let updateData = { ...req.body };
 
       if (req.file) {
-        const uploadedUrl = await uploadToCloudinary(req.file.buffer, req.file.mimetype);
-        if (uploadedUrl) {
-            updateData.profileImage = uploadedUrl;
+        // Delete old image
+        if (existingProfile?.profileImagePublicId) {
+          await deleteFromCloudinary(existingProfile.profileImagePublicId);
+        }
+
+        const result = await uploadToCloudinary(req.file.buffer, req.file.mimetype);
+        if (result) {
+          updateData.profileImage = result.url;
+          updateData.profileImagePublicId = result.public_id;
         }
       }
 
