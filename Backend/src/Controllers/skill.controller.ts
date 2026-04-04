@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
 import { TYPES } from "../interfaces/types";
 import { ISkillService } from "../interfaces/ISkillService";
-
-import { uploadToCloudinary, deleteFromCloudinary } from "../Utils/cloudinary";
+import { uploadToCloudinary, deleteFromCloudinary, extractPublicId } from "../Utils/cloudinary";
+import { SkillDTO } from "../DTOs/Skill.dto";
 
 @injectable()
 export class SkillController {
@@ -14,7 +14,7 @@ export class SkillController {
   public getAllSkills = async (req: Request, res: Response): Promise<void> => {
     try {
       const skills = await this.skillService.getAllSkills();
-      res.status(200).json({ success: true, skills });
+      res.status(200).json({ success: true, skills: SkillDTO.toResponseList(skills) });
     } catch (error) {
       console.error("Get Skills Error:", error);
       res.status(500).json({ success: false, message: "Internal server error" });
@@ -23,25 +23,38 @@ export class SkillController {
 
   public createSkill = async (req: Request, res: Response): Promise<void> => {
     try {
-      let iconUrl = req.body.icon;
-      let iconPublicId = "";
-
+      let imageData = {
+        secureUrl: "",
+        publicId: ""
+      };
+      
       if (req.file) {
         const result = await uploadToCloudinary(req.file.buffer, req.file.mimetype);
         if (result) {
-          iconUrl = result.url;
-          iconPublicId = result.public_id;
+          imageData.secureUrl = result.url;
+          imageData.publicId = result.public_id;
         }
+      } else if (req.body.icon) {
+        imageData.secureUrl = req.body.icon;
+        imageData.publicId = extractPublicId(req.body.icon);
+      }
+
+      if (!imageData.secureUrl) {
+        res.status(400).json({ success: false, message: "Icon is required" });
+        return;
       }
 
       const skillData = {
         ...req.body,
-        icon: iconUrl,
-        iconPublicId: iconPublicId,
+        image: imageData,
       };
 
+      // Remove legacy fields if they exist in req.body
+      delete skillData.icon;
+      delete skillData.iconPublicId;
+
       const skill = await this.skillService.createSkill(skillData);
-      res.status(201).json({ success: true, skill });
+      res.status(201).json({ success: true, skill: SkillDTO.toResponse(skill) });
     } catch (error) {
       console.error("Create Skill Error:", error);
       res.status(500).json({ success: false, message: "Internal server error" });
@@ -58,30 +71,38 @@ export class SkillController {
         return;
       }
 
-      let iconUrl = req.body.icon;
-      let iconPublicId = existingSkill.iconPublicId;
+      let imageData = { ...existingSkill.image };
 
       if (req.file) {
         // Delete old icon
-        if (existingSkill.iconPublicId) {
-          await deleteFromCloudinary(existingSkill.iconPublicId);
+        if (existingSkill.image.publicId) {
+          await deleteFromCloudinary(existingSkill.image.publicId);
         }
         
         const result = await uploadToCloudinary(req.file.buffer, req.file.mimetype);
         if (result) {
-          iconUrl = result.url;
-          iconPublicId = result.public_id;
+          imageData.secureUrl = result.url;
+          imageData.publicId = result.public_id;
         }
+      } else if (req.body.icon && req.body.icon !== existingSkill.image.secureUrl) {
+        imageData.secureUrl = req.body.icon;
+        imageData.publicId = extractPublicId(req.body.icon);
       }
 
       const skillData = {
         ...req.body,
-        icon: iconUrl,
-        iconPublicId: iconPublicId,
+        image: imageData,
       };
+      
+      delete skillData.icon;
+      delete skillData.iconPublicId;
 
       const updatedSkill = await this.skillService.updateSkill(id, skillData);
-      res.status(200).json({ success: true, skill: updatedSkill });
+      if (!updatedSkill) {
+        res.status(404).json({ success: false, message: "Skill not found" });
+        return;
+      }
+      res.status(200).json({ success: true, skill: SkillDTO.toResponse(updatedSkill) });
     } catch (error) {
       console.error("Update Skill Error:", error);
       res.status(500).json({ success: false, message: "Internal server error" });
@@ -98,8 +119,8 @@ export class SkillController {
         return;
       }
 
-      if (skill.iconPublicId) {
-        await deleteFromCloudinary(skill.iconPublicId);
+      if (skill.image.publicId) {
+        await deleteFromCloudinary(skill.image.publicId);
       }
 
       await this.skillService.deleteSkill(id);

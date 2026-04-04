@@ -40,3 +40,25 @@ export const deleteFromCloudinary = async (public_id: string): Promise<void> => 
     console.error("Cloudinary Delete Error:", error);
   }
 };
+
+export const extractPublicId = (url: string): string => {
+    if (!url || !url.includes("cloudinary.com")) return "";
+    
+    try {
+        const parts = url.split("/");
+        const uploadIndex = parts.indexOf("upload");
+        if (uploadIndex === -1) return "";
+        
+        let startIndex = uploadIndex + 1;
+        if (parts[startIndex].startsWith("v")) {
+            startIndex++;
+        }
+        
+        const publicIdWithExt = parts.slice(startIndex).join("/");
+        const publicId = publicIdWithExt.split(".").slice(0, -1).join(".");
+        return publicId;
+    } catch (error) {
+        console.error(`Error extracting publicId from URL: ${url}`, error);
+        return "";
+    }
+};

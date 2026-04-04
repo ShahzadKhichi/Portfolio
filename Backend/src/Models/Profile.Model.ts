@@ -2,8 +2,10 @@ import mongoose, { Document, Schema } from "mongoose";
 
 export interface IProfile extends Document {
   bio: string;
-  profileImage: string;
-  profileImagePublicId?: string;
+  image: {
+    secureUrl: string;
+    publicId: string;
+  };
   phoneNumber?: string;
   location?: string;
   resumeUrl?: string;
@@ -21,13 +23,15 @@ const profileSchema = new Schema<IProfile>(
       type: String,
       required: true,
     },
-    profileImage: {
-      type: String,
-      required: true,
-    },
-    profileImagePublicId: {
-      type: String,
-      required: false,
+    image: {
+      secureUrl: {
+        type: String,
+        required: true,
+      },
+      publicId: {
+        type: String,
+        required: true,
+      },
     },
     phoneNumber: {
       type: String,

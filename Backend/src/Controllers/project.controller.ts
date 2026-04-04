@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { injectable, inject } from "tsyringe";
 import { TYPES } from "../interfaces/types";
 import { IProjectService } from "../interfaces/IProjectService";
-import { uploadToCloudinary, deleteFromCloudinary } from "../Utils/cloudinary";
+import { uploadToCloudinary, deleteFromCloudinary, extractPublicId } from "../Utils/cloudinary";
+import { ProjectDTO } from "../DTOs/Project.dto";
 
 @injectable()
 export class ProjectController {
@@ -12,23 +13,33 @@ export class ProjectController {
 
   public createProject = async (req: Request, res: Response): Promise<void> => {
     try {
-      let imageUrl = "";
-      let imagePublicId = "";
+      let imageData = {
+        secureUrl: "",
+        publicId: ""
+      };
       
       if (req.file) {
         const result = await uploadToCloudinary(req.file.buffer, req.file.mimetype);
         if (result) {
-          imageUrl = result.url;
-          imagePublicId = result.public_id;
+          imageData.secureUrl = result.url;
+          imageData.publicId = result.public_id;
         }
       } else if (req.body.image) {
-        imageUrl = req.body.image;
+        imageData.secureUrl = req.body.image;
+        imageData.publicId = extractPublicId(req.body.image);
       }
 
-      const projectData = { ...req.body, image: imageUrl, imagePublicId };
+      if (!imageData.secureUrl) {
+        res.status(400).json({ success: false, message: "Image is required" });
+        return;
+      }
+
+      const projectData = { ...req.body, image: imageData };
       
+      delete projectData.imagePublicId;
+
       const project = await this.projectService.createProject(projectData);
-      res.status(201).json({ success: true, project });
+      res.status(201).json({ success: true, project: ProjectDTO.toResponse(project) });
     } catch (error) {
       console.error("Create Project Error:", error);
       res.status(500).json({ message: "internal server error", success: false });
@@ -38,7 +49,7 @@ export class ProjectController {
   public getAllProjects = async (req: Request, res: Response): Promise<void> => {
     try {
       const projects = await this.projectService.getAllProjects();
-      res.status(200).json({ success: true, projects });
+      res.status(200).json({ success: true, projects: ProjectDTO.toResponseList(projects) });
     } catch (error) {
       console.error("Get Projects Error:", error);
       res.status(500).json({ message: "internal server error", success: false });
@@ -53,7 +64,7 @@ export class ProjectController {
         res.status(404).json({ message: "Project not found", success: false });
         return;
       }
-      res.status(200).json({ success: true, project });
+      res.status(200).json({ success: true, project: ProjectDTO.toResponse(project) });
     } catch (error) {
       console.error("Get Project Error:", error);
       res.status(500).json({ message: "internal server error", success: false });
@@ -70,22 +81,33 @@ export class ProjectController {
         return;
       }
 
-      let updateData = { ...req.body };
+      let imageData = { ...existingProject.image };
+
       if (req.file) {
         // If there's an existing image, delete it
-        if (existingProject.imagePublicId) {
-          await deleteFromCloudinary(existingProject.imagePublicId);
+        if (existingProject.image.publicId) {
+          await deleteFromCloudinary(existingProject.image.publicId);
         }
         
         const result = await uploadToCloudinary(req.file.buffer, req.file.mimetype);
         if (result) {
-          updateData.image = result.url;
-          updateData.imagePublicId = result.public_id;
+          imageData.secureUrl = result.url;
+          imageData.publicId = result.public_id;
         }
+      } else if (req.body.image && req.body.image !== existingProject.image.secureUrl) {
+        imageData.secureUrl = req.body.image;
+        imageData.publicId = extractPublicId(req.body.image);
       }
 
-      const project = await this.projectService.updateProject(id, updateData);
-      res.status(200).json({ success: true, project });
+      const projectData = { ...req.body, image: imageData };
+      delete projectData.imagePublicId;
+
+      const project = await this.projectService.updateProject(id, projectData);
+      if (!project) {
+        res.status(404).json({ success: false, message: "Project not found" });
+        return;
+      }
+      res.status(200).json({ success: true, project: ProjectDTO.toResponse(project) });
     } catch (error) {
       console.error("Update Project Error:", error);
       res.status(500).json({ message: "internal server error", success: false });
@@ -103,8 +125,8 @@ export class ProjectController {
       }
 
       // Delete from Cloudinary if public_id exists
-      if (project.imagePublicId) {
-        await deleteFromCloudinary(project.imagePublicId);
+      if (project.image.publicId) {
+        await deleteFromCloudinary(project.image.publicId);
       }
 
       await this.projectService.deleteProject(id);

@@ -3,8 +3,10 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface IProject extends Document {
   title: string;
   description: string;
-  image?: string;
-  imagePublicId?: string;
+  image: {
+    secureUrl: string;
+    publicId: string;
+  };
   tags?: string[];
   github?: string;
   live?: string;
@@ -22,12 +24,14 @@ const ProjectSchema = new Schema<IProject>(
       required: true,
     },
     image: {
-      type: String,
-      required: false,
-    },
-    imagePublicId: {
-      type: String,
-      required: false,
+      secureUrl: {
+        type: String,
+        required: true,
+      },
+      publicId: {
+        type: String,
+        required: true,
+      },
     },
     tags: {
       type: [String],
