@@ -13,6 +13,7 @@ import projectRoutes from "./src/Routes/project.route";
 import profileRoutes from "./src/Routes/profile.route";
 import skillRoutes from "./src/Routes/skill.route";
 import messageRoutes from "./src/Routes/message.route";
+import typewriterRoutes from "./src/Routes/typewriter.route";
 
 const app: express.Application = express();
 const port = process.env.PORT || 4000;
@@ -28,6 +29,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/skills", skillRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/typewriter", typewriterRoutes);
 
 app.get("*", (req: express.Request, res: express.Response) => {
   res.status(200).json({

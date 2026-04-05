@@ -7,6 +7,7 @@ import { UserRepository } from "./repositories/UserRepository";
 import { ProjectRepository } from "./repositories/ProjectRepository";
 import { ProfileRepository } from "./repositories/ProfileRepository";
 import { SkillRepository } from "./repositories/SkillRepository";
+import { TypewriterRepository } from "./repositories/TypewriterRepository";
 
 // Utils / Senders
 import { MailSenderUtility } from "./Utils/mailSender";
@@ -18,6 +19,7 @@ import { ProjectService } from "./services/ProjectService";
 import { ProfileService } from "./services/ProfileService";
 import { SkillService } from "./services/SkillService";
 import { MessageService } from "./services/MessageService";
+import { TypewriterService } from "./services/TypewriterService";
 
 // Controllers
 import { PublicController } from "./Controllers/public.controller";
@@ -26,6 +28,7 @@ import { ProjectController } from "./Controllers/project.controller";
 import { ProfileController } from "./Controllers/profile.controller";
 import { SkillController } from "./Controllers/skill.controller";
 import { MessageController } from "./Controllers/message.controller";
+import { TypewriterController } from "./Controllers/typewriter.controller";
 
 // Registration
 container.register(TYPES.IMailRepository, { useClass: MailRepository });
@@ -50,6 +53,10 @@ container.register(TYPES.SkillController, { useClass: SkillController });
 
 container.register(TYPES.IMessageService, { useClass: MessageService });
 container.register(TYPES.MessageController, { useClass: MessageController });
+
+container.register(TYPES.ITypewriterRepository, { useClass: TypewriterRepository });
+container.register(TYPES.ITypewriterService, { useClass: TypewriterService });
+container.register(TYPES.TypewriterController, { useClass: TypewriterController });
 
 container.register(TYPES.PublicController, { useClass: PublicController });
 

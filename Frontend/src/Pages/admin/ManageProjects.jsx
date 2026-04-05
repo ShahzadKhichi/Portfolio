@@ -42,14 +42,16 @@ export default function ManageProjects() {
   };
 
   const handleOpenModal = (project = null) => {
+    console.log(project);
+    
     if (project) {
       setEditingProject(project);
       setFormData({
-        title: project.title,
-        description: project.description,
-        tags: project.tags.join(", "),
-        github: project.links.github || "",
-        live: project.links.live || "",
+        title: project?.title,
+        description: project?.description,
+        tags: project?.tags?.join(", "),
+        github: project?.links?.github || "",
+        live: project?.links?.live || "",
       });
       setImagePreview(project.image);
     } else {

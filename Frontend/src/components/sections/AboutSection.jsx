@@ -1,9 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Typewriter from "typewriter-effect";
 import { motion } from "framer-motion";
 import SocialLinks from "../ui/SocialLinks";
+import * as typewriterApi from "../../api/typewriter.api";
 
 export default function AboutSection({ image, bio, socialLinks }) {
+  const [typewriterStrings, setTypewriterStrings] = useState([
+    "Web Developer",
+    "Software Engineer",
+    "MERN Stack Dev",
+    "Full Stack Dev",
+  ]);
+
+  useEffect(() => {
+    const fetchTypewriterStrings = async () => {
+      try {
+        const response = await typewriterApi.getAllTypewriters();
+        if (response.data.success && response.data.typewriters.length > 0) {
+          setTypewriterStrings(response.data.typewriters.map(t => t.text));
+        }
+      } catch (error) {
+        console.error("Error fetching typewriter strings:", error);
+      }
+    };
+    fetchTypewriterStrings();
+  }, []);
+
   return (
     <section
       id="about"
@@ -53,20 +75,9 @@ export default function AboutSection({ image, bio, socialLinks }) {
             <span>I am a</span>
             <span className="text-cyan-400 min-h-[2.5rem] sm:min-h-[3rem] flex items-center">
               <Typewriter
+                key={typewriterStrings.join(",")}
                 options={{
-                  strings: [
-                    "Web Developer",
-                    "Software Engineer",
-                    "MERN Stack Dev",
-                    "React Developer",
-                    "React Native Dev",
-                    "Full Stack Dev",
-                    "Frontend Dev",
-                    "Java Developer",
-                    "Backend Dev",
-                    "Node.js Dev",
-                    "Spring Boot Dev",
-                  ],
+                  strings: typewriterStrings,
                   autoStart: true,
                   loop: true,
                   deleteSpeed: 30,
