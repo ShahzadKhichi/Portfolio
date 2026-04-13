@@ -10,6 +10,7 @@ const UserRepository_1 = require("./repositories/UserRepository");
 const ProjectRepository_1 = require("./repositories/ProjectRepository");
 const ProfileRepository_1 = require("./repositories/ProfileRepository");
 const SkillRepository_1 = require("./repositories/SkillRepository");
+const TypewriterRepository_1 = require("./repositories/TypewriterRepository");
 // Utils / Senders
 const mailSender_1 = require("./Utils/mailSender");
 // Services
@@ -19,6 +20,7 @@ const ProjectService_1 = require("./services/ProjectService");
 const ProfileService_1 = require("./services/ProfileService");
 const SkillService_1 = require("./services/SkillService");
 const MessageService_1 = require("./services/MessageService");
+const TypewriterService_1 = require("./services/TypewriterService");
 // Controllers
 const public_controller_1 = require("./Controllers/public.controller");
 const user_controller_1 = require("./Controllers/user.controller");
@@ -26,6 +28,7 @@ const project_controller_1 = require("./Controllers/project.controller");
 const profile_controller_1 = require("./Controllers/profile.controller");
 const skill_controller_1 = require("./Controllers/skill.controller");
 const message_controller_1 = require("./Controllers/message.controller");
+const typewriter_controller_1 = require("./Controllers/typewriter.controller");
 // Registration
 tsyringe_1.container.register(types_1.TYPES.IMailRepository, { useClass: MailRepository_1.MailRepository });
 tsyringe_1.container.register(types_1.TYPES.IMailSender, { useClass: mailSender_1.MailSenderUtility });
@@ -44,4 +47,7 @@ tsyringe_1.container.register(types_1.TYPES.ISkillService, { useClass: SkillServ
 tsyringe_1.container.register(types_1.TYPES.SkillController, { useClass: skill_controller_1.SkillController });
 tsyringe_1.container.register(types_1.TYPES.IMessageService, { useClass: MessageService_1.MessageService });
 tsyringe_1.container.register(types_1.TYPES.MessageController, { useClass: message_controller_1.MessageController });
+tsyringe_1.container.register(types_1.TYPES.ITypewriterRepository, { useClass: TypewriterRepository_1.TypewriterRepository });
+tsyringe_1.container.register(types_1.TYPES.ITypewriterService, { useClass: TypewriterService_1.TypewriterService });
+tsyringe_1.container.register(types_1.TYPES.TypewriterController, { useClass: typewriter_controller_1.TypewriterController });
 tsyringe_1.container.register(types_1.TYPES.PublicController, { useClass: public_controller_1.PublicController });

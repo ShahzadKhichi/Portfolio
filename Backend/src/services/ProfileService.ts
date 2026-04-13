@@ -17,4 +17,8 @@ export class ProfileService implements IProfileService {
     public async updateProfile(data: Partial<IProfile>): Promise<IProfile | null> {
         return await this.profileRepository.updateProfile(data);
     }
+
+    public async incrementViews(): Promise<void> {
+        await this.profileRepository.incrementViews();
+    }
 }

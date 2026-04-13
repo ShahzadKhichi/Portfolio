@@ -34,35 +34,12 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const skillSchema = new mongoose_1.Schema({
-    name: {
+const typewriterSchema = new mongoose_1.Schema({
+    text: {
         type: String,
         required: true,
         trim: true,
     },
-    level: {
-        type: Number,
-        required: true,
-        min: 0,
-        max: 100,
-    },
-    category: {
-        type: String,
-        required: true,
-        enum: ["Frontend", "Backend", "Database", "DevOps", "Mobile", "Other"],
-    },
-    image: {
-        secureUrl: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-        publicId: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-    },
 }, { timestamps: true });
-const Skill = mongoose_1.default.model("Skill", skillSchema);
-exports.default = Skill;
+const Typewriter = mongoose_1.default.model("Typewriter", typewriterSchema);
+exports.default = Typewriter;

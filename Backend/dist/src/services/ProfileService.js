@@ -25,6 +25,9 @@ let ProfileService = class ProfileService {
     async updateProfile(data) {
         return await this.profileRepository.updateProfile(data);
     }
+    async incrementViews() {
+        await this.profileRepository.incrementViews();
+    }
 };
 exports.ProfileService = ProfileService;
 exports.ProfileService = ProfileService = __decorate([

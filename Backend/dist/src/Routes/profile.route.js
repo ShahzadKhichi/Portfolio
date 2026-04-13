@@ -10,5 +10,6 @@ const multer_middleware_1 = require("../Middlewares/multer.middleware");
 const router = (0, express_1.Router)();
 const profileController = container_1.container.resolve(types_1.TYPES.ProfileController);
 router.get("/", profileController.getProfile);
-router.put("/", auth_middleware_1.authenticate, multer_middleware_1.upload.single("image"), (0, validateBody_1.validateBody)(validator_1.profileSchema), profileController.updateProfile);
+router.post("/views/increment", profileController.incrementViews);
+router.put("/", auth_middleware_1.authenticate, multer_middleware_1.uploadFile.single("image"), (0, validateBody_1.validateBody)(validator_1.profileSchema), profileController.updateProfile);
 exports.default = router;

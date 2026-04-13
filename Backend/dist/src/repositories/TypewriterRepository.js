@@ -9,27 +9,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SkillRepository = void 0;
+exports.TypewriterRepository = void 0;
 const tsyringe_1 = require("tsyringe");
-const Skill_Model_1 = __importDefault(require("../Models/Skill.Model"));
-let SkillRepository = class SkillRepository {
-    async getAllSkills() {
-        return await Skill_Model_1.default.find().sort({ name: 1 });
+const Typewriter_Model_1 = __importDefault(require("../Models/Typewriter.Model"));
+let TypewriterRepository = class TypewriterRepository {
+    async getAllTypewriters() {
+        return await Typewriter_Model_1.default.find().sort({ createdAt: 1 });
     }
-    async getSkillById(id) {
-        return await Skill_Model_1.default.findById(id);
+    async getTypewriterById(id) {
+        return await Typewriter_Model_1.default.findById(id);
     }
-    async createSkill(data) {
-        return await Skill_Model_1.default.create(data);
+    async createTypewriter(data) {
+        return await Typewriter_Model_1.default.create(data);
     }
-    async updateSkill(id, data) {
-        return await Skill_Model_1.default.findByIdAndUpdate(id, data, { new: true });
+    async updateTypewriter(id, data) {
+        return await Typewriter_Model_1.default.findByIdAndUpdate(id, data, { new: true });
     }
-    async deleteSkill(id) {
-        return await Skill_Model_1.default.findByIdAndDelete(id);
+    async deleteTypewriter(id) {
+        return await Typewriter_Model_1.default.findByIdAndDelete(id);
     }
 };
-exports.SkillRepository = SkillRepository;
-exports.SkillRepository = SkillRepository = __decorate([
+exports.TypewriterRepository = TypewriterRepository;
+exports.TypewriterRepository = TypewriterRepository = __decorate([
     (0, tsyringe_1.injectable)()
-], SkillRepository);
+], TypewriterRepository);

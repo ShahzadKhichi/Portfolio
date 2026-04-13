@@ -39,9 +39,15 @@ const profileSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
-    profileImage: {
-        type: String,
-        required: true,
+    image: {
+        secureUrl: {
+            type: String,
+            required: true,
+        },
+        publicId: {
+            type: String,
+            required: true,
+        },
     },
     phoneNumber: {
         type: String,
@@ -60,6 +66,10 @@ const profileSchema = new mongoose_1.Schema({
         linkedin: String,
         twitter: String,
         instagram: String,
+    },
+    views: {
+        type: Number,
+        default: 0,
     },
 }, { timestamps: true });
 const Profile = mongoose_1.default.model("Profile", profileSchema);

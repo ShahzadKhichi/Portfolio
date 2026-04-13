@@ -5,12 +5,7 @@ import SocialLinks from "../ui/SocialLinks";
 import * as typewriterApi from "../../api/typewriter.api";
 
 export default function AboutSection({ image, bio, socialLinks }) {
-  const [typewriterStrings, setTypewriterStrings] = useState([
-    "Web Developer",
-    "Software Engineer",
-    "MERN Stack Dev",
-    "Full Stack Dev",
-  ]);
+  const [typewriterStrings, setTypewriterStrings] = useState([]);
 
   useEffect(() => {
     const fetchTypewriterStrings = async () => {

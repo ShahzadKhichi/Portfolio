@@ -4,6 +4,7 @@ const express_1 = require("express");
 const container_1 = require("../container");
 const types_1 = require("../interfaces/types");
 const validateBody_1 = require("../Middlewares/validateBody");
+const auth_middleware_1 = require("../Middlewares/auth.middleware");
 const validator_1 = require("../Utils/Validators/validator");
 const router = (0, express_1.Router)();
 const userController = container_1.container.resolve(types_1.TYPES.UserController);
@@ -13,4 +14,7 @@ router.post("/login", (0, validateBody_1.validateBody)(validator_1.loginSchema),
 router.post("/forgot-password", (0, validateBody_1.validateBody)(validator_1.forgotPasswordSchema), userController.forgotPassword);
 router.post("/verify-otp", (0, validateBody_1.validateBody)(validator_1.verifyOtpSchema), userController.verifyOtp);
 router.post("/reset-password", (0, validateBody_1.validateBody)(validator_1.resetPasswordSchema), userController.resetPassword);
+// Private Routes
+router.get("/me", auth_middleware_1.authenticate, userController.getMe);
+router.put("/profile", auth_middleware_1.authenticate, (0, validateBody_1.validateBody)(validator_1.updateProfileSchema), userController.updateProfile);
 exports.default = router;

@@ -11,6 +11,7 @@ const router = Router();
 const profileController = container.resolve<ProfileController>(TYPES.ProfileController);
 
 router.get("/", profileController.getProfile);
+router.post("/views/increment", profileController.incrementViews);
 router.put("/", authenticate, uploadFile.single("image"), validateBody(profileSchema), profileController.updateProfile);
 
 export default router;

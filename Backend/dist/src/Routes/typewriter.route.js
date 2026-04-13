@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const tsyringe_1 = require("tsyringe");
+const types_1 = require("../interfaces/types");
+const auth_middleware_1 = require("../Middlewares/auth.middleware");
+const router = (0, express_1.Router)();
+const typewriterController = tsyringe_1.container.resolve(types_1.TYPES.TypewriterController);
+router.get("/", typewriterController.getAllTypewriters);
+router.post("/", auth_middleware_1.authenticate, typewriterController.createTypewriter);
+router.put("/:id", auth_middleware_1.authenticate, typewriterController.updateTypewriter);
+router.delete("/:id", auth_middleware_1.authenticate, typewriterController.deleteTypewriter);
+exports.default = router;

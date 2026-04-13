@@ -125,6 +125,36 @@ let UserController = class UserController {
                 res.status(500).json({ message: "internal server error", success: false });
             }
         };
+        this.getMe = async (req, res) => {
+            try {
+                const id = req.user.id;
+                const admin = await this.userService.getAdminById(id);
+                if (!admin) {
+                    res.status(404).json({ message: "Admin not found", success: false });
+                    return;
+                }
+                res.status(200).json({ success: true, admin });
+            }
+            catch (error) {
+                console.error("Get Me Error:", error);
+                res.status(500).json({ message: "internal server error", success: false });
+            }
+        };
+        this.updateProfile = async (req, res) => {
+            try {
+                const id = req.user.id;
+                const updated = await this.userService.updateAdmin(id, req.body);
+                if (!updated) {
+                    res.status(404).json({ message: "Admin not found", success: false });
+                    return;
+                }
+                res.status(200).json({ success: true, admin: updated });
+            }
+            catch (error) {
+                console.error("Update Profile Error:", error);
+                res.status(500).json({ message: "internal server error", success: false });
+            }
+        };
     }
 };
 exports.UserController = UserController;

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import * as projectApi from "../../api/project.api";
 import * as skillApi from "../../api/skill.api";
 import * as messageApi from "../../api/message.api";
+import * as profileApi from "../../api/profile.api";
 
 export default function Dashboard() {
   const [stats, setStats] = useState([
@@ -18,10 +19,11 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [projRes, skillRes, msgRes] = await Promise.all([
+        const [projRes, skillRes, msgRes, profRes] = await Promise.all([
           projectApi.getAllProjects(),
           skillApi.getAllSkills(),
-          messageApi.getAllMessages()
+          messageApi.getAllMessages(),
+          profileApi.getProfile()
         ]);
 
         const newStats = [...stats];
@@ -29,8 +31,9 @@ export default function Dashboard() {
         if (skillRes.data.success) newStats[3].value = skillRes.data.skills.length;
         if (msgRes.data.success) newStats[1].value = msgRes.data.messages.length;
         
-        // Mock views for now as backend doesn't have analytics yet
-        newStats[0].value = "1,245"; 
+        if (profRes.data.success) {
+          newStats[0].value = profRes.data.profile.views?.toLocaleString() || "0";
+        }
 
         setStats(newStats);
       } catch (error) {

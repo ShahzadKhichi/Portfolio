@@ -12,32 +12,32 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SkillService = void 0;
+exports.TypewriterService = void 0;
 const tsyringe_1 = require("tsyringe");
 const types_1 = require("../interfaces/types");
-let SkillService = class SkillService {
-    constructor(skillRepository) {
-        this.skillRepository = skillRepository;
+let TypewriterService = class TypewriterService {
+    constructor(typewriterRepository) {
+        this.typewriterRepository = typewriterRepository;
     }
-    async getAllSkills() {
-        return await this.skillRepository.getAllSkills();
+    async getAllTypewriters() {
+        return await this.typewriterRepository.getAllTypewriters();
     }
-    async getSkillById(id) {
-        return await this.skillRepository.getSkillById(id);
+    async getTypewriterById(id) {
+        return await this.typewriterRepository.getTypewriterById(id);
     }
-    async createSkill(data) {
-        return await this.skillRepository.createSkill(data);
+    async createTypewriter(data) {
+        return await this.typewriterRepository.createTypewriter(data);
     }
-    async updateSkill(id, data) {
-        return await this.skillRepository.updateSkill(id, data);
+    async updateTypewriter(id, data) {
+        return await this.typewriterRepository.updateTypewriter(id, data);
     }
-    async deleteSkill(id) {
-        return await this.skillRepository.deleteSkill(id);
+    async deleteTypewriter(id) {
+        return await this.typewriterRepository.deleteTypewriter(id);
     }
 };
-exports.SkillService = SkillService;
-exports.SkillService = SkillService = __decorate([
+exports.TypewriterService = TypewriterService;
+exports.TypewriterService = TypewriterService = __decorate([
     (0, tsyringe_1.injectable)(),
-    __param(0, (0, tsyringe_1.inject)(types_1.TYPES.ISkillRepository)),
+    __param(0, (0, tsyringe_1.inject)(types_1.TYPES.ITypewriterRepository)),
     __metadata("design:paramtypes", [Object])
-], SkillService);
+], TypewriterService);

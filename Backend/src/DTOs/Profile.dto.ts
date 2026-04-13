@@ -13,6 +13,7 @@ export interface ProfileResponseDTO {
         twitter?: string;
         instagram?: string;
     };
+    views: number;
 }
 
 export class ProfileDTO {
@@ -25,6 +26,7 @@ export class ProfileDTO {
             location: profile.location,
             resumeUrl: profile.resumeUrl,
             socialLinks: profile.socialLinks,
+            views: profile.views || 0,
         };
     }
 }

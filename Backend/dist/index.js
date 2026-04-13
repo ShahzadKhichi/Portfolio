@@ -16,6 +16,7 @@ const project_route_1 = __importDefault(require("./src/Routes/project.route"));
 const profile_route_1 = __importDefault(require("./src/Routes/profile.route"));
 const skill_route_1 = __importDefault(require("./src/Routes/skill.route"));
 const message_route_1 = __importDefault(require("./src/Routes/message.route"));
+const typewriter_route_1 = __importDefault(require("./src/Routes/typewriter.route"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 4000;
 app.use((0, cors_1.default)());
@@ -28,6 +29,7 @@ app.use("/api/projects", project_route_1.default);
 app.use("/api/profile", profile_route_1.default);
 app.use("/api/skills", skill_route_1.default);
 app.use("/api/messages", message_route_1.default);
+app.use("/api/typewriter", typewriter_route_1.default);
 app.get("*", (req, res) => {
     res.status(200).json({
         active: true,

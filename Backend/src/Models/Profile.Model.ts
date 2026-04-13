@@ -15,6 +15,7 @@ export interface IProfile extends Document {
     twitter?: string;
     instagram?: string;
   };
+  views: number;
 }
 
 const profileSchema = new Schema<IProfile>(
@@ -50,6 +51,10 @@ const profileSchema = new Schema<IProfile>(
       linkedin: String,
       twitter: String,
       instagram: String,
+    },
+    views: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

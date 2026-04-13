@@ -16,13 +16,18 @@ exports.ProfileController = void 0;
 const tsyringe_1 = require("tsyringe");
 const types_1 = require("../interfaces/types");
 const cloudinary_1 = require("../Utils/cloudinary");
+const Profile_dto_1 = require("../DTOs/Profile.dto");
 let ProfileController = class ProfileController {
     constructor(profileService) {
         this.profileService = profileService;
         this.getProfile = async (req, res) => {
             try {
                 const profile = await this.profileService.getProfile();
-                res.status(200).json({ success: true, profile });
+                if (!profile) {
+                    res.status(404).json({ success: false, message: "Profile not found" });
+                    return;
+                }
+                res.status(200).json({ success: true, profile: Profile_dto_1.ProfileDTO.toResponse(profile) });
             }
             catch (error) {
                 console.error("Get Profile Error:", error);
@@ -31,21 +36,48 @@ let ProfileController = class ProfileController {
         };
         this.updateProfile = async (req, res) => {
             try {
-                let updateData = { ...req.body };
+                const existingProfile = await this.profileService.getProfile();
+                let imageData = { ...existingProfile?.image };
                 if (req.file) {
-                    const uploadedUrl = await (0, cloudinary_1.uploadToCloudinary)(req.file.buffer, req.file.mimetype);
-                    if (uploadedUrl) {
-                        updateData.profileImage = uploadedUrl;
+                    // Delete old image
+                    if (existingProfile?.image.publicId) {
+                        await (0, cloudinary_1.deleteFromCloudinary)(existingProfile.image.publicId);
+                    }
+                    const result = await (0, cloudinary_1.uploadToCloudinary)(req.file.buffer, req.file.mimetype);
+                    if (result) {
+                        imageData.secureUrl = result.url;
+                        imageData.publicId = result.public_id;
                     }
                 }
-                if (updateData.socialLinks && typeof updateData.socialLinks === "string") {
-                    updateData.socialLinks = JSON.parse(updateData.socialLinks);
+                else if (req.body.profileImage && req.body.profileImage !== existingProfile?.image.secureUrl) {
+                    imageData.secureUrl = req.body.profileImage;
+                    imageData.publicId = (0, cloudinary_1.extractPublicId)(req.body.profileImage);
                 }
-                const updatedProfile = await this.profileService.updateProfile(updateData);
-                res.status(200).json({ success: true, profile: updatedProfile });
+                const profileData = { ...req.body, image: imageData };
+                delete profileData.profileImage;
+                delete profileData.profileImagePublicId;
+                if (profileData.socialLinks && typeof profileData.socialLinks === "string") {
+                    profileData.socialLinks = JSON.parse(profileData.socialLinks);
+                }
+                const updatedProfile = await this.profileService.updateProfile(profileData);
+                if (!updatedProfile) {
+                    res.status(404).json({ success: false, message: "Profile not found" });
+                    return;
+                }
+                res.status(200).json({ success: true, profile: Profile_dto_1.ProfileDTO.toResponse(updatedProfile) });
             }
             catch (error) {
                 console.error("Update Profile Error:", error);
+                res.status(500).json({ success: false, message: "Internal server error" });
+            }
+        };
+        this.incrementViews = async (req, res) => {
+            try {
+                await this.profileService.incrementViews();
+                res.status(200).json({ success: true, message: "Views incremented" });
+            }
+            catch (error) {
+                console.error("Increment Views Error:", error);
                 res.status(500).json({ success: false, message: "Internal server error" });
             }
         };

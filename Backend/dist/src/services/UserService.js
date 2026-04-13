@@ -35,7 +35,7 @@ let UserService = class UserService {
         const JWTSec = process.env.JWT_SECRET || "default_super_secret_for_jwt";
         const JWTRefreshSec = process.env.JWT_REFRESH_SECRET || "default_refresh_secret";
         const payload = { id: user._id, email: user.email };
-        const accessToken = jsonwebtoken_1.default.sign(payload, JWTSec, { expiresIn: "15m" });
+        const accessToken = jsonwebtoken_1.default.sign(payload, JWTSec, { expiresIn: "1d" });
         const refreshToken = jsonwebtoken_1.default.sign(payload, JWTRefreshSec, { expiresIn: "7d" });
         return { accessToken, refreshToken };
     }
@@ -122,20 +122,31 @@ let UserService = class UserService {
         return true;
     }
     async verifyRegistration(email, otp) {
-        const user = await this.userRepository.findByEmail(email);
-        // Only verify if user exists, is NOT verified already, OTP matches, and hasn't expired.
-        if (!user || user.isVerified || user.registrationOtp !== otp || !user.registrationOtpExpiry)
+        const admin = await this.userRepository.findByEmail(email);
+        if (!admin || admin.isVerified || admin.registrationOtp !== otp || (admin.registrationOtpExpiry && admin.registrationOtpExpiry < new Date())) {
             return false;
-        if (new Date() > user.registrationOtpExpiry) {
-            return false; // OTP Expired
         }
-        // Complete Verification
         await this.userRepository.updateAdmin(email, {
             isVerified: true,
             registrationOtp: undefined,
             registrationOtpExpiry: undefined
         });
         return true;
+    }
+    async getAdminById(id) {
+        return await this.userRepository.findById(id);
+    }
+    async updateAdmin(id, adminData) {
+        const admin = await this.userRepository.findById(id);
+        if (!admin)
+            return null;
+        if (adminData.email)
+            admin.email = adminData.email;
+        if (adminData.firstname)
+            admin.name.firstname = adminData.firstname;
+        if (adminData.lastname)
+            admin.name.lastname = adminData.lastname;
+        return await admin.save();
     }
 };
 exports.UserService = UserService;

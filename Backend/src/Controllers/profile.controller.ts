@@ -66,4 +66,14 @@ export class ProfileController {
       res.status(500).json({ success: false, message: "Internal server error" });
     }
   };
+
+  public incrementViews = async (req: Request, res: Response): Promise<void> => {
+    try {
+      await this.profileService.incrementViews();
+      res.status(200).json({ success: true, message: "Views incremented" });
+    } catch (error) {
+      console.error("Increment Views Error:", error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  };
 }

@@ -25,6 +25,9 @@ let ProfileRepository = class ProfileRepository {
             return await Profile_Model_1.default.create(data);
         }
     }
+    async incrementViews() {
+        await Profile_Model_1.default.updateOne({}, { $inc: { views: 1 } });
+    }
 };
 exports.ProfileRepository = ProfileRepository;
 exports.ProfileRepository = ProfileRepository = __decorate([

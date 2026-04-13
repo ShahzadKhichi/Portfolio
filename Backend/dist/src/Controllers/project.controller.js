@@ -16,23 +16,35 @@ exports.ProjectController = void 0;
 const tsyringe_1 = require("tsyringe");
 const types_1 = require("../interfaces/types");
 const cloudinary_1 = require("../Utils/cloudinary");
+const Project_dto_1 = require("../DTOs/Project.dto");
 let ProjectController = class ProjectController {
     constructor(projectService) {
         this.projectService = projectService;
         this.createProject = async (req, res) => {
             try {
-                let imageUrl = "";
+                let imageData = {
+                    secureUrl: "",
+                    publicId: ""
+                };
                 if (req.file) {
-                    const uploadedUrl = await (0, cloudinary_1.uploadToCloudinary)(req.file.buffer, req.file.mimetype);
-                    if (uploadedUrl)
-                        imageUrl = uploadedUrl;
+                    const result = await (0, cloudinary_1.uploadToCloudinary)(req.file.buffer, req.file.mimetype);
+                    if (result) {
+                        imageData.secureUrl = result.url;
+                        imageData.publicId = result.public_id;
+                    }
                 }
                 else if (req.body.image) {
-                    imageUrl = req.body.image;
+                    imageData.secureUrl = req.body.image;
+                    imageData.publicId = (0, cloudinary_1.extractPublicId)(req.body.image);
                 }
-                const projectData = { ...req.body, image: imageUrl };
+                if (!imageData.secureUrl) {
+                    res.status(400).json({ success: false, message: "Image is required" });
+                    return;
+                }
+                const projectData = { ...req.body, image: imageData };
+                delete projectData.imagePublicId;
                 const project = await this.projectService.createProject(projectData);
-                res.status(201).json({ success: true, project });
+                res.status(201).json({ success: true, project: Project_dto_1.ProjectDTO.toResponse(project) });
             }
             catch (error) {
                 console.error("Create Project Error:", error);
@@ -42,7 +54,7 @@ let ProjectController = class ProjectController {
         this.getAllProjects = async (req, res) => {
             try {
                 const projects = await this.projectService.getAllProjects();
-                res.status(200).json({ success: true, projects });
+                res.status(200).json({ success: true, projects: Project_dto_1.ProjectDTO.toResponseList(projects) });
             }
             catch (error) {
                 console.error("Get Projects Error:", error);
@@ -57,7 +69,7 @@ let ProjectController = class ProjectController {
                     res.status(404).json({ message: "Project not found", success: false });
                     return;
                 }
-                res.status(200).json({ success: true, project });
+                res.status(200).json({ success: true, project: Project_dto_1.ProjectDTO.toResponse(project) });
             }
             catch (error) {
                 console.error("Get Project Error:", error);
@@ -67,18 +79,35 @@ let ProjectController = class ProjectController {
         this.updateProject = async (req, res) => {
             try {
                 const id = req.params.id;
-                let updateData = { ...req.body };
-                if (req.file) {
-                    const uploadedUrl = await (0, cloudinary_1.uploadToCloudinary)(req.file.buffer, req.file.mimetype);
-                    if (uploadedUrl)
-                        updateData.image = uploadedUrl;
-                }
-                const project = await this.projectService.updateProject(id, updateData);
-                if (!project) {
+                const existingProject = await this.projectService.getProjectById(id);
+                if (!existingProject) {
                     res.status(404).json({ message: "Project not found", success: false });
                     return;
                 }
-                res.status(200).json({ success: true, project });
+                let imageData = { ...existingProject.image };
+                if (req.file) {
+                    // If there's an existing image, delete it
+                    if (existingProject.image.publicId) {
+                        await (0, cloudinary_1.deleteFromCloudinary)(existingProject.image.publicId);
+                    }
+                    const result = await (0, cloudinary_1.uploadToCloudinary)(req.file.buffer, req.file.mimetype);
+                    if (result) {
+                        imageData.secureUrl = result.url;
+                        imageData.publicId = result.public_id;
+                    }
+                }
+                else if (req.body.image && req.body.image !== existingProject.image.secureUrl) {
+                    imageData.secureUrl = req.body.image;
+                    imageData.publicId = (0, cloudinary_1.extractPublicId)(req.body.image);
+                }
+                const projectData = { ...req.body, image: imageData };
+                delete projectData.imagePublicId;
+                const project = await this.projectService.updateProject(id, projectData);
+                if (!project) {
+                    res.status(404).json({ success: false, message: "Project not found" });
+                    return;
+                }
+                res.status(200).json({ success: true, project: Project_dto_1.ProjectDTO.toResponse(project) });
             }
             catch (error) {
                 console.error("Update Project Error:", error);
@@ -88,11 +117,16 @@ let ProjectController = class ProjectController {
         this.deleteProject = async (req, res) => {
             try {
                 const id = req.params.id;
-                const project = await this.projectService.deleteProject(id);
+                const project = await this.projectService.getProjectById(id);
                 if (!project) {
                     res.status(404).json({ message: "Project not found", success: false });
                     return;
                 }
+                // Delete from Cloudinary if public_id exists
+                if (project.image.publicId) {
+                    await (0, cloudinary_1.deleteFromCloudinary)(project.image.publicId);
+                }
+                await this.projectService.deleteProject(id);
                 res.status(200).json({ success: true, message: "Project deleted successfully" });
             }
             catch (error) {

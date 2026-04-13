@@ -22,6 +22,9 @@ let UserRepository = class UserRepository {
     async updateAdmin(email, updateData) {
         return await Admin_Model_1.default.findOneAndUpdate({ email }, updateData, { new: true });
     }
+    async findById(id) {
+        return await Admin_Model_1.default.findById(id);
+    }
 };
 exports.UserRepository = UserRepository;
 exports.UserRepository = UserRepository = __decorate([

@@ -45,8 +45,14 @@ const ProjectSchema = new mongoose_1.Schema({
         required: true,
     },
     image: {
-        type: String,
-        required: false,
+        secureUrl: {
+            type: String,
+            required: true,
+        },
+        publicId: {
+            type: String,
+            required: true,
+        },
     },
     tags: {
         type: [String],

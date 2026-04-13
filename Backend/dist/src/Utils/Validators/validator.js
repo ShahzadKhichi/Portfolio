@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.skillSchema = exports.profileSchema = exports.projectSchema = exports.resetPasswordSchema = exports.verifyOtpSchema = exports.forgotPasswordSchema = exports.verifyRegistrationSchema = exports.registerSchema = exports.loginSchema = void 0;
+exports.updateProfileSchema = exports.skillSchema = exports.profileSchema = exports.projectSchema = exports.resetPasswordSchema = exports.verifyOtpSchema = exports.forgotPasswordSchema = exports.verifyRegistrationSchema = exports.registerSchema = exports.loginSchema = void 0;
 const zod_1 = __importDefault(require("zod"));
 exports.loginSchema = zod_1.default.object({
     email: zod_1.default.string().email(),
@@ -76,4 +76,9 @@ exports.skillSchema = zod_1.default.object({
     level: zod_1.default.coerce.number().min(0).max(100),
     category: zod_1.default.enum(["Frontend", "Backend", "Database", "DevOps", "Mobile", "Other"]),
     icon: zod_1.default.string().optional(),
+});
+exports.updateProfileSchema = zod_1.default.object({
+    firstname: zod_1.default.string().min(3).optional(),
+    lastname: zod_1.default.string().min(3).optional(),
+    email: zod_1.default.string().email().optional(),
 });

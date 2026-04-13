@@ -15,6 +15,15 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const incrementViews = async () => {
+      try {
+        await profileApi.incrementViews();
+      } catch (error) {
+        console.error("Error incrementing views:", error);
+      }
+    };
+    incrementViews();
+
     const fetchData = async () => {
       try {
         const [projRes, profRes] = await Promise.all([

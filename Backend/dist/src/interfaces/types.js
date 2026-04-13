@@ -20,4 +20,7 @@ exports.TYPES = {
     SkillController: Symbol.for("SkillController"),
     IMessageService: Symbol.for("IMessageService"),
     MessageController: Symbol.for("MessageController"),
+    ITypewriterRepository: Symbol.for("ITypewriterRepository"),
+    ITypewriterService: Symbol.for("ITypewriterService"),
+    TypewriterController: Symbol.for("TypewriterController"),
 };

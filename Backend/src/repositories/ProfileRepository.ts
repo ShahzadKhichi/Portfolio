@@ -16,4 +16,8 @@ export class ProfileRepository implements IProfileRepository {
             return await Profile.create(data);
         }
     }
+
+    public async incrementViews(): Promise<void> {
+        await Profile.updateOne({}, { $inc: { views: 1 } });
+    }
 }
