@@ -7,7 +7,7 @@ const categoryGradients = {
   "Frontend": "from-cyan-400 to-blue-400",
   "Backend": "from-green-400 to-emerald-400",
   "DevOps": "from-blue-400 to-indigo-400",
-  "default": "from-purple-400 to-pink-400"
+  "default": "from-cyan-400 to-blue-400"
 };
 
 const SkillCard = ({ skill }) => {
@@ -20,21 +20,21 @@ const SkillCard = ({ skill }) => {
       <div className="relative p-5 rounded-2xl bg-gray-900/50 backdrop-blur-md border border-gray-800 shadow-2xl transition-all duration-300 group-hover:border-cyan-500/50 group-hover:shadow-cyan-500/10 overflow-hidden">
         {/* Glow effect on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/5 group-hover:to-blue-500/5 transition-all duration-300" />
-        
+
         {skill.icon ? (
-          <img 
-            src={skill.icon} 
-            alt={skill.name} 
-            className="w-12 h-12 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300 drop-shadow-xl" 
+          <img
+            src={skill.icon}
+            alt={skill.name}
+            className="w-12 h-12 object-contain group-hover:grayscale-0 transition-all duration-300 drop-shadow-xl"
           />
         ) : (
           <FaCode className="text-4xl text-cyan-500 drop-shadow-md" />
         )}
       </div>
-      
+
       {/* Skill Level Ring/Bar */}
       <div className="absolute -bottom-4 w-12 h-1 bg-gray-800 rounded-full overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">
-        <motion.div 
+        <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${skill.level}%` }}
           className="h-full bg-gradient-to-r from-cyan-400 to-blue-500"
@@ -98,11 +98,11 @@ export default function SkillsSection() {
               uniqueSkillsMap.set(skill.name, skill);
             }
           });
-          
+
           const uniqueSkills = Array.from(uniqueSkillsMap.values());
           // Sort by level (desc) then name (asc)
           uniqueSkills.sort((a, b) => b.level - a.level || a.name.localeCompare(b.name));
-          
+
           setSkills(uniqueSkills);
         }
       } catch (error) {
@@ -118,7 +118,7 @@ export default function SkillsSection() {
 
   // Dynamically group skills by category
   const categories = [...new Set(skills.map(s => s.category))];
-  
+
   // Custom sort order for categories
   const categoryOrder = ["Frontend", "Backend", "DevOps", "Database", "Mobile"];
   const sortedCategories = categories.sort((a, b) => {
@@ -134,28 +134,28 @@ export default function SkillsSection() {
     <section className="w-full py-24 bg-gradient-to-b from-black via-gray-950 to-black" id="skills">
       <div className="container mx-auto px-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-20">
-            <motion.h2
+          <motion.h2
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
             className="text-4xl sm:text-5xl font-extrabold text-cyan-400 mb-4"
-            >
+          >
             Technical Stack
-            </motion.h2>
-            <motion.div 
-                initial={{ width: 0 }}
-                whileInView={{ width: 100 }}
-                className="h-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
-            />
+          </motion.h2>
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: 100 }}
+            className="h-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
+          />
         </div>
-        
+
         {sortedCategories.map(cat => (
           <SkillGroup
             key={cat}
             title={cat}
             skills={skills.filter(s => s.category === cat)}
-            gradient={categoryGradients[cat] || categoryGradients.default}
+            gradient={categoryGradients.default}
           />
         ))}
       </div>
