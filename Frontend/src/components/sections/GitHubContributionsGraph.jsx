@@ -72,7 +72,7 @@ export default function GitHubContributionsGraph() {
   };
 
   const getColor = (level) => {
-    const colors = ["#0f172a", "#1e3a8a", "#2563eb", "#3b82f6", "#60a5fa"];
+    const colors = ["#152040", "#0d4a4a", "#0e8c6b", "#00c4a7", "#00f5d4"];
     return colors[level] || colors[0];
   };
 
@@ -80,14 +80,14 @@ export default function GitHubContributionsGraph() {
     return (
       <section
         id="github"
-        className="w-full py-20 bg-gradient-to-b from-slate-950 to-slate-900"
+        className="w-full py-20 bg-navy-950"
       >
         <div className="max-w-6xl mx-auto px-4 text-center">
           <motion.h2
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
-            className="text-4xl font-bold text-blue-400 mb-4"
+            className="text-4xl font-bold text-teal-accent mb-4"
           >
             GitHub Contributions
           </motion.h2>
@@ -95,7 +95,7 @@ export default function GitHubContributionsGraph() {
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            className="h-1 w-32 mx-auto bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full"
+            className="h-1 w-32 mx-auto bg-teal-accent rounded-full"
           />
         </div>
       </section>
@@ -105,14 +105,14 @@ export default function GitHubContributionsGraph() {
     return (
       <section
         id="github"
-        className="w-full py-20 bg-gradient-to-b from-slate-950 to-slate-900"
+        className="w-full py-20 bg-navy-950"
       >
         <div className="max-w-6xl mx-auto px-4 text-center">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl font-bold text-blue-400 mb-4"
+            className="text-4xl font-bold text-teal-accent mb-4"
           >
             GitHub Contributions
           </motion.h2>
@@ -121,7 +121,7 @@ export default function GitHubContributionsGraph() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-blue-400 underline"
+            className="text-teal-accent underline"
           >
             View on GitHub
           </motion.a>
@@ -148,7 +148,7 @@ export default function GitHubContributionsGraph() {
   return (
     <section
       id="github"
-      className="w-full py-20 bg-gradient-to-b from-slate-950 to-slate-900"
+      className="w-full py-20 bg-navy-950"
     >
       <div className="max-w-7xl mx-auto px-4">
         <motion.h2
@@ -156,9 +156,9 @@ export default function GitHubContributionsGraph() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="text-4xl lg:text-5xl font-extrabold text-center text-blue-400 mb-6"
+          className="text-4xl lg:text-5xl font-extrabold text-center text-white mb-6"
         >
-          GitHub Contributions
+          GitHub <span className="text-teal-accent">Contributions</span>
         </motion.h2>
 
         <motion.p
@@ -176,7 +176,7 @@ export default function GitHubContributionsGraph() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="bg-slate-900/70 backdrop-blur-lg border border-blue-800/30 rounded-2xl p-6 lg:p-8 shadow-2xl overflow-x-auto"
+          className="bg-navy-800/60 backdrop-blur-lg border border-teal-accent/10 rounded-2xl p-6 lg:p-8 shadow-2xl overflow-x-auto"
         >
           <div className="flex gap-1 min-w-max mb-2 px-8">
             {monthLabels.map((label, i) => (
@@ -251,7 +251,7 @@ export default function GitHubContributionsGraph() {
           viewport={{ once: true }}
           transition={{ delay: 0.4 }}
           whileHover={{ scale: 1.05 }}
-          className="block w-full max-w-xs mx-auto mt-10 px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold text-center rounded-full shadow-lg hover:shadow-blue-500/50 transition-all"
+          className="block w-full max-w-xs mx-auto mt-10 px-8 py-3 bg-teal-accent text-navy-950 font-bold text-center rounded-full shadow-lg hover:shadow-teal-accent/30 hover:bg-teal-dark transition-all"
         >
           View GitHub
         </motion.a>

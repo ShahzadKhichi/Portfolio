@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-gradient-to-t from-slate-950 to-slate-900 py-12 border-t border-blue-800/30">
+    <footer className="w-full bg-navy-950 py-12 border-t border-teal-accent/10">
       <div className="max-w-7xl mx-auto px-4 text-center">
         <motion.p
           initial={{ opacity: 0 }}

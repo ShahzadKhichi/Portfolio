@@ -4,10 +4,10 @@ import { FaCode } from "react-icons/fa";
 import * as skillApi from "../../api/skill.api";
 
 const categoryGradients = {
-  "Frontend": "from-cyan-400 to-blue-400",
-  "Backend": "from-green-400 to-emerald-400",
-  "DevOps": "from-blue-400 to-indigo-400",
-  "default": "from-cyan-400 to-blue-400"
+  "Frontend": "from-teal-accent to-emerald-400",
+  "Backend": "from-emerald-400 to-green-400",
+  "DevOps": "from-sky-400 to-teal-accent",
+  "default": "from-teal-accent to-emerald-400"
 };
 
 const SkillCard = ({ skill }) => {
@@ -17,9 +17,9 @@ const SkillCard = ({ skill }) => {
       transition={{ type: "spring", stiffness: 300, damping: 10 }}
       className="group relative flex flex-col justify-center items-center"
     >
-      <div className="relative p-5 rounded-2xl bg-gray-900/50 backdrop-blur-md border border-gray-800 shadow-2xl transition-all duration-300 group-hover:border-cyan-500/50 group-hover:shadow-cyan-500/10 overflow-hidden">
+      <div className="relative p-5 rounded-2xl bg-navy-800/70 backdrop-blur-md border border-navy-600/50 shadow-2xl transition-all duration-300 group-hover:border-teal-accent/50 group-hover:shadow-teal-accent/10 overflow-hidden">
         {/* Glow effect on hover */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/5 group-hover:to-blue-500/5 transition-all duration-300" />
+        <div className="absolute inset-0 bg-teal-accent/0 group-hover:bg-teal-accent/5 transition-all duration-300" />
 
         {skill.icon ? (
           <img
@@ -28,22 +28,22 @@ const SkillCard = ({ skill }) => {
             className="w-12 h-12 object-contain group-hover:grayscale-0 transition-all duration-300 drop-shadow-xl"
           />
         ) : (
-          <FaCode className="text-4xl text-cyan-500 drop-shadow-md" />
+          <FaCode className="text-4xl text-teal-accent drop-shadow-md" />
         )}
       </div>
 
       {/* Skill Level Ring/Bar */}
-      <div className="absolute -bottom-4 w-12 h-1 bg-gray-800 rounded-full overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">
+      <div className="absolute -bottom-4 w-12 h-1 bg-navy-700 rounded-full overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${skill.level}%` }}
-          className="h-full bg-gradient-to-r from-cyan-400 to-blue-500"
+          className="h-full bg-teal-accent"
         />
       </div>
 
       <span
         className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 
-      transition-all duration-300 pointer-events-none text-[10px] font-bold text-white bg-black/90 px-3 py-1.5 rounded-full border border-white/10 shadow-2xl whitespace-nowrap z-10 uppercase tracking-wider"
+      transition-all duration-300 pointer-events-none text-[10px] font-bold text-navy-950 bg-teal-accent px-3 py-1.5 rounded-full shadow-2xl whitespace-nowrap z-10 uppercase tracking-wider"
       >
         {skill.name} • {skill.level}%
       </span>
@@ -131,7 +131,7 @@ export default function SkillsSection() {
   });
 
   return (
-    <section className="w-full py-24 bg-gradient-to-b from-black via-gray-950 to-black" id="skills">
+    <section className="w-full py-24 bg-navy-950" id="skills">
       <div className="container mx-auto px-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-20">
           <motion.h2
@@ -139,14 +139,14 @@ export default function SkillsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="text-4xl sm:text-5xl font-extrabold text-cyan-400 mb-4"
+            className="text-4xl sm:text-5xl font-extrabold text-white mb-4"
           >
-            Technical Stack
+            Technical <span className="text-teal-accent">Stack</span>
           </motion.h2>
           <motion.div
             initial={{ width: 0 }}
             whileInView={{ width: 100 }}
-            className="h-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
+            className="h-1 bg-teal-accent rounded-full"
           />
         </div>
 
@@ -155,7 +155,7 @@ export default function SkillsSection() {
             key={cat}
             title={cat}
             skills={skills.filter(s => s.category === cat)}
-            gradient={categoryGradients.default}
+            gradient={categoryGradients[cat] || categoryGradients.default}
           />
         ))}
       </div>

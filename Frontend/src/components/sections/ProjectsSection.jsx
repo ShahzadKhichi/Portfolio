@@ -7,12 +7,13 @@ export default function ProjectsSection({ projects }) {
   return (
     <section
       id="projects"
-      className="w-full py-20 bg-gradient-to-b from-[#111] via-[#0a0a0a] to-black relative overflow-hidden"
+      className="w-full py-20 bg-navy-900 relative overflow-hidden"
     >
-      {/* Static Background Blobs */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-600/5 blur-3xl" />
-      <div className="absolute top-20 left-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-20 right-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl" />
+      {/* Ambient Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-20 w-96 h-96 bg-teal-accent/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-teal-accent/3 rounded-full blur-[100px]" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         {/* Title */}
@@ -23,8 +24,8 @@ export default function ProjectsSection({ projects }) {
           viewport={{ once: true, margin: "-100px" }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl lg:text-7xl font-extrabold bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-500 bg-clip-text text-transparent">
-            My Projects
+          <h2 className="text-5xl lg:text-7xl font-extrabold text-white">
+            My <span className="text-teal-accent">Projects</span>
           </h2>
           <p className="mt-3 text-gray-400 text-lg max-w-2xl mx-auto">
             Explore my latest work — built with passion, precision, and modern
@@ -54,7 +55,7 @@ export default function ProjectsSection({ projects }) {
               href="https://github.com/ShahzadKhichi"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold rounded-full shadow-lg hover:shadow-cyan-500/40 transition-shadow"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-teal-accent text-navy-950 font-bold rounded-full shadow-lg hover:shadow-teal-accent/40 transition-all duration-300 hover:bg-teal-dark"
             >
               <span>View All on GitHub</span>
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

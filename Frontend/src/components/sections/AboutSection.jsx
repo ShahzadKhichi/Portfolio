@@ -24,10 +24,13 @@ export default function AboutSection({ image, bio, socialLinks }) {
   return (
     <section
       id="about"
-      className="min-h-screen w-full bg-gradient-to-b from-black via-[#0a0a0a] to-[#111] flex flex-col items-center justify-center px-4  py-16 sm:py-20 lg:py-0 relative overflow-hidden"
+      className="min-h-screen w-full bg-navy-950 flex flex-col items-center justify-center px-4  py-16 sm:py-20 lg:py-0 relative overflow-hidden"
     >
-      {/* Static Background (No Animation) */}
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-blue-600/5 blur-3xl" />
+      {/* Ambient Background Glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-teal-accent/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-teal-accent/3 rounded-full blur-[100px]" />
+      </div>
 
       <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center relative z-10">
         {/* Image Section */}
@@ -39,8 +42,8 @@ export default function AboutSection({ image, bio, socialLinks }) {
           className="flex justify-center lg:justify-end"
         >
           <div className="relative group">
-            <div className="absolute -inset-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity duration-300" />
-            <div className="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-4xl overflow-hidden border-4 border-cyan-500 shadow-2xl shadow-cyan-500/50">
+            <div className="absolute -inset-2 bg-teal-accent/30 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition-opacity duration-300" />
+            <div className="relative w-56 h-56 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-4xl overflow-hidden border-4 border-teal-accent/60 shadow-2xl shadow-teal-accent/20">
               <img
                 src={image || "/profile.png"}
                 alt="Shahzad Khichi"
@@ -48,7 +51,7 @@ export default function AboutSection({ image, bio, socialLinks }) {
                 loading="lazy"
               />
             </div>
-            <div className="hidden sm:block absolute -bottom-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+            <div className="hidden sm:block absolute -bottom-3 left-1/2 -translate-x-1/2 bg-teal-accent text-navy-950 px-3 py-1 rounded-full text-xs font-bold shadow-lg">
               Available for Hire
             </div>
           </div>
@@ -62,13 +65,13 @@ export default function AboutSection({ image, bio, socialLinks }) {
           viewport={{ once: true, margin: "-100px" }}
           className="text-center lg:text-left pt-15 space-y-5"
         >
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
-            Shahzad Khichi
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white">
+            Shahzad <span className="text-teal-accent">Khichi</span>
           </h1>
 
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-1.5">
             <span>I am a</span>
-            <span className="text-cyan-400 min-h-[2.5rem] sm:min-h-[3rem] flex items-center">
+            <span className="text-teal-accent min-h-[2.5rem] sm:min-h-[3rem] flex items-center">
               <Typewriter
                 key={typewriterStrings.join(",")}
                 options={{
@@ -83,11 +86,11 @@ export default function AboutSection({ image, bio, socialLinks }) {
               />
             </span>
           </h2>
-          {/* image */}
-          <div className="bg-gradient-to-br from-[#1a1a1a]/80 via-[#0f0f0f]/90 to-[#111]/80 backdrop-blur-xl border border-cyan-700/40 rounded-2xl p-5 sm:p-7 lg:p-8 shadow-2xl text-sm sm:text-base">
-            <span className="text-blue-400 font-mono">{"<>"}</span>
-            <p className="text-gray-200 leading-relaxed mt-2 mb-3">{bio || "Loading description..."}</p>
-            <span className="text-blue-400 font-mono">{"</>"}</span>
+          {/* Bio Card */}
+          <div className="bg-navy-800/60 backdrop-blur-xl border border-teal-accent/15 rounded-2xl p-5 sm:p-7 lg:p-8 shadow-2xl text-sm sm:text-base">
+            <span className="text-teal-accent font-mono">{"<>"}</span>
+            <p className="text-gray-300 leading-relaxed mt-2 mb-3">{bio || "Loading description..."}</p>
+            <span className="text-teal-accent font-mono">{"</>"}</span>
           </div>
 
           <div className="flex justify-center lg:justify-start">
@@ -99,7 +102,7 @@ export default function AboutSection({ image, bio, socialLinks }) {
               href="/Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-bold rounded-full shadow-lg hover:shadow-blue-500/40 transition-shadow flex items-center justify-center gap-2 text-sm"
+              className="px-6 py-3 bg-teal-accent text-navy-950 font-bold rounded-full shadow-lg hover:shadow-teal-accent/40 transition-all duration-300 hover:bg-teal-dark flex items-center justify-center gap-2 text-sm"
             >
               <span>Download Resume</span>
               <svg
@@ -119,7 +122,7 @@ export default function AboutSection({ image, bio, socialLinks }) {
 
             <a
               href="#contact"
-              className="px-6 py-3 bg-transparent text-cyan-300 border-2 border-cyan-500 font-bold rounded-full hover:bg-cyan-500/10 transition-colors flex items-center justify-center gap-2 text-sm"
+              className="px-6 py-3 bg-transparent text-teal-accent border-2 border-teal-accent/50 font-bold rounded-full hover:bg-teal-accent/10 transition-colors flex items-center justify-center gap-2 text-sm"
             >
               <span>Get in Touch</span>
               <svg

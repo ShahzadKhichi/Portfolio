@@ -18,7 +18,7 @@ export default function SocialLinks({ links }) {
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.1, rotate: 5 }}
-          className="p-3 bg-blue-500 text-white rounded-full shadow-lg hover:shadow-blue-500/50 transition-all"
+          className="p-3 bg-navy-700 text-teal-accent border border-teal-accent/20 rounded-full shadow-lg hover:shadow-teal-accent/20 hover:bg-teal-accent hover:text-navy-950 transition-all duration-300"
         >
           <FaLinkedin size={24} />
         </motion.a>
@@ -29,7 +29,7 @@ export default function SocialLinks({ links }) {
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{ scale: 1.1, rotate: 5 }}
-          className="p-3 bg-green-600 text-white rounded-full shadow-lg hover:shadow-green-500/50 transition-all"
+          className="p-3 bg-navy-700 text-teal-accent border border-teal-accent/20 rounded-full shadow-lg hover:shadow-teal-accent/20 hover:bg-teal-accent hover:text-navy-950 transition-all duration-300"
         >
           <FaWhatsapp size={24} />
         </motion.a>
@@ -38,7 +38,7 @@ export default function SocialLinks({ links }) {
         <motion.a
           href={`mailto:${social.email}`}
           whileHover={{ scale: 1.1, rotate: 5 }}
-          className="p-3 bg-gray-800 text-gray-200 rounded-full shadow-lg hover:shadow-gray-700/50 transition-all"
+          className="p-3 bg-navy-700 text-teal-accent border border-teal-accent/20 rounded-full shadow-lg hover:shadow-teal-accent/20 hover:bg-teal-accent hover:text-navy-950 transition-all duration-300"
         >
           <MdEmail size={24} />
         </motion.a>

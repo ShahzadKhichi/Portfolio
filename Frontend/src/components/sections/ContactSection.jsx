@@ -36,7 +36,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="w-full py-24 lg:py-32">
+    <section id="contact" className="w-full py-24 lg:py-32 bg-navy-900">
       <div className="max-w-5xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -45,8 +45,8 @@ export default function ContactSection() {
           transition={{ duration: 0.4 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl lg:text-7xl font-extrabold bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
-            Let's Connect
+          <h2 className="text-5xl lg:text-7xl font-extrabold text-white">
+            Got a project in <span className="text-teal-accent">mind?</span>
           </h2>
           <p className="mt-4 text-gray-400 text-lg max-w-2xl mx-auto">
             Have a project in mind? I'd love to hear from you.
@@ -59,7 +59,7 @@ export default function ContactSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           onSubmit={handleSubmit}
-          className="bg-[#1a1a1a]/80 backdrop-blur-2xl border border-cyan-700/40 rounded-3xl p-8 lg:p-12 shadow-2xl"
+          className="bg-navy-800/60 backdrop-blur-2xl border border-teal-accent/15 rounded-3xl p-8 lg:p-12 shadow-2xl"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             {["name", "email"].map((field, i) => (
@@ -69,8 +69,8 @@ export default function ContactSection() {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.1 + i * 0.1 }}
               >
-                <label className="block text-cyan-300 font-semibold mb-3 text-sm tracking-wider">
-                  {field === "name" ? "Full Name" : "Email Address"}
+                <label className="block text-teal-accent font-semibold mb-3 text-sm tracking-wider">
+                  {field === "name" ? "Your name" : "Your email"}
                 </label>
                 <input
                   type={field === "email" ? "email" : "text"}
@@ -79,7 +79,7 @@ export default function ContactSection() {
                   onChange={handleChange}
                   required
                   disabled={isSubmitting}
-                  className="w-full px-5 py-4 bg-[#101010]/80 border border-cyan-600/40 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all"
+                  className="w-full px-5 py-4 bg-navy-950/80 border border-navy-600/60 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-teal-accent focus:ring-2 focus:ring-teal-accent/20 transition-all"
                   placeholder={
                     field === "name" ? "John Doe" : "john@example.com"
                   }
@@ -94,7 +94,7 @@ export default function ContactSection() {
             transition={{ delay: 0.3 }}
             className="mb-8"
           >
-            <label className="block text-cyan-300 font-semibold mb-3 text-sm tracking-wider">
+            <label className="block text-teal-accent font-semibold mb-3 text-sm tracking-wider">
               Your Message
             </label>
             <textarea
@@ -104,7 +104,7 @@ export default function ContactSection() {
               required
               rows={6}
               disabled={isSubmitting}
-              className="w-full px-5 py-4 bg-[#101010]/80 border border-cyan-600/40 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition-all resize-none"
+              className="w-full px-5 py-4 bg-navy-950/80 border border-navy-600/60 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-teal-accent focus:ring-2 focus:ring-teal-accent/20 transition-all resize-none"
               placeholder="Tell me about your project..."
             />
           </motion.div>
@@ -120,10 +120,10 @@ export default function ContactSection() {
               disabled={isSubmitting}
               whileHover={!isSubmitting ? { scale: 1.05 } : {}}
               whileTap={!isSubmitting ? { scale: 0.95 } : {}}
-              className={`group relative px-10 py-4 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 text-white font-bold text-lg rounded-2xl shadow-xl transition-all flex items-center justify-center gap-3 ${
+              className={`group relative px-10 py-4 bg-teal-accent text-navy-950 font-bold text-lg rounded-2xl shadow-xl transition-all flex items-center justify-center gap-3 ${
                 isSubmitting
                   ? "opacity-70 cursor-not-allowed"
-                  : "hover:shadow-cyan-500/60"
+                  : "hover:shadow-teal-accent/40 hover:bg-teal-dark"
               }`}
             >
               {isSubmitting ? (
@@ -135,7 +135,7 @@ export default function ContactSection() {
                       repeat: Infinity,
                       ease: "linear",
                     }}
-                    className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                    className="w-5 h-5 border-2 border-navy-950/30 border-t-navy-950 rounded-full"
                   />
                   Sending...
                 </>

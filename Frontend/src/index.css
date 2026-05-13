@@ -1,17 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --color-navy-950: #060b18;
+  --color-navy-900: #0a1128;
+  --color-navy-800: #0f1a33;
+  --color-navy-700: #152040;
+  --color-navy-600: #1a2a4a;
+  --color-teal-accent: #00f5d4;
+  --color-teal-glow: #00f5d480;
+  --color-teal-dark: #00c4a7;
+  --color-teal-muted: #00f5d420;
+}
 
 html {
   scroll-behavior: smooth;
-  background: #0f172a;
+  background: var(--color-navy-950);
   color: #f1f5f9;
+  font-family: 'Inter', 'Space Grotesk', system-ui, -apple-system, sans-serif;
 }
 
 ::selection {
-  background: #3b82f6;
-  color: #fff;
+  background: var(--color-teal-accent);
+  color: #0a1128;
 }
 
 body {
-  background: linear-gradient(to bottom, #0f172a, #1e293b);
+  background: var(--color-navy-950);
   min-height: 100vh;
+  position: relative;
+}
+
+/* Subtle ambient background glow */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(0, 245, 212, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0, 245, 212, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(0, 196, 167, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a1128;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #00f5d4, #00c4a7);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00f5d4;
+}
+
+/* Smooth focus styles */
+*:focus-visible {
+  outline: 2px solid #00f5d4;
+  outline-offset: 2px;
 }
