@@ -36,7 +36,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="w-full py-24 lg:py-32 bg-navy-900">
+    <section id="contact" className="w-full py-24 lg:py-32 bg-transparent relative z-10">
       <div className="max-w-5xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -46,7 +46,7 @@ export default function ContactSection() {
           className="text-center mb-16"
         >
           <h2 className="text-5xl lg:text-7xl font-extrabold text-white">
-            Got a project in <span className="text-teal-accent">mind?</span>
+            Got a project in <span className="text-gradient-primary">mind?</span>
           </h2>
           <p className="mt-4 text-gray-400 text-lg max-w-2xl mx-auto">
             Have a project in mind? I'd love to hear from you.

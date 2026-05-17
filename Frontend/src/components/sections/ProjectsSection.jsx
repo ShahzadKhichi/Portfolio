@@ -7,7 +7,7 @@ export default function ProjectsSection({ projects }) {
   return (
     <section
       id="projects"
-      className="w-full py-20 bg-navy-900 relative overflow-hidden"
+      className="w-full py-20 bg-transparent relative overflow-hidden"
     >
       {/* Ambient Background */}
       <div className="absolute inset-0 pointer-events-none">
@@ -25,7 +25,7 @@ export default function ProjectsSection({ projects }) {
           className="text-center mb-16"
         >
           <h2 className="text-5xl lg:text-7xl font-extrabold text-white">
-            My <span className="text-teal-accent">Projects</span>
+            My <span className="text-gradient-primary">Projects</span>
           </h2>
           <p className="mt-3 text-gray-400 text-lg max-w-2xl mx-auto">
             Explore my latest work — built with passion, precision, and modern

@@ -67,3 +67,18 @@ body::before {
   outline: 2px solid #00f5d4;
   outline-offset: 2px;
 }
+
+/* Hide default cursor for professional feel (applied only when hover is supported) */
+@media (hover: hover) and (pointer: fine) {
+  body, a, button, input, textarea, select, label {
+    cursor: none !important;
+  }
+}
+
+/* Beautiful text gradient utility */
+.text-gradient-primary {
+  background: linear-gradient(to right, #00f5d4, #00c4a7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

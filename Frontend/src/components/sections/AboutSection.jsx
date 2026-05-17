@@ -24,7 +24,7 @@ export default function AboutSection({ image, bio, socialLinks }) {
   return (
     <section
       id="about"
-      className="min-h-screen w-full bg-navy-950 flex flex-col items-center justify-center px-4  py-16 sm:py-20 lg:py-0 relative overflow-hidden"
+      className="min-h-screen w-full bg-transparent flex flex-col items-center justify-center px-4  py-16 sm:py-20 lg:py-0 relative overflow-hidden"
     >
       {/* Ambient Background Glow */}
       <div className="absolute inset-0 pointer-events-none">
@@ -66,12 +66,12 @@ export default function AboutSection({ image, bio, socialLinks }) {
           className="text-center lg:text-left pt-15 space-y-5"
         >
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white">
-            Shahzad <span className="text-teal-accent">Khichi</span>
+            Shahzad <span className="text-gradient-primary">Khichi</span>
           </h1>
 
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-1.5">
             <span>I am a</span>
-            <span className="text-teal-accent min-h-[2.5rem] sm:min-h-[3rem] flex items-center">
+            <span className="text-gradient-primary min-h-[2.5rem] sm:min-h-[3rem] flex items-center">
               <Typewriter
                 key={typewriterStrings.join(",")}
                 options={{

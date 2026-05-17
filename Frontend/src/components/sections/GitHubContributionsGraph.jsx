@@ -80,7 +80,7 @@ export default function GitHubContributionsGraph() {
     return (
       <section
         id="github"
-        className="w-full py-20 bg-navy-950"
+        className="w-full py-20 bg-transparent relative z-10"
       >
         <div className="max-w-6xl mx-auto px-4 text-center">
           <motion.h2
@@ -105,7 +105,7 @@ export default function GitHubContributionsGraph() {
     return (
       <section
         id="github"
-        className="w-full py-20 bg-navy-950"
+        className="w-full py-20 bg-transparent relative z-10"
       >
         <div className="max-w-6xl mx-auto px-4 text-center">
           <motion.h2
@@ -178,7 +178,7 @@ export default function GitHubContributionsGraph() {
   return (
     <section
       id="github"
-      className="w-full py-20 bg-navy-950"
+      className="w-full py-20 bg-transparent relative z-10"
     >
       <div className="max-w-7xl mx-auto px-4">
         <motion.h2
@@ -188,7 +188,7 @@ export default function GitHubContributionsGraph() {
           transition={{ duration: 0.4 }}
           className="text-4xl lg:text-5xl font-extrabold text-center text-white mb-6"
         >
-          GitHub <span className="text-teal-accent">Contributions</span>
+          GitHub <span className="text-gradient-primary">Contributions</span>
         </motion.h2>
 
         <motion.p

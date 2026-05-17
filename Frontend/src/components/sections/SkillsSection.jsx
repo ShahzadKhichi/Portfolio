@@ -11,42 +11,72 @@ const categoryGradients = {
 };
 
 const SkillCard = ({ skill }) => {
+  const radius = 38;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (skill.level / 100) * circumference;
+
   return (
     <motion.div
-      whileHover={{ scale: 1.15, y: -8 }}
-      transition={{ type: "spring", stiffness: 300, damping: 10 }}
-      className="group relative flex flex-col justify-center items-center"
+      whileHover={{ scale: 1.1, y: -10 }}
+      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+      className="group relative flex flex-col justify-center items-center p-4"
     >
-      <div className="relative p-5 rounded-2xl bg-navy-800/70 backdrop-blur-md border border-navy-600/50 shadow-2xl transition-all duration-300 group-hover:border-teal-accent/50 group-hover:shadow-teal-accent/10 overflow-hidden">
-        {/* Glow effect on hover */}
-        <div className="absolute inset-0 bg-teal-accent/0 group-hover:bg-teal-accent/5 transition-all duration-300" />
+      <div className="relative flex items-center justify-center w-[100px] h-[100px] rounded-full bg-navy-800/80 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group-hover:shadow-[0_0_40px_rgba(0,245,212,0.2)]">
+        
+        {/* SVG Circular Progress */}
+        <svg className="absolute inset-0 w-full h-full -rotate-90 drop-shadow-lg" viewBox="0 0 100 100">
+          <circle
+            cx="50"
+            cy="50"
+            r={radius}
+            fill="none"
+            stroke="rgba(0, 245, 212, 0.05)"
+            strokeWidth="4"
+          />
+          <motion.circle
+            cx="50"
+            cy="50"
+            r={radius}
+            fill="none"
+            stroke="url(#gradient)"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            initial={{ strokeDashoffset: circumference }}
+            whileInView={{ strokeDashoffset }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
+          />
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#00f5d4" />
+              <stop offset="100%" stopColor="#00c4a7" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        {/* Glow behind icon */}
+        <div className="absolute inset-0 bg-teal-accent/0 group-hover:bg-teal-accent/10 rounded-full transition-all duration-300 blur-md" />
 
         {skill.icon ? (
           <img
             src={skill.icon}
             alt={skill.name}
-            className="w-12 h-12 object-contain group-hover:grayscale-0 transition-all duration-300 drop-shadow-xl"
+            className="w-11 h-11 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-2xl z-10"
           />
         ) : (
-          <FaCode className="text-4xl text-teal-accent drop-shadow-md" />
+          <FaCode className="text-3xl text-teal-accent drop-shadow-md z-10" />
         )}
       </div>
 
-      {/* Skill Level Ring/Bar */}
-      <div className="absolute -bottom-4 w-12 h-1 bg-navy-700 rounded-full overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300">
-        <motion.div
-          initial={{ width: 0 }}
-          whileInView={{ width: `${skill.level}%` }}
-          className="h-full bg-teal-accent"
-        />
+      <div className="mt-5 text-center flex flex-col items-center gap-1">
+        <h4 className="text-[15px] font-bold text-gray-200 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-teal-accent group-hover:to-emerald-400 transition-all">
+          {skill.name}
+        </h4>
+        <span className="text-xs text-teal-accent/80 font-mono font-medium tracking-wider bg-teal-accent/10 px-2 py-0.5 rounded-full border border-teal-accent/20">
+          {skill.level}%
+        </span>
       </div>
-
-      <span
-        className="absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 
-      transition-all duration-300 pointer-events-none text-[10px] font-bold text-navy-950 bg-teal-accent px-3 py-1.5 rounded-full shadow-2xl whitespace-nowrap z-10 uppercase tracking-wider"
-      >
-        {skill.name} • {skill.level}%
-      </span>
     </motion.div>
   );
 };
@@ -54,23 +84,26 @@ const SkillCard = ({ skill }) => {
 const SkillGroup = ({ title, skills, gradient }) => {
   if (!skills || skills.length === 0) return null;
   return (
-    <div className="w-full max-w-6xl mb-16">
+    <div className="w-full max-w-6xl mb-20 bg-navy-900/30 backdrop-blur-sm rounded-3xl p-8 lg:p-12 border border-navy-700/50 shadow-2xl relative overflow-hidden">
+      {/* Decorative background glow for group */}
+      <div className="absolute -top-20 -right-20 w-64 h-64 bg-teal-accent/5 rounded-full blur-[80px] pointer-events-none" />
+      
       <motion.h3
         initial={{ opacity: 0, y: -10 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         viewport={{ once: true }}
-        className={`text-2xl font-bold text-center mb-10 bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}
+        className={`text-3xl font-extrabold text-center mb-12 bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}
       >
         {title}
       </motion.h3>
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6 sm:gap-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 sm:gap-8 lg:gap-10">
         {skills.map((skill, i) => (
           <motion.div
             key={skill._id || i}
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.015, duration: 0.3 }}
+            transition={{ delay: i * 0.05, duration: 0.4, type: "spring", stiffness: 200 }}
             viewport={{ once: true }}
             className="flex justify-center"
           >
@@ -131,7 +164,7 @@ export default function SkillsSection() {
   });
 
   return (
-    <section className="w-full py-24 bg-navy-950" id="skills">
+    <section className="w-full py-24 bg-transparent relative z-10" id="skills">
       <div className="container mx-auto px-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-20">
           <motion.h2
@@ -141,7 +174,7 @@ export default function SkillsSection() {
             viewport={{ once: true }}
             className="text-4xl sm:text-5xl font-extrabold text-white mb-4"
           >
-            Technical <span className="text-teal-accent">Stack</span>
+            Technical <span className="text-gradient-primary">Stack</span>
           </motion.h2>
           <motion.div
             initial={{ width: 0 }}
