@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FiFrown, FiLock, FiExternalLink, FiGithub } from "react-icons/fi";
 
@@ -13,9 +13,16 @@ const ProjectCard = ({
   github,
   githubLink,
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const techStack = tags || Technologies || [];
   const liveUrl = live || liveLink;
   const githubUrl = github || githubLink;
+
+  const words = (description || "").trim().split(/\s+/);
+  const isLongDescription = words.length > 20;
+  const displayText = isLongDescription && !isExpanded 
+    ? words.slice(0, 20).join(" ") + "..." 
+    : description;
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -86,7 +93,15 @@ const ProjectCard = ({
               viewport={{ once: true }}
               className="text-gray-100 text-sm sm:text-base lg:text-lg leading-relaxed mb-6 sm:mb-7 lg:mb-8 font-light tracking-wide"
             >
-              {description}
+              {displayText}
+              {isLongDescription && (
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="ml-2 text-teal-accent hover:text-teal-accent/80 hover:underline font-semibold transition-colors duration-200 focus:outline-none inline-flex items-center"
+                >
+                  {isExpanded ? "Show Less" : "Read More"}
+                </button>
+              )}
             </motion.p>
           </div>
 
