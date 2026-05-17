@@ -83,7 +83,7 @@ export default function ManageTypewriter() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const filteredTexts = texts.filter(t => 
+  const filteredTexts = texts.filter(t =>
     t.text.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -98,18 +98,18 @@ export default function ManageTypewriter() {
         </div>
         <div className="relative w-full md:w-64">
           <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-          <input 
+          <input
             type="text"
             placeholder="Search texts..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-teal-accent/50 transition-all"
           />
         </div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Form Section */}
         <div className="lg:col-span-1">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm sticky top-8 shadow-xl shadow-black/50">
@@ -129,15 +129,15 @@ export default function ManageTypewriter() {
                   required
                   value={newText}
                   onChange={(e) => setNewText(e.target.value)}
-                  className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all placeholder:text-gray-500"
+                  className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all placeholder:text-gray-500"
                   placeholder="e.g. MERN Stack Developer"
                 />
               </div>
-              
+
               <button
                 type="submit"
                 disabled={formLoading}
-                className="w-full flex justify-center items-center space-x-2 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/20 disabled:opacity-70"
+                className="w-full flex justify-center items-center space-x-2 py-3 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 font-bold rounded-lg transition-all shadow-lg shadow-teal-accent/20 disabled:opacity-70"
               >
                 {formLoading ? <span>Processing...</span> : (
                   <>
@@ -157,7 +157,7 @@ export default function ManageTypewriter() {
               <h2 className="text-xl font-bold text-white">Current Phrases</h2>
               <div className="text-gray-500 text-sm">{filteredTexts.length} items found</div>
             </div>
-            
+
             <div className="space-y-4">
               <AnimatePresence>
                 {filteredTexts.map((text, idx) => (
@@ -168,18 +168,18 @@ export default function ManageTypewriter() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="flex items-center justify-between p-4 bg-black/40 border border-white/5 rounded-xl hover:border-cyan-500/30 transition-colors group"
+                    className="flex items-center justify-between p-4 bg-navy-950/20 border border-white/5 rounded-xl hover:border-teal-accent/30 transition-colors group"
                   >
                     <div className="flex items-center space-x-4 cursor-pointer flex-1" onClick={() => startEdit(text)}>
-                      <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 group-hover:border-cyan-500/30 transition-colors">
-                        <FaKeyboard className="text-cyan-400" />
+                      <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 group-hover:border-teal-accent/30 transition-colors">
+                        <FaKeyboard className="text-teal-accent" />
                       </div>
                       <h3 className="font-semibold text-white truncate">{text.text}</h3>
                     </div>
                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => startEdit(text)}
-                        className="p-2 text-cyan-400 bg-cyan-400/10 hover:bg-cyan-400/20 rounded-lg transition-colors"
+                        className="p-2 text-teal-accent bg-teal-accent/10 hover:bg-teal-accent/20 rounded-lg transition-colors"
                       >
                         <FaEdit />
                       </button>

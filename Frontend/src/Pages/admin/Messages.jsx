@@ -89,8 +89,8 @@ export default function Messages() {
                     >
                       <td className="px-8 py-6 align-top max-w-[200px]">
                         <div className="flex items-start space-x-3">
-                            <div className="w-10 h-10 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center shrink-0">
-                                <FaUser className="text-cyan-400 text-sm" />
+                            <div className="w-10 h-10 rounded-full bg-teal-accent/10 border border-teal-accent/30 flex items-center justify-center shrink-0">
+                                <FaUser className="text-teal-accent text-sm" />
                             </div>
                             <div>
                                 <p className="text-white font-semibold truncate">{msg.name}</p>
@@ -110,7 +110,7 @@ export default function Messages() {
                       <td className="px-8 py-6 align-top text-right space-x-2 whitespace-nowrap">
                         <a 
                             href={`mailto:${msg.email}`}
-                            className="inline-flex items-center justify-center w-9 h-9 text-blue-400 hover:text-white bg-blue-500/10 hover:bg-blue-500 rounded-lg transition-all" 
+                            className="inline-flex items-center justify-center w-9 h-9 text-teal-accent hover:text-navy-950 bg-teal-accent/10 hover:bg-teal-accent rounded-lg transition-all" 
                             title="Reply"
                         >
                           <FaReply className="text-sm" />

@@ -59,7 +59,7 @@ export default function ContactSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           onSubmit={handleSubmit}
-          className="bg-navy-800/60 backdrop-blur-2xl border border-teal-accent/15 rounded-3xl p-8 lg:p-12 shadow-2xl"
+          className="bg-white/[0.02] border border-white/10 hover:border-teal-accent/30 rounded-3xl p-8 lg:p-12 shadow-2xl backdrop-blur-[3px] transition-all duration-500"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             {["name", "email"].map((field, i) => (
@@ -79,7 +79,7 @@ export default function ContactSection() {
                   onChange={handleChange}
                   required
                   disabled={isSubmitting}
-                  className="w-full px-5 py-4 bg-navy-950/80 border border-navy-600/60 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-teal-accent focus:ring-2 focus:ring-teal-accent/20 transition-all"
+                  className="w-full px-5 py-4 bg-white/[0.02] border border-white/10 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-teal-accent focus:ring-2 focus:ring-teal-accent/20 transition-all"
                   placeholder={
                     field === "name" ? "John Doe" : "john@example.com"
                   }
@@ -104,7 +104,7 @@ export default function ContactSection() {
               required
               rows={6}
               disabled={isSubmitting}
-              className="w-full px-5 py-4 bg-navy-950/80 border border-navy-600/60 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:border-teal-accent focus:ring-2 focus:ring-teal-accent/20 transition-all resize-none"
+              className="w-full px-5 py-4 bg-white/[0.02] border border-white/10 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:border-teal-accent focus:ring-2 focus:ring-teal-accent/20 transition-all resize-none"
               placeholder="Tell me about your project..."
             />
           </motion.div>

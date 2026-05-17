@@ -21,7 +21,7 @@ const SkillCard = ({ skill }) => {
       transition={{ type: "spring", stiffness: 300, damping: 15 }}
       className="group relative flex flex-col justify-center items-center p-4"
     >
-      <div className="relative flex items-center justify-center w-[100px] h-[100px] rounded-full bg-navy-800/80 backdrop-blur-xl shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 group-hover:shadow-[0_0_40px_rgba(0,245,212,0.2)]">
+      <div className="relative flex items-center justify-center w-[100px] h-[100px] rounded-full bg-white/[0.02] border border-white/10 backdrop-blur-[3px] shadow-xl hover:border-teal-accent/30 transition-all duration-300 group-hover:shadow-[0_0_40px_rgba(0,245,212,0.2)]">
         
         {/* SVG Circular Progress */}
         <svg className="absolute inset-0 w-full h-full -rotate-90 drop-shadow-lg" viewBox="0 0 100 100">
@@ -84,7 +84,7 @@ const SkillCard = ({ skill }) => {
 const SkillGroup = ({ title, skills, gradient }) => {
   if (!skills || skills.length === 0) return null;
   return (
-    <div className="w-full max-w-6xl mb-20 bg-navy-900/30 backdrop-blur-sm rounded-3xl p-8 lg:p-12 border border-navy-700/50 shadow-2xl relative overflow-hidden">
+    <div className="w-full max-w-6xl mb-20 bg-white/[0.02] border border-white/10 backdrop-blur-[3px] rounded-3xl p-8 lg:p-12 shadow-2xl hover:border-teal-accent/30 transition-all duration-500 relative overflow-hidden">
       {/* Decorative background glow for group */}
       <div className="absolute -top-20 -right-20 w-64 h-64 bg-teal-accent/5 rounded-full blur-[80px] pointer-events-none" />
       

@@ -206,7 +206,7 @@ export default function GitHubContributionsGraph() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="bg-navy-800/60 backdrop-blur-lg border border-teal-accent/10 rounded-2xl p-6 lg:p-8 shadow-2xl overflow-x-auto"
+          className="bg-white/[0.02] border border-white/10 hover:border-teal-accent/30 rounded-2xl p-6 lg:p-8 shadow-2xl backdrop-blur-[3px] transition-all duration-500 overflow-x-auto"
         >
           <div className="flex gap-1 min-w-max mb-2 px-8">
             {monthLabels.map((label, i) => (
@@ -219,7 +219,7 @@ export default function GitHubContributionsGraph() {
                 className="w-3 lg:w-4"
               >
                 {label && (
-                  <span className="text-xs text-gray-400 whitespace-nowrap -translate-x-2">
+                  <span className="text-xs text-gray-200 whitespace-nowrap -translate-x-2">
                     {label}
                   </span>
                 )}
@@ -256,7 +256,7 @@ export default function GitHubContributionsGraph() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="flex justify-end items-center gap-2 mt-4 text-xs text-gray-400"
+            className="flex justify-end items-center gap-2 mt-4 text-xs text-gray-200"
           >
             <span>Less</span>
             <div className="flex gap-1">

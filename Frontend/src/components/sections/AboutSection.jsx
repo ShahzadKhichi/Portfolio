@@ -87,9 +87,9 @@ export default function AboutSection({ image, bio, socialLinks }) {
             </span>
           </h2>
           {/* Bio Card */}
-          <div className="bg-navy-800/60 backdrop-blur-xl border border-teal-accent/15 rounded-2xl p-5 sm:p-7 lg:p-8 shadow-2xl text-sm sm:text-base">
+          <div className="bg-white/[0.02] border border-white/10 backdrop-blur-[3px] rounded-2xl p-5 sm:p-7 lg:p-8 shadow-2xl text-sm sm:text-base">
             <span className="text-teal-accent font-mono">{"<>"}</span>
-            <p className="text-gray-300 leading-relaxed mt-2 mb-3">{bio || "Loading description..."}</p>
+            <p className="text-gray-100 leading-relaxed mt-2 mb-3">{bio || "Loading description..."}</p>
             <span className="text-teal-accent font-mono">{"</>"}</span>
           </div>
 

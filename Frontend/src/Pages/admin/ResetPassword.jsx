@@ -140,16 +140,16 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-purple-600/10 blur-3xl -z-10" />
+    <div className="min-h-screen bg-transparent flex items-center justify-center p-4 relative z-10 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-accent/5 via-transparent to-teal-dark/5 blur-3xl -z-10" />
       
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-md bg-black/60 backdrop-blur-xl border border-cyan-800/30 rounded-2xl p-8 shadow-2xl"
+        className="w-full max-w-md bg-navy-800/60 backdrop-blur-xl border border-teal-accent/15 rounded-2xl p-8 shadow-2xl shadow-teal-accent/5"
       >
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-accent to-emerald-400 bg-clip-text text-transparent mb-2">
             Reset Password
           </h1>
           <p className="text-gray-400 text-sm">
@@ -167,14 +167,14 @@ export default function ResetPassword() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-gray-500"
+                className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 focus:ring-1 focus:ring-teal-accent/50 transition-all placeholder:text-gray-500"
                 placeholder="admin@example.com"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              className={`w-full py-3 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 font-bold rounded-lg transition-all shadow-lg shadow-teal-accent/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
               {loading ? "Sending..." : "Send OTP"}
             </button>
@@ -195,10 +195,10 @@ export default function ResetPassword() {
                     value={digit}
                     onChange={(e) => handleOtpChange(e, index)}
                     onKeyDown={(e) => handleOtpKeyDown(e, index)}
-                    className={`w-12 h-14 text-center text-xl font-bold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-500/50
+                    className={`w-12 h-14 text-center text-xl font-bold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal-accent/50
                       ${isSuccess 
                         ? "bg-green-500/20 border-green-500 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.3)]" 
-                        : "bg-white/5 border border-white/10 text-white focus:border-cyan-500/50"
+                        : "bg-navy-950/40 border border-teal-accent/15 text-white focus:border-teal-accent/50"
                       }
                     `}
                     disabled={loading || isSuccess}
@@ -215,7 +215,7 @@ export default function ResetPassword() {
               className={`w-full py-3 text-white rounded-lg font-bold transition-all duration-500 shadow-lg 
                 ${isSuccess 
                   ? "bg-green-600 shadow-green-500/30 scale-[1.02]" 
-                  : (loading ? "bg-cyan-600 opacity-70 cursor-not-allowed" : "bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 shadow-cyan-500/20")
+                  : (loading ? "bg-teal-accent opacity-70 cursor-not-allowed" : "bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 shadow-teal-accent/20")
                 }
               `}
             >
@@ -232,7 +232,7 @@ export default function ResetPassword() {
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-gray-500"
+                className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 focus:ring-1 focus:ring-teal-accent/50 transition-all placeholder:text-gray-500"
                 placeholder="••••••••"
                 disabled={loading}
               />
@@ -240,7 +240,7 @@ export default function ResetPassword() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              className={`w-full py-3 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 font-bold rounded-lg transition-all shadow-lg shadow-teal-accent/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
               {loading ? "Resetting..." : "Reset Password"}
             </button>
@@ -248,7 +248,7 @@ export default function ResetPassword() {
         )}
 
         <div className="mt-8 text-center">
-          <Link to="/admin/login" className="text-gray-400 hover:text-cyan-400 text-sm transition-colors">
+          <Link to="/admin/login" className="text-gray-400 hover:text-teal-accent text-sm transition-colors">
             &larr; Back to Login
           </Link>
         </div>

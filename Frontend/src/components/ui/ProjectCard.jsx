@@ -27,11 +27,11 @@ const ProjectCard = ({
         damping: 18,
       }}
       viewport={{ once: true, margin: "-100px" }}
-      className="group relative bg-navy-800/60 backdrop-blur-xl border border-navy-600/40 rounded-3xl overflow-hidden shadow-2xl hover:shadow-teal-accent/20 transition-all duration-500 hover:-translate-y-2 w-full max-w-5xl mx-auto"
+      className="group relative bg-white/[0.02] backdrop-blur-[3px] border border-white/10 rounded-3xl overflow-hidden shadow-2xl hover:border-teal-accent/30 transition-all duration-500 hover:-translate-y-2 w-full max-w-5xl mx-auto"
     >
       <div className="flex flex-col lg:flex-row h-full min-h-[420px]">
         {/* Image Section - Consistent across all devices */}
-        <div className="lg:w-1/2 relative overflow-hidden bg-navy-950/50">
+        <div className="lg:w-1/2 relative overflow-hidden bg-white/5">
           <motion.div
             whileHover={{ scale: 1.15 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -46,7 +46,7 @@ const ProjectCard = ({
           </motion.div>
 
           {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-navy-950/95 via-navy-950/60 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
 
           {/* Featured Badge - Responsive */}
           <motion.div
@@ -65,7 +65,7 @@ const ProjectCard = ({
         </div>
 
         {/* Content Section - Responsive */}
-        <div className="lg:w-1/2 p-5 sm:p-6 lg:p-8 xl:p-10 flex flex-col justify-between bg-gradient-to-b from-transparent via-navy-800/95 to-navy-900/95 backdrop-blur-sm">
+        <div className="lg:w-1/2 p-5 sm:p-6 lg:p-8 xl:p-10 flex flex-col justify-between bg-white/[0.02] backdrop-blur-[3px]">
           <div>
             {/* Title - Responsive */}
             <motion.h3
@@ -84,7 +84,7 @@ const ProjectCard = ({
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
-              className="text-gray-300 text-sm sm:text-base lg:text-lg leading-relaxed mb-6 sm:mb-7 lg:mb-8 font-light tracking-wide"
+              className="text-gray-100 text-sm sm:text-base lg:text-lg leading-relaxed mb-6 sm:mb-7 lg:mb-8 font-light tracking-wide"
             >
               {description}
             </motion.p>
@@ -105,7 +105,7 @@ const ProjectCard = ({
                   backgroundColor: "rgba(0, 245, 212, 0.7)",
                   color: "#0a1128",
                 }}
-                className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-navy-700/60 text-teal-accent font-semibold rounded-full border border-teal-accent/25 backdrop-blur-sm transition-all duration-300 shadow-md"
+                className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-white/10 text-teal-accent font-semibold rounded-full border border-teal-accent/20 backdrop-blur-sm transition-all duration-300 shadow-md"
               >
                 {tech}
               </motion.span>
@@ -132,7 +132,7 @@ const ProjectCard = ({
             ) : (
               <motion.div
                 whileHover={{ scale: 1.03 }}
-                className="flex-1 flex items-center justify-center gap-2 sm:gap-1 px-2 py-1 sm:px-6 sm:py-3.5 bg-navy-700/60 text-gray-400 font-medium text-xs sm:text-sm rounded-2xl cursor-default shadow-md"
+                className="flex-1 flex items-center justify-center gap-2 sm:gap-1 px-2 py-1 sm:px-6 sm:py-3.5 bg-white/5 text-gray-400 font-medium text-xs sm:text-sm rounded-2xl cursor-default shadow-md"
               >
                 <FiFrown className="w-5 h-4 sm:w-5 sm:h-5" />
                 <span>Coming Soon</span>
@@ -149,7 +149,7 @@ const ProjectCard = ({
                   boxShadow: "0 0 25px rgba(156, 163, 175, 0.3)",
                 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex-1 flex items-center justify-center gap-2 sm:gap-3 px-5 py-3 sm:px-6 sm:py-3.5 bg-navy-700/60 text-gray-200 font-bold text-xs sm:text-sm rounded-2xl border border-navy-600 hover:border-teal-accent/30 hover:text-white transition-all duration-300 shadow-xl group/link"
+                className="flex-1 flex items-center justify-center gap-2 sm:gap-3 px-5 py-3 sm:px-6 sm:py-3.5 bg-white/5 text-gray-200 font-bold text-xs sm:text-sm rounded-2xl border border-white/10 hover:border-teal-accent/30 hover:text-white transition-all duration-300 shadow-xl group/link"
               >
                 <FiGithub className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span>Source Code</span>
@@ -157,7 +157,7 @@ const ProjectCard = ({
             ) : (
               <motion.div
                 whileHover={{ scale: 1.03 }}
-                className="flex-1 flex items-center justify-center gap-2 sm:gap-3 px-5 py-3 sm:px-6 sm:py-3.5 bg-navy-700/60 text-gray-400 font-medium text-xs sm:text-sm rounded-2xl cursor-default shadow-md"
+                className="flex-1 flex items-center justify-center gap-2 sm:gap-3 px-5 py-3 sm:px-6 sm:py-3.5 bg-white/5 text-gray-400 font-medium text-xs sm:text-sm rounded-2xl cursor-default shadow-md"
               >
                 <FiLock className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span>Private</span>

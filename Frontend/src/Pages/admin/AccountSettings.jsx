@@ -72,7 +72,7 @@ export default function AccountSettings() {
                 required
                 value={admin.firstname}
                 onChange={(e) => setAdmin({ ...admin, firstname: e.target.value })}
-                className="w-full pl-12 pr-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+                className="w-full pl-12 pr-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-xl text-white focus:outline-none focus:border-teal-accent/50 transition-all"
                 placeholder="First Name"
               />
             </div>
@@ -87,7 +87,7 @@ export default function AccountSettings() {
                 required
                 value={admin.lastname}
                 onChange={(e) => setAdmin({ ...admin, lastname: e.target.value })}
-                className="w-full pl-12 pr-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+                className="w-full pl-12 pr-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-xl text-white focus:outline-none focus:border-teal-accent/50 transition-all"
                 placeholder="Last Name"
               />
             </div>
@@ -102,7 +102,7 @@ export default function AccountSettings() {
                 required
                 value={admin.email}
                 onChange={(e) => setAdmin({ ...admin, email: e.target.value })}
-                className="w-full pl-12 pr-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+                className="w-full pl-12 pr-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-xl text-white focus:outline-none focus:border-teal-accent/50 transition-all"
                 placeholder="Email Address"
               />
             </div>
@@ -112,7 +112,7 @@ export default function AccountSettings() {
             <button
               type="submit"
               disabled={updateLoading}
-              className="w-full flex justify-center items-center space-x-2 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-cyan-500/20 disabled:opacity-70"
+              className="w-full flex justify-center items-center space-x-2 py-4 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 rounded-xl font-bold transition-all shadow-lg shadow-teal-accent/20 disabled:opacity-70"
             >
               {updateLoading ? <span>Updating...</span> : (
                 <>

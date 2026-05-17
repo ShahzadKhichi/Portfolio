@@ -39,16 +39,16 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-blue-600/10 blur-3xl -z-10" />
+    <div className="min-h-screen bg-transparent flex items-center justify-center p-4 relative z-10 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-accent/5 via-transparent to-teal-dark/5 blur-3xl -z-10" />
       
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-black/60 backdrop-blur-xl border border-cyan-800/30 rounded-2xl p-8 shadow-2xl"
+        className="w-full max-w-md bg-navy-800/60 backdrop-blur-xl border border-teal-accent/15 rounded-2xl p-8 shadow-2xl shadow-teal-accent/5"
       >
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-accent to-emerald-400 bg-clip-text text-transparent mb-2">
             Admin Login
           </h1>
           <p className="text-gray-400 text-sm">Welcome back! Please enter your details.</p>
@@ -61,7 +61,7 @@ export default function Login() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-gray-500"
+              className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 focus:ring-1 focus:ring-teal-accent/50 transition-all placeholder:text-gray-500"
               placeholder="admin@example.com"
             />
           </div>
@@ -69,7 +69,7 @@ export default function Login() {
           <div>
             <div className="flex justify-between items-center mb-2">
               <label className="text-gray-300 text-sm font-medium">Password</label>
-              <Link to="/admin/reset-password" className="text-sm border-b border-transparent text-cyan-400 hover:border-cyan-400 transition-colors">
+              <Link to="/admin/reset-password" className="text-sm border-b border-transparent text-teal-accent hover:border-teal-accent transition-colors">
                 Forgot password?
               </Link>
             </div>
@@ -77,7 +77,7 @@ export default function Login() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all placeholder:text-gray-500"
+              className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 focus:ring-1 focus:ring-teal-accent/50 transition-all placeholder:text-gray-500"
               placeholder="••••••••"
             />
           </div>
@@ -85,7 +85,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all transform hover:scale-[1.02] shadow-lg shadow-cyan-500/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            className={`w-full py-3 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 font-bold rounded-lg transition-all transform hover:scale-[1.02] shadow-lg shadow-teal-accent/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
             {loading ? "Signing In..." : "Sign In"}
           </button>

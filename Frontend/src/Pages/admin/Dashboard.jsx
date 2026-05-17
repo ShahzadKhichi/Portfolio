@@ -9,7 +9,7 @@ import * as profileApi from "../../api/profile.api";
 
 export default function Dashboard() {
   const [stats, setStats] = useState([
-    { title: "Total Views", value: "---", icon: <FaEye />, color: "text-blue-400", bg: "bg-blue-500/10", link: "#" },
+    { title: "Total Views", value: "---", icon: <FaEye />, color: "text-teal-accent", bg: "bg-teal-500/10", link: "#" },
     { title: "Messages", value: "0", icon: <FaEnvelope />, color: "text-green-400", bg: "bg-green-500/10", link: "/admin/messages" },
     { title: "Active Projects", value: "0", icon: <FaProjectDiagram />, color: "text-purple-400", bg: "bg-purple-500/10", link: "/admin/projects" },
     { title: "Skills", value: "0", icon: <FaCode />, color: "text-pink-400", bg: "bg-pink-500/10", link: "/admin/skills" },
@@ -60,7 +60,7 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            className="group p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm hover:border-cyan-500/30 transition-all shadow-xl shadow-black/20"
+            className="group p-6 rounded-2xl bg-navy-800/60 border border-teal-accent/15 backdrop-blur-xl hover:border-teal-accent/30 transition-all shadow-xl shadow-teal-accent/5"
           >
             <div className="flex justify-between items-start mb-4">
               <div>
@@ -75,7 +75,7 @@ export default function Dashboard() {
             </div>
             
             {stat.link !== "#" && (
-                <Link to={stat.link} className="flex items-center text-xs font-semibold text-gray-500 hover:text-cyan-400 transition-colors">
+                <Link to={stat.link} className="flex items-center text-xs font-semibold text-gray-500 hover:text-teal-accent transition-colors">
                     MANAGE {stat.title.toUpperCase()} <FaArrowRight className="ml-2" />
                 </Link>
             )}
@@ -84,8 +84,8 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-        <div className="lg:col-span-2 p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent pointer-events-none" />
+        <div className="lg:col-span-2 p-8 rounded-2xl bg-navy-800/60 border border-teal-accent/15 backdrop-blur-xl min-h-[300px] flex flex-col items-center justify-center relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-teal-accent/5 to-transparent pointer-events-none" />
           <FaProjectDiagram className="text-5xl text-gray-800 mb-4" />
           <p className="text-gray-500 font-medium">Project Analytics Chart coming soon</p>
           <div className="mt-4 flex gap-2">
@@ -95,7 +95,7 @@ export default function Dashboard() {
           </div>
         </div>
         
-        <div className="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm flex flex-col">
+        <div className="p-8 rounded-2xl bg-navy-800/60 border border-teal-accent/15 backdrop-blur-xl flex flex-col">
           <h3 className="text-lg font-bold text-white mb-6">Quick Actions</h3>
           <div className="space-y-3">
             {[
@@ -106,7 +106,7 @@ export default function Dashboard() {
                 <Link 
                     key={action.label} 
                     to={action.path}
-                    className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10 hover:border-cyan-500/50 hover:bg-white/10 transition-all font-medium text-gray-300"
+                    className="flex items-center justify-between p-4 bg-navy-950/40 rounded-xl border border-teal-accent/15 hover:border-teal-accent/50 hover:bg-white/10 transition-all font-medium text-gray-300"
                 >
                     {action.label}
                     <FaArrowRight className="text-xs text-gray-600" />

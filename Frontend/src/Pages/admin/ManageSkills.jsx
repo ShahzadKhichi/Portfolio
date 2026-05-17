@@ -117,14 +117,14 @@ export default function ManageSkills() {
       return <img src={skill.icon} alt={skill.name} className="w-6 h-6 object-contain" />;
     }
     switch (skill.category) {
-      case "Frontend": return <FaCode className="text-cyan-400" />;
+      case "Frontend": return <FaCode className="text-teal-accent" />;
       case "Backend": return <FaServer className="text-purple-400" />;
       case "Database": return <FaDatabase className="text-yellow-400" />;
       default: return <FaTools className="text-gray-400" />;
     }
   };
 
-  const filteredSkills = skills.filter(skill => 
+  const filteredSkills = skills.filter(skill =>
     skill.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     skill.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -140,18 +140,18 @@ export default function ManageSkills() {
         </div>
         <div className="relative w-full md:w-64">
           <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-          <input 
+          <input
             type="text"
             placeholder="Search skills..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-teal-accent/50 transition-all"
           />
         </div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Form Section */}
         <div className="lg:col-span-1">
           <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm sticky top-8 shadow-xl shadow-black/50">
@@ -164,20 +164,20 @@ export default function ManageSkills() {
               )}
             </div>
             <form onSubmit={handleAddOrUpdateSkill} className="space-y-4">
-              
+
               <div className="flex justify-center mb-4">
                 <div className="relative group">
-                    <div className="w-20 h-20 rounded-xl bg-black/50 border border-white/10 flex items-center justify-center overflow-hidden">
-                        {iconPreview ? (
-                            <img src={iconPreview} alt="Preview" className="w-full h-full object-cover" />
-                        ) : (
-                            <FaCloudUploadAlt className="text-3xl text-gray-700" />
-                        )}
-                    </div>
-                    <label className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
-                        <span className="text-[10px] text-white font-bold uppercase">Upload</span>
-                        <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
-                    </label>
+                  <div className="w-20 h-20 rounded-xl bg-black/50 border border-white/10 flex items-center justify-center overflow-hidden">
+                    {iconPreview ? (
+                      <img src={iconPreview} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <FaCloudUploadAlt className="text-3xl text-gray-700" />
+                    )}
+                  </div>
+                  <label className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                    <span className="text-[10px] text-white font-bold uppercase">Upload</span>
+                    <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
+                  </label>
                 </div>
               </div>
 
@@ -187,8 +187,8 @@ export default function ManageSkills() {
                   type="text"
                   required
                   value={newSkill.name}
-                  onChange={(e) => setNewSkill({...newSkill, name: e.target.value})}
-                  className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all placeholder:text-gray-500"
+                  onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })}
+                  className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all placeholder:text-gray-500"
                   placeholder="e.g. Next.js"
                 />
               </div>
@@ -197,8 +197,8 @@ export default function ManageSkills() {
                   <label className="block text-gray-300 text-sm mb-2 font-medium">Category</label>
                   <select
                     value={newSkill.category}
-                    onChange={(e) => setNewSkill({...newSkill, category: e.target.value})}
-                    className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all appearance-none"
+                    onChange={(e) => setNewSkill({ ...newSkill, category: e.target.value })}
+                    className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all appearance-none"
                   >
                     {CATEGORIES.map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -212,16 +212,16 @@ export default function ManageSkills() {
                     min="0"
                     max="100"
                     value={newSkill.level}
-                    onChange={(e) => setNewSkill({...newSkill, level: e.target.value})}
-                    className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+                    onChange={(e) => setNewSkill({ ...newSkill, level: e.target.value })}
+                    className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all"
                   />
                 </div>
               </div>
-              
+
               <button
                 type="submit"
                 disabled={formLoading}
-                className="w-full flex justify-center items-center space-x-2 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/20 disabled:opacity-70"
+                className="w-full flex justify-center items-center space-x-2 py-3 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 font-bold rounded-lg transition-all shadow-lg shadow-teal-accent/20 disabled:opacity-70"
               >
                 {formLoading ? <span>Processing...</span> : (
                   <>
@@ -241,7 +241,7 @@ export default function ManageSkills() {
               <h2 className="text-xl font-bold text-white">Current Skills</h2>
               <div className="text-gray-500 text-sm">{filteredSkills.length} skills found</div>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <AnimatePresence>
                 {filteredSkills.map((skill, idx) => (
@@ -252,30 +252,30 @@ export default function ManageSkills() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="flex items-center justify-between p-4 bg-black/40 border border-white/5 rounded-xl hover:border-cyan-500/30 transition-colors group"
+                    className="flex items-center justify-between p-4 bg-navy-950/20 border border-white/5 rounded-xl hover:border-teal-accent/30 transition-colors group"
                   >
                     <div className="flex items-center space-x-4 cursor-pointer" onClick={() => startEdit(skill)}>
-                      <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 group-hover:border-cyan-500/30 transition-colors">
+                      <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 group-hover:border-teal-accent/30 transition-colors">
                         {getSkillIcon(skill)}
                       </div>
                       <div>
                         <h3 className="font-semibold text-white">{skill.name}</h3>
                         <div className="flex items-center space-x-2">
-                            <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                <motion.div 
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${skill.level}%` }}
-                                    className="h-full bg-gradient-to-r from-cyan-500 to-blue-500" 
-                                />
-                            </div>
-                            <span className="text-[10px] text-gray-500 uppercase font-medium">{skill.category}</span>
+                          <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={{ width: `${skill.level}%` }}
+                              className="h-full bg-gradient-to-r from-teal-accent to-emerald-400"
+                            />
+                          </div>
+                          <span className="text-[10px] text-gray-500 uppercase font-medium">{skill.category}</span>
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => startEdit(skill)}
-                        className="p-2 text-cyan-400 bg-cyan-400/10 hover:bg-cyan-400/20 rounded-lg transition-colors"
+                        className="p-2 text-teal-accent bg-teal-accent/10 hover:bg-teal-accent/20 rounded-lg transition-colors"
                       >
                         <FaEdit />
                       </button>

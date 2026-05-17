@@ -10,7 +10,7 @@ export default function ManageProjects() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  
+
   // Form State
   const [formData, setFormData] = useState({
     title: "",
@@ -43,7 +43,7 @@ export default function ManageProjects() {
 
   const handleOpenModal = (project = null) => {
     console.log(project);
-    
+
     if (project) {
       setEditingProject(project);
       setFormData({
@@ -70,21 +70,21 @@ export default function ManageProjects() {
   };
 
   const handleFileChange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-          setSelectedFile(file);
-          setImagePreview(URL.createObjectURL(file));
-      }
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
   };
 
-  const filteredProjects = projects.filter(p => 
+  const filteredProjects = projects.filter(p =>
     p.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     p.tags.some(t => t.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this project?")) return;
-    
+
     try {
       const response = await projectApi.deleteProject(id);
       if (response.data.success) {
@@ -92,7 +92,7 @@ export default function ManageProjects() {
         setProjects(projects.filter(p => p._id !== id));
       }
     } catch (error) {
-           console.error("Delete project error:", error);
+      console.error("Delete project error:", error);
       toast.error("Failed to delete project");
     }
   };
@@ -117,9 +117,9 @@ export default function ManageProjects() {
         response = await projectApi.updateProject(editingProject._id, data);
       } else {
         if (!selectedFile) {
-            toast.error("Image is required for new projects");
-            setFormLoading(false);
-            return;
+          toast.error("Image is required for new projects");
+          setFormLoading(false);
+          return;
         }
         response = await projectApi.createProject(data);
       }
@@ -151,17 +151,17 @@ export default function ManageProjects() {
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
           <div className="relative w-full md:w-64">
             <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-            <input 
+            <input
               type="text"
               placeholder="Search projects..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+              className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-teal-accent/50 transition-all"
             />
           </div>
           <button
             onClick={() => handleOpenModal()}
-            className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white px-5 py-2 rounded-lg font-bold hover:shadow-lg hover:shadow-cyan-500/20 transition-all"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 px-5 py-2 rounded-lg font-bold hover:shadow-lg hover:shadow-teal-accent/20 transition-all"
           >
             <FaPlus />
             <span>Add New</span>
@@ -184,24 +184,24 @@ export default function ManageProjects() {
             <div className="p-5 flex-1 flex flex-col">
               <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
               <p className="text-gray-400 text-sm mb-4 line-clamp-2">{project.description}</p>
-              
+
               <div className="flex flex-wrap gap-2 mb-4">
                 {project.tags.map(tag => (
-                   <span key={tag} className="text-[10px] uppercase tracking-wider bg-white/10 text-gray-300 px-2 py-0.5 rounded">
-                     {tag}
-                   </span>
+                  <span key={tag} className="text-[10px] uppercase tracking-wider bg-white/10 text-gray-300 px-2 py-0.5 rounded">
+                    {tag}
+                  </span>
                 ))}
               </div>
 
               <div className="mt-auto flex justify-end space-x-2 pt-4 border-t border-white/10">
-                <button 
+                <button
                   onClick={() => handleOpenModal(project)}
-                  className="px-3 py-1.5 flex items-center space-x-2 text-sm text-cyan-400 bg-cyan-400/10 rounded-lg hover:bg-cyan-400/20 transition-colors"
+                  className="px-3 py-1.5 flex items-center space-x-2 text-sm text-teal-accent bg-teal-accent/10 rounded-lg hover:bg-teal-accent/20 transition-colors"
                 >
-                   <FaEdit /> <span>Edit</span>
+                  <FaEdit /> <span>Edit</span>
                 </button>
-                <button 
-                   onClick={() => handleDelete(project._id)}
+                <button
+                  onClick={() => handleDelete(project._id)}
                   className="px-3 py-1.5 flex items-center space-x-2 text-sm text-red-400 bg-red-400/10 rounded-lg hover:bg-red-400/20 transition-colors"
                 >
                   <FaTrash /> <span>Delete</span>
@@ -228,7 +228,7 @@ export default function ManageProjects() {
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               className="relative w-full max-w-2xl bg-[#0f0f0f] border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
             >
-               <div className="flex items-center justify-between p-6 border-b border-white/10 bg-white/5">
+              <div className="flex items-center justify-between p-6 border-b border-white/10 bg-white/5">
                 <h2 className="text-xl font-bold text-white">
                   {editingProject ? "Edit Project" : "Add New Project"}
                 </h2>
@@ -239,28 +239,28 @@ export default function ManageProjects() {
 
               <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300">Project Title</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.title}
-                        onChange={(e) => setFormData({...formData, title: e.target.value})}
-                        className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all"
-                        placeholder="e.g. Portfolio Website"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                       <label className="text-sm font-medium text-gray-300">Tags (comma separated)</label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.tags}
-                        onChange={(e) => setFormData({...formData, tags: e.target.value})}
-                        className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all"
-                        placeholder="React, Tailwind, Node.js"
-                      />
-                    </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300">Project Title</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.title}
+                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      className="w-full px-4 py-2.5 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all"
+                      placeholder="e.g. Portfolio Website"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300">Tags (comma separated)</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.tags}
+                      onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                      className="w-full px-4 py-2.5 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all"
+                      placeholder="React, Tailwind, Node.js"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -269,8 +269,8 @@ export default function ManageProjects() {
                     required
                     rows="3"
                     value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all"
                     placeholder="Describe your project..."
                   />
                 </div>
@@ -281,8 +281,8 @@ export default function ManageProjects() {
                     <input
                       type="url"
                       value={formData.github}
-                      onChange={(e) => setFormData({...formData, github: e.target.value})}
-                      className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+                      onChange={(e) => setFormData({ ...formData, github: e.target.value })}
+                      className="w-full px-4 py-2.5 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all"
                       placeholder="https://github.com/..."
                     />
                   </div>
@@ -291,8 +291,8 @@ export default function ManageProjects() {
                     <input
                       type="url"
                       value={formData.live}
-                      onChange={(e) => setFormData({...formData, live: e.target.value})}
-                      className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+                      onChange={(e) => setFormData({ ...formData, live: e.target.value })}
+                      className="w-full px-4 py-2.5 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all"
                       placeholder="https://project.com"
                     />
                   </div>
@@ -300,28 +300,28 @@ export default function ManageProjects() {
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-300">Project Image</label>
-                  <label className="relative flex flex-col items-center justify-center w-full h-48 bg-white/5 border-2 border-dashed border-white/10 rounded-xl cursor-pointer hover:bg-white/10 hover:border-cyan-500/30 transition-all overflow-hidden">
+                  <label className="relative flex flex-col items-center justify-center w-full h-48 bg-navy-950/40 border-2 border-dashed border-teal-accent/20 rounded-xl cursor-pointer hover:bg-white/10 hover:border-teal-accent/55 transition-all overflow-hidden">
                     {imagePreview ? (
-                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
-                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                          <FaCloudUploadAlt className="text-2xl text-cyan-400 mb-2" />
-                          <p className="text-xs text-gray-400">
-                             Click to upload or drag and drop
-                          </p>
-                        </div>
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <FaCloudUploadAlt className="text-2xl text-teal-accent mb-2" />
+                        <p className="text-xs text-gray-400">
+                          Click to upload or drag and drop
+                        </p>
+                      </div>
                     )}
                     <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
                     {imagePreview && (
-                        <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">Change Image</span>
-                        </div>
+                      <div className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <span className="text-white text-xs font-bold">Change Image</span>
+                      </div>
                     )}
                   </label>
                 </div>
 
                 <div className="pt-4 flex justify-end space-x-3">
-                   <button
+                  <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
                     className="px-6 py-2.5 rounded-lg text-gray-400 hover:text-white transition-colors"
@@ -331,7 +331,7 @@ export default function ManageProjects() {
                   <button
                     type="submit"
                     disabled={formLoading}
-                    className="px-8 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-lg font-bold hover:shadow-lg hover:shadow-cyan-500/20 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="px-8 py-2.5 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 rounded-lg font-bold hover:shadow-lg hover:shadow-teal-accent/20 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     {formLoading ? "Saving..." : (editingProject ? "Update Project" : "Create Project")}
                   </button>

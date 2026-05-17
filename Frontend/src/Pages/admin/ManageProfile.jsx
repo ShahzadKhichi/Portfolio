@@ -105,7 +105,7 @@ export default function ManageProfile() {
                     />
                 </div>
                 <label className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer rounded-3xl">
-                    <FaCloudUploadAlt className="text-3xl text-cyan-400" />
+                    <FaCloudUploadAlt className="text-3xl text-teal-accent" />
                     <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
                 </label>
             </div>
@@ -116,7 +116,7 @@ export default function ManageProfile() {
                 <p className="text-xs text-gray-500 line-clamp-1">{selectedFile ? `Selected: ${selectedFile.name}` : `Current: ${profile.image || 'None'}`}</p>
               </div>
               <p className="text-xs text-gray-500 flex items-center gap-2">
-                <FaUpload className="text-cyan-500/50" />
+                <FaUpload className="text-teal-accent/50" />
                 Click the image to upload a new profile picture.
               </p>
             </div>
@@ -132,7 +132,7 @@ export default function ManageProfile() {
               rows={6}
               value={profile.bio}
               onChange={(e) => setProfile({...profile, bio: e.target.value})}
-              className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all placeholder:text-gray-500 resize-none leading-relaxed"
+              className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all placeholder:text-gray-500 resize-none leading-relaxed"
               placeholder="Write a brief introduction about yourself..."
             />
             <p className="text-xs text-gray-500 mt-2 text-right">{profile.bio.length} characters</p>
@@ -152,7 +152,7 @@ export default function ManageProfile() {
                   ...profile, 
                   socialLinks: { ...profile.socialLinks, github: e.target.value }
                 })}
-                className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+                className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all"
                 placeholder="https://github.com/..."
               />
             </div>
@@ -165,7 +165,7 @@ export default function ManageProfile() {
                   ...profile, 
                   socialLinks: { ...profile.socialLinks, linkedin: e.target.value }
                 })}
-                className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-lg text-white focus:outline-none focus:border-cyan-500/50 transition-all"
+                className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all"
                 placeholder="https://linkedin.com/in/..."
               />
             </div>
@@ -177,7 +177,7 @@ export default function ManageProfile() {
           <button
             type="submit"
             disabled={saveLoading}
-            className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white rounded-lg font-bold transition-all shadow-lg shadow-cyan-500/20 disabled:opacity-70"
+            className="flex items-center space-x-2 px-8 py-3 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 font-bold rounded-lg transition-all shadow-lg shadow-teal-accent/20 disabled:opacity-70"
           >
             {saveLoading ? <span>Saving...</span> : (
               <>
