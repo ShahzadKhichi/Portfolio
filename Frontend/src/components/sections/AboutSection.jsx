@@ -5,7 +5,12 @@ import SocialLinks from "../ui/SocialLinks";
 import * as typewriterApi from "../../api/typewriter.api";
 
 export default function AboutSection({ image, bio, socialLinks }) {
-  const [typewriterStrings, setTypewriterStrings] = useState([]);
+  const [typewriterStrings, setTypewriterStrings] = useState([
+    "Web Developer",
+    "Software Engineer",
+    "MERN Stack Specialist",
+    "Full Stack Developer"
+  ]);
 
   useEffect(() => {
     const fetchTypewriterStrings = async () => {
@@ -89,7 +94,9 @@ export default function AboutSection({ image, bio, socialLinks }) {
           {/* Bio Card */}
           <div className="bg-white/[0.02] border border-white/10 backdrop-blur-[3px] rounded-2xl p-5 sm:p-7 lg:p-8 shadow-2xl text-sm sm:text-base">
             <span className="text-teal-accent font-mono">{"<>"}</span>
-            <p className="text-gray-100 leading-relaxed mt-2 mb-3">{bio || "Loading description..."}</p>
+            <p className="text-gray-100 leading-relaxed mt-2 mb-3">
+              {bio || "I am a passionate Full Stack Developer and MERN Stack Specialist specializing in building robust, high-performance web applications. With strong expertise in React.js, Node.js, Express, MongoDB, and modern UI/UX design, I craft clean, scalable, and search engine-optimized digital solutions tailored to user needs."}
+            </p>
             <span className="text-teal-accent font-mono">{"</>"}</span>
           </div>
 
