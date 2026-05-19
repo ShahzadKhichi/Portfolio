@@ -83,8 +83,8 @@ export default function AboutSection({ image, bio, socialLinks }) {
                   strings: typewriterStrings,
                   autoStart: true,
                   loop: true,
-                  deleteSpeed: 30,
-                  typeSpeed: 70,
+                  deleteSpeed: 50,
+                  typeSpeed: 60,
                   delay: 70,
                   cursor: "_",
                 }}
