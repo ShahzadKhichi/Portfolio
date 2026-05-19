@@ -12,12 +12,12 @@ export interface ProjectResponseDTO {
 
 export class ProjectDTO {
     public static toResponse(project: IProject): ProjectResponseDTO {
-       
+
         return {
             _id: project._id as string,
             title: project.title,
             description: project.description,
-            image: project.image.secureUrl,
+            image: project.image?.secureUrl,
             tags: project.tags || [],
             github: project.github,
             live: project.live,
