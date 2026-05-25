@@ -23,9 +23,9 @@ function App() {
       <div id="main" className="relative bg-bg min-h-screen overflow-hidden">
         {/* Floating Liquid Background Blobs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-          <div className="absolute top-[10%] left-[5%] w-[45vw] h-[45vw] max-w-[500px] rounded-full bg-gradient-to-tr from-teal-200/40 to-emerald-100/30 blur-[80px] animate-blob" />
-          <div className="absolute top-[35%] right-[-5%] w-[40vw] h-[40vw] max-w-[450px] rounded-full bg-gradient-to-tr from-sky-200/40 to-teal-100/30 blur-[100px] animate-blob animation-delay-2000" />
-          <div className="absolute bottom-[10%] left-[10%] w-[50vw] h-[50vw] max-w-[600px] rounded-full bg-gradient-to-tr from-emerald-100/40 to-sky-100/30 blur-[120px] animate-blob animation-delay-4000" />
+          <div className="absolute top-[10%] left-[5%] w-[45vw] h-[45vw] max-w-[500px] rounded-full bg-teal-200/20 blur-[80px] animate-blob" />
+          <div className="absolute top-[35%] right-[-5%] w-[40vw] h-[40vw] max-w-[450px] rounded-full bg-sky-200/20 blur-[100px] animate-blob animation-delay-2000" />
+          <div className="absolute bottom-[10%] left-[10%] w-[50vw] h-[50vw] max-w-[600px] rounded-full bg-emerald-100/20 blur-[120px] animate-blob animation-delay-4000" />
         </div>
 
         <Routes>

@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaLinkedin, FaWhatsapp } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+import { SiGmail } from "react-icons/si";
 
 export default function SocialLinks({ links }) {
   if (!links) return null;
@@ -19,6 +19,15 @@ export default function SocialLinks({ links }) {
           <FaLinkedin size={24} />
         </motion.a>
       )}
+      {links.email && (
+        <motion.a
+          href={`mailto:${links.email}`}
+          whileHover={{ scale: 1.1 }}
+          className="p-3 bg-surface text-accent border border-border rounded-full hover:bg-accent hover:text-white transition-colors duration-300"
+        >
+          <SiGmail size={24} />
+        </motion.a>
+      )}
       {(links.whatsapp || links.phone) && (
         <motion.a
           href={`https://wa.me/${links.whatsapp || links.phone}`}
@@ -28,15 +37,6 @@ export default function SocialLinks({ links }) {
           className="p-3 bg-surface text-accent border border-border rounded-full hover:bg-accent hover:text-white transition-colors duration-300"
         >
           <FaWhatsapp size={24} />
-        </motion.a>
-      )}
-      {links.email && (
-        <motion.a
-          href={`mailto:${links.email}`}
-          whileHover={{ scale: 1.1 }}
-          className="p-3 bg-surface text-accent border border-border rounded-full hover:bg-accent hover:text-white transition-colors duration-300"
-        >
-          <MdEmail size={24} />
         </motion.a>
       )}
     </div>

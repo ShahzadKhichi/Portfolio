@@ -30,10 +30,33 @@ export default function AboutSection({ image, bio, socialLinks, name }) {
       id="about"
       className="min-h-screen w-full bg-bg flex flex-col items-center justify-center px-4 py-16 sm:py-20 lg:py-0"
     >
-      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-        {/* Content Section (Left on Desktop) */}
+      <div className="max-w-5xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        {/* Image Section */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex justify-center lg:justify-end"
+        >
+          <div className="relative">
+            <div className="w-56 h-56 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-3xl overflow-hidden border-2 border-border">
+              <img
+                src={image || "/profile.png"}
+                alt={displayName}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div className="hidden sm:block absolute -bottom-3 left-1/2 -translate-x-1/2 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold">
+              Available for Hire
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Content Section */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           viewport={{ once: true, margin: "-100px" }}
@@ -120,29 +143,6 @@ export default function AboutSection({ image, bio, socialLinks, name }) {
                 />
               </svg>
             </a>
-          </div>
-        </motion.div>
-
-        {/* Image Section (Right on Desktop) */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          viewport={{ once: true, margin: "-100px" }}
-          className="flex justify-center lg:justify-start"
-        >
-          <div className="relative">
-            <div className="w-56 h-56 sm:w-64 sm:h-64 lg:w-80 lg:h-80 rounded-3xl overflow-hidden border-2 border-border">
-              <img
-                src={image || "/profile.png"}
-                alt={displayName}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div className="hidden sm:block absolute -bottom-3 left-1/2 -translate-x-1/2 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold">
-              Available for Hire
-            </div>
           </div>
         </motion.div>
       </div>
