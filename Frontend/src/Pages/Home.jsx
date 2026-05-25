@@ -58,6 +58,7 @@ const Home = () => {
         image={profile?.profileImage}
         bio={profile?.bio}
         socialLinks={profile?.socialLinks}
+        name={profile?.name}
       />
       <ProjectsSection projects={projects} />
       <SkillsSection />

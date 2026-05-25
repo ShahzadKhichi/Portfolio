@@ -1,21 +1,14 @@
-import React, { useRef } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import gsap from "gsap";
 import ProjectCard from "../ui/ProjectCard";
 
 export default function ProjectsSection({ projects }) {
   return (
     <section
       id="projects"
-      className="w-full py-20 bg-transparent relative overflow-hidden"
+      className="w-full py-20 bg-bg-alt relative overflow-hidden"
     >
-      {/* Ambient Background */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-20 w-96 h-96 bg-teal-accent/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-20 right-20 w-80 h-80 bg-teal-accent/3 rounded-full blur-[100px]" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 relative z-10">
+      <div className="max-w-7xl mx-auto px-4">
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -24,10 +17,10 @@ export default function ProjectsSection({ projects }) {
           viewport={{ once: true, margin: "-100px" }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl lg:text-7xl font-extrabold text-white">
-            My <span className="text-gradient-primary">Projects</span>
+          <h2 className="text-5xl lg:text-7xl font-extrabold text-text">
+            My <span className="text-accent">Projects</span>
           </h2>
-          <p className="mt-3 text-gray-400 text-lg max-w-2xl mx-auto">
+          <p className="mt-3 text-text-secondary text-lg max-w-2xl mx-auto">
             Explore my latest work — built with passion, precision, and modern
             tech.
           </p>
@@ -55,7 +48,7 @@ export default function ProjectsSection({ projects }) {
               href="https://github.com/ShahzadKhichi"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-teal-accent text-navy-950 font-bold rounded-full shadow-lg hover:shadow-teal-accent/40 transition-all duration-300 hover:bg-teal-dark"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-accent text-white font-bold rounded-full transition-colors duration-300 hover:bg-accent-hover"
             >
               <span>View All on GitHub</span>
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

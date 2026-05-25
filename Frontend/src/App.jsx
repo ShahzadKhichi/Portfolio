@@ -13,17 +13,14 @@ import ManageSkills from "./Pages/admin/ManageSkills";
 import ManageProfile from "./Pages/admin/ManageProfile";
 import ManageTypewriter from "./Pages/admin/ManageTypewriter";
 import AccountSettings from "./Pages/admin/AccountSettings";
-import Background3D from "./components/layout/Background3D";
-import CustomCursor from "./components/ui/CustomCursor";
+
 
 function App() {
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
-      <CustomCursor />
 
-      <div id="main" className="relative bg-transparent min-h-screen">
-        <Background3D />
+      <div id="main" className="relative bg-bg min-h-screen">
         <Routes>
           <Route path="/" element={<Home />} />
           

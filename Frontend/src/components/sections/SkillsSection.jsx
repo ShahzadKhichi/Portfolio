@@ -3,13 +3,6 @@ import { motion } from "framer-motion";
 import { FaCode } from "react-icons/fa";
 import * as skillApi from "../../api/skill.api";
 
-const categoryGradients = {
-  "Frontend": "from-teal-accent to-emerald-400",
-  "Backend": "from-emerald-400 to-green-400",
-  "DevOps": "from-sky-400 to-teal-accent",
-  "default": "from-teal-accent to-emerald-400"
-};
-
 const SkillCard = ({ skill }) => {
   const radius = 38;
   const circumference = 2 * Math.PI * radius;
@@ -17,20 +10,20 @@ const SkillCard = ({ skill }) => {
 
   return (
     <motion.div
-      whileHover={{ scale: 1.1, y: -10 }}
+      whileHover={{ scale: 1.08, y: -5 }}
       transition={{ type: "spring", stiffness: 300, damping: 15 }}
-      className="group relative flex flex-col justify-center items-center p-4"
+      className="group flex flex-col justify-center items-center p-4"
     >
-      <div className="relative flex items-center justify-center w-[100px] h-[100px] rounded-full bg-white/[0.02] border border-white/10 backdrop-blur-[3px] shadow-xl hover:border-teal-accent/30 transition-all duration-300 group-hover:shadow-[0_0_40px_rgba(0,245,212,0.2)]">
+      <div className="relative flex items-center justify-center w-[100px] h-[100px] rounded-full bg-white border border-border hover:border-accent/30 transition-colors duration-300">
         
         {/* SVG Circular Progress */}
-        <svg className="absolute inset-0 w-full h-full -rotate-90 drop-shadow-lg" viewBox="0 0 100 100">
+        <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
           <circle
             cx="50"
             cy="50"
             r={radius}
             fill="none"
-            stroke="rgba(0, 245, 212, 0.05)"
+            stroke="#e2e8f0"
             strokeWidth="4"
           />
           <motion.circle
@@ -38,7 +31,7 @@ const SkillCard = ({ skill }) => {
             cy="50"
             r={radius}
             fill="none"
-            stroke="url(#gradient)"
+            stroke="#0d9488"
             strokeWidth="4"
             strokeLinecap="round"
             strokeDasharray={circumference}
@@ -47,33 +40,24 @@ const SkillCard = ({ skill }) => {
             viewport={{ once: true }}
             transition={{ duration: 1.5, ease: "easeOut", delay: 0.2 }}
           />
-          <defs>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#00f5d4" />
-              <stop offset="100%" stopColor="#00c4a7" />
-            </linearGradient>
-          </defs>
         </svg>
-
-        {/* Glow behind icon */}
-        <div className="absolute inset-0 bg-teal-accent/0 group-hover:bg-teal-accent/10 rounded-full transition-all duration-300 blur-md" />
 
         {skill.icon ? (
           <img
             src={skill.icon}
             alt={skill.name}
-            className="w-11 h-11 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-2xl z-10"
+            className="w-11 h-11 object-contain group-hover:scale-110 transition-transform duration-300 z-10"
           />
         ) : (
-          <FaCode className="text-3xl text-teal-accent drop-shadow-md z-10" />
+          <FaCode className="text-3xl text-accent z-10" />
         )}
       </div>
 
       <div className="mt-5 text-center flex flex-col items-center gap-1">
-        <h4 className="text-[15px] font-bold text-gray-200 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-teal-accent group-hover:to-emerald-400 transition-all">
+        <h4 className="text-[15px] font-bold text-text group-hover:text-accent transition-colors">
           {skill.name}
         </h4>
-        <span className="text-xs text-teal-accent/80 font-mono font-medium tracking-wider bg-teal-accent/10 px-2 py-0.5 rounded-full border border-teal-accent/20">
+        <span className="text-xs text-accent font-mono font-medium tracking-wider bg-accent-light px-2 py-0.5 rounded-full border border-accent/20">
           {skill.level}%
         </span>
       </div>
@@ -81,19 +65,16 @@ const SkillCard = ({ skill }) => {
   );
 };
 
-const SkillGroup = ({ title, skills, gradient }) => {
+const SkillGroup = ({ title, skills }) => {
   if (!skills || skills.length === 0) return null;
   return (
-    <div className="w-full max-w-6xl mb-20 bg-white/[0.02] border border-white/10 backdrop-blur-[3px] rounded-3xl p-8 lg:p-12 shadow-2xl hover:border-teal-accent/30 transition-all duration-500 relative overflow-hidden">
-      {/* Decorative background glow for group */}
-      <div className="absolute -top-20 -right-20 w-64 h-64 bg-teal-accent/5 rounded-full blur-[80px] pointer-events-none" />
-      
+    <div className="w-full max-w-6xl mb-20 bg-white border border-border rounded-3xl p-8 lg:p-12 hover:border-accent/30 transition-colors duration-300">
       <motion.h3
         initial={{ opacity: 0, y: -10 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
         viewport={{ once: true }}
-        className={`text-3xl font-extrabold text-center mb-12 bg-gradient-to-r ${gradient} bg-clip-text text-transparent`}
+        className="text-3xl font-extrabold text-center mb-12 text-accent"
       >
         {title}
       </motion.h3>
@@ -164,7 +145,7 @@ export default function SkillsSection() {
   });
 
   return (
-    <section className="w-full py-24 bg-transparent relative z-10" id="skills">
+    <section className="w-full py-24 bg-bg" id="skills">
       <div className="container mx-auto px-4 flex flex-col items-center">
         <div className="flex flex-col items-center mb-20">
           <motion.h2
@@ -172,14 +153,14 @@ export default function SkillsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="text-4xl sm:text-5xl font-extrabold text-white mb-4"
+            className="text-4xl sm:text-5xl font-extrabold text-text mb-4"
           >
-            Technical <span className="text-gradient-primary">Stack</span>
+            Technical <span className="text-accent">Stack</span>
           </motion.h2>
           <motion.div
             initial={{ width: 0 }}
             whileInView={{ width: 100 }}
-            className="h-1 bg-teal-accent rounded-full"
+            className="h-1 bg-accent rounded-full"
           />
         </div>
 
@@ -188,7 +169,6 @@ export default function SkillsSection() {
             key={cat}
             title={cat}
             skills={skills.filter(s => s.category === cat)}
-            gradient={categoryGradients[cat] || categoryGradients.default}
           />
         ))}
       </div>

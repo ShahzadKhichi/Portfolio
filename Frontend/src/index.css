@@ -2,46 +2,32 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navy-950: #060b18;
-  --color-navy-900: #0a1128;
-  --color-navy-800: #0f1a33;
-  --color-navy-700: #152040;
-  --color-navy-600: #1a2a4a;
-  --color-teal-accent: #00f5d4;
-  --color-teal-glow: #00f5d480;
-  --color-teal-dark: #00c4a7;
-  --color-teal-muted: #00f5d420;
+  --color-bg: #ffffff;
+  --color-bg-alt: #f8fafc;
+  --color-surface: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-text: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-accent: #0d9488;
+  --color-accent-hover: #0f766e;
+  --color-accent-light: #ccfbf1;
 }
 
 html {
   scroll-behavior: smooth;
-  background: var(--color-navy-950);
-  color: #f1f5f9;
+  background: var(--color-bg);
+  color: var(--color-text);
   font-family: 'Inter', 'Space Grotesk', system-ui, -apple-system, sans-serif;
 }
 
 ::selection {
-  background: var(--color-teal-accent);
-  color: #0a1128;
+  background: var(--color-accent);
+  color: #ffffff;
 }
 
 body {
-  background: var(--color-navy-950);
+  background: var(--color-bg);
   min-height: 100vh;
-  position: relative;
-}
-
-/* Subtle ambient background glow */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: 
-    radial-gradient(circle at 20% 50%, rgba(0, 245, 212, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(0, 245, 212, 0.02) 0%, transparent 50%),
-    radial-gradient(circle at 50% 80%, rgba(0, 196, 167, 0.02) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
 }
 
 /* Custom scrollbar */
@@ -50,35 +36,20 @@ body::before {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a1128;
+  background: var(--color-bg-alt);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, #00f5d4, #00c4a7);
+  background: var(--color-accent);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00f5d4;
+  background: var(--color-accent-hover);
 }
 
 /* Smooth focus styles */
 *:focus-visible {
-  outline: 2px solid #00f5d4;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
-}
-
-/* Hide default cursor for professional feel (applied only when hover is supported) */
-@media (hover: hover) and (pointer: fine) {
-  body, a, button, input, textarea, select, label {
-    cursor: none !important;
-  }
-}
-
-/* Beautiful text gradient utility */
-.text-gradient-primary {
-  background: linear-gradient(to right, #00f5d4, #00c4a7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
