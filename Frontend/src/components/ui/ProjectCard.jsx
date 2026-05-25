@@ -35,7 +35,7 @@ const ProjectCard = ({
         damping: 18,
       }}
       viewport={{ once: true, margin: "-100px" }}
-      className="group bg-white border border-border rounded-3xl overflow-hidden hover:border-accent/30 transition-all duration-300 hover:-translate-y-1 w-full max-w-5xl mx-auto"
+      className="group liquid-glass rounded-3xl overflow-hidden hover:border-accent/30 transition-all duration-300 hover:-translate-y-1 w-full max-w-5xl mx-auto"
     >
       <div className="flex flex-col lg:flex-row h-full min-h-[420px]">
         {/* Image Section */}

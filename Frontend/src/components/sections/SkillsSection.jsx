@@ -14,7 +14,7 @@ const SkillCard = ({ skill }) => {
       transition={{ type: "spring", stiffness: 300, damping: 15 }}
       className="group flex flex-col justify-center items-center p-4"
     >
-      <div className="relative flex items-center justify-center w-[100px] h-[100px] rounded-full bg-white border border-border hover:border-accent/30 transition-colors duration-300">
+      <div className="relative flex items-center justify-center w-[100px] h-[100px] rounded-full bg-white/40 backdrop-blur-md border border-white/40 hover:border-accent/40 transition-colors duration-300">
         
         {/* SVG Circular Progress */}
         <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
@@ -68,7 +68,7 @@ const SkillCard = ({ skill }) => {
 const SkillGroup = ({ title, skills }) => {
   if (!skills || skills.length === 0) return null;
   return (
-    <div className="w-full max-w-6xl mb-20 bg-white border border-border rounded-3xl p-8 lg:p-12 hover:border-accent/30 transition-colors duration-300">
+    <div className="w-full max-w-6xl mb-20 liquid-glass rounded-3xl p-8 lg:p-12 hover:border-accent/30 transition-colors duration-300">
       <motion.h3
         initial={{ opacity: 0, y: -10 }}
         whileInView={{ opacity: 1, y: 0 }}

@@ -53,7 +53,7 @@ export default function ContactSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           onSubmit={handleSubmit}
-          className="bg-white border border-border hover:border-accent/30 rounded-3xl p-8 lg:p-12 transition-colors duration-300"
+          className="liquid-glass rounded-3xl p-8 lg:p-12 transition-colors duration-300"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             {["name", "email"].map((field, i) => (
