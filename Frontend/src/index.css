@@ -11,7 +11,7 @@
   --color-accent: #0d9488;
   --color-accent-hover: #0f766e;
   --color-accent-light: rgba(13, 148, 136, 0.08);
-  --color-typewriter: #7c3aed;
+  --color-typewriter: #0d9488;
 }
 
 html {
@@ -61,7 +61,7 @@ body {
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
+  box-shadow:
     0 10px 30px -10px rgba(0, 0, 0, 0.05),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
 }
@@ -79,12 +79,15 @@ body {
   0% {
     transform: translate(0px, 0px) scale(1) rotate(0deg);
   }
+
   33% {
     transform: translate(40px, -60px) scale(1.1) rotate(120deg);
   }
+
   66% {
     transform: translate(-30px, 30px) scale(0.9) rotate(240deg);
   }
+
   100% {
     transform: translate(0px, 0px) scale(1) rotate(360deg);
   }
@@ -105,4 +108,3 @@ body {
 .typewriter-text {
   color: var(--color-typewriter) !important;
 }
-

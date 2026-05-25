@@ -28,9 +28,9 @@ export default function AboutSection({ image, bio, socialLinks, name }) {
   return (
     <section
       id="about"
-      className="min-h-screen w-full bg-bg flex flex-col items-center justify-center px-4 py-16 sm:py-20 lg:py-0"
+      className="min-h-screen w-full bg-bg flex flex-col items-center justify-center px-4 xl:pr-50 py-16 sm:py-20 lg:py-0"
     >
-      <div className="max-w-5xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      <div className="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
         {/* Image Section */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
