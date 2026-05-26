@@ -50,33 +50,33 @@ export default function Messages() {
     });
   };
 
-  if (loading) return <div className="text-white text-center py-20">Loading messages...</div>;
+  if (loading) return <div className="text-text text-center py-20 font-semibold">Loading messages...</div>;
 
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="text-3xl font-bold text-white mb-2">Customer Messages</h1>
-        <p className="text-gray-400">View and respond to inquiries submitted via the contact form.</p>
+        <h1 className="text-3xl font-bold text-text mb-2">Customer Messages</h1>
+        <p className="text-text-secondary">View and respond to inquiries submitted via the contact form.</p>
       </header>
 
-      <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-sm shadow-xl shadow-black/30">
+      <div className="bg-surface border border-border/80 rounded-2xl overflow-hidden shadow-md">
         {messages.length === 0 ? (
           <div className="p-20 text-center">
-            <FaEnvelope className="text-5xl text-gray-700 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">No messages found.</p>
+            <FaEnvelope className="text-5xl text-border mx-auto mb-4" />
+            <p className="text-text-secondary text-lg font-medium">No messages found.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-white/5 border-b border-white/10 text-gray-400 text-[10px] uppercase tracking-[0.2em] font-bold">
+                <tr className="bg-bg-alt border-b border-border/80 text-text-secondary text-[10px] uppercase tracking-[0.2em] font-bold">
                   <th className="px-8 py-5">Sender</th>
                   <th className="px-8 py-5">Message</th>
                   <th className="px-8 py-5 whitespace-nowrap">Date</th>
                   <th className="px-8 py-5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-border/40">
                 <AnimatePresence>
                   {messages.map((msg, idx) => (
                     <motion.tr
@@ -85,39 +85,39 @@ export default function Messages() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ delay: idx * 0.05 }}
-                      className="hover:bg-white/5 transition-colors group"
+                      className="hover:bg-bg-alt/30 transition-colors group"
                     >
                       <td className="px-8 py-6 align-top max-w-[200px]">
                         <div className="flex items-start space-x-3">
-                            <div className="w-10 h-10 rounded-full bg-teal-accent/10 border border-teal-accent/30 flex items-center justify-center shrink-0">
-                                <FaUser className="text-teal-accent text-sm" />
+                            <div className="w-10 h-10 rounded-full bg-accent-light border border-accent/20 flex items-center justify-center shrink-0">
+                                <FaUser className="text-accent text-sm" />
                             </div>
                             <div>
-                                <p className="text-white font-semibold truncate">{msg.name}</p>
-                                <p className="text-gray-500 text-xs truncate">{msg.email}</p>
+                                <p className="text-text font-semibold truncate">{msg.name}</p>
+                                <p className="text-text-secondary text-xs truncate">{msg.email}</p>
                             </div>
                         </div>
                       </td>
                       <td className="px-8 py-6 align-top min-w-[300px]">
-                        <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">{msg.message}</p>
+                        <p className="text-text-secondary text-sm leading-relaxed whitespace-pre-wrap">{msg.message}</p>
                       </td>
-                      <td className="px-8 py-6 align-top text-gray-500 text-xs whitespace-nowrap">
+                      <td className="px-8 py-6 align-top text-text-secondary text-xs whitespace-nowrap">
                         <div className="flex items-center space-x-2 mt-1">
-                            <FaCalendarAlt className="opacity-30" />
+                            <FaCalendarAlt className="opacity-40" />
                             <span>{formatDate(msg.createdAt)}</span>
                         </div>
                       </td>
                       <td className="px-8 py-6 align-top text-right space-x-2 whitespace-nowrap">
                         <a 
                             href={`mailto:${msg.email}`}
-                            className="inline-flex items-center justify-center w-9 h-9 text-teal-accent hover:text-navy-950 bg-teal-accent/10 hover:bg-teal-accent rounded-lg transition-all" 
+                            className="inline-flex items-center justify-center w-9 h-9 text-accent hover:text-white bg-accent-light hover:bg-accent rounded-lg transition-all" 
                             title="Reply"
                         >
                           <FaReply className="text-sm" />
                         </a>
                         <button
                           onClick={() => handleDelete(msg._id)}
-                          className="inline-flex items-center justify-center w-9 h-9 text-red-400 hover:text-white bg-red-500/10 hover:bg-red-500 rounded-lg transition-all" 
+                          className="inline-flex items-center justify-center w-9 h-9 text-red-600 hover:text-white bg-red-500/10 hover:bg-red-600 rounded-lg transition-all" 
                           title="Delete"
                         >
                           <FaTrash className="text-sm" />

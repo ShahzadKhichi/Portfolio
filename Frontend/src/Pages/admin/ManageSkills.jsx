@@ -117,10 +117,10 @@ export default function ManageSkills() {
       return <img src={skill.icon} alt={skill.name} className="w-6 h-6 object-contain" />;
     }
     switch (skill.category) {
-      case "Frontend": return <FaCode className="text-teal-accent" />;
-      case "Backend": return <FaServer className="text-purple-400" />;
-      case "Database": return <FaDatabase className="text-yellow-400" />;
-      default: return <FaTools className="text-gray-400" />;
+      case "Frontend": return <FaCode className="text-accent" />;
+      case "Backend": return <FaServer className="text-indigo-600" />;
+      case "Database": return <FaDatabase className="text-amber-600" />;
+      default: return <FaTools className="text-text-secondary" />;
     }
   };
 
@@ -129,23 +129,23 @@ export default function ManageSkills() {
     skill.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <div className="text-white text-center py-20">Loading skills...</div>;
+  if (loading) return <div className="text-text text-center py-20 font-semibold">Loading skills...</div>;
 
   return (
     <div className="space-y-6">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Manage Skills</h1>
-          <p className="text-gray-400">Update the technical skills displayed on your portfolio.</p>
+          <h1 className="text-3xl font-bold text-text mb-2">Manage Skills</h1>
+          <p className="text-text-secondary">Update the technical skills displayed on your portfolio.</p>
         </div>
         <div className="relative w-full md:w-64">
-          <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+          <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary/60" />
           <input
             type="text"
             placeholder="Search skills..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-teal-accent/50 transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-surface border border-border rounded-xl text-text focus:outline-none focus:border-accent transition-all placeholder:text-text-secondary/50"
           />
         </div>
       </header>
@@ -154,11 +154,11 @@ export default function ManageSkills() {
 
         {/* Form Section */}
         <div className="lg:col-span-1">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm sticky top-8 shadow-xl shadow-black/50">
+          <div className="bg-surface border border-border/80 rounded-2xl p-6 sticky top-8 shadow-md">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-white">{editingSkill ? "Edit Skill" : "Add New Skill"}</h2>
+              <h2 className="text-xl font-bold text-text">{editingSkill ? "Edit Skill" : "Add New Skill"}</h2>
               {editingSkill && (
-                <button onClick={resetForm} className="text-gray-500 hover:text-white transition-colors">
+                <button onClick={resetForm} className="text-text-secondary hover:text-text transition-colors cursor-pointer">
                   <FaTimes />
                 </button>
               )}
@@ -167,11 +167,11 @@ export default function ManageSkills() {
 
               <div className="flex justify-center mb-4">
                 <div className="relative group">
-                  <div className="w-20 h-20 rounded-xl bg-black/50 border border-white/10 flex items-center justify-center overflow-hidden">
+                  <div className="w-20 h-20 rounded-xl bg-bg-alt border border-border flex items-center justify-center overflow-hidden">
                     {iconPreview ? (
                       <img src={iconPreview} alt="Preview" className="w-full h-full object-cover" />
                     ) : (
-                      <FaCloudUploadAlt className="text-3xl text-gray-700" />
+                      <FaCloudUploadAlt className="text-3xl text-text-secondary/60" />
                     )}
                   </div>
                   <label className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
@@ -182,23 +182,23 @@ export default function ManageSkills() {
               </div>
 
               <div>
-                <label className="block text-gray-300 text-sm mb-2 font-medium">Skill Name</label>
+                <label className="block text-text-secondary text-sm mb-2 font-semibold">Skill Name</label>
                 <input
                   type="text"
                   required
                   value={newSkill.name}
                   onChange={(e) => setNewSkill({ ...newSkill, name: e.target.value })}
-                  className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all placeholder:text-gray-500"
+                  className="w-full px-4 py-3 bg-bg-alt border border-border rounded-lg text-text focus:outline-none focus:border-accent transition-all placeholder:text-text-secondary/50"
                   placeholder="e.g. Next.js"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-300 text-sm mb-2 font-medium">Category</label>
+                  <label className="block text-text-secondary text-sm mb-2 font-semibold">Category</label>
                   <select
                     value={newSkill.category}
                     onChange={(e) => setNewSkill({ ...newSkill, category: e.target.value })}
-                    className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all appearance-none"
+                    className="w-full px-4 py-3 bg-bg-alt border border-border rounded-lg text-text focus:outline-none focus:border-accent transition-all"
                   >
                     {CATEGORIES.map(cat => (
                       <option key={cat} value={cat}>{cat}</option>
@@ -206,14 +206,14 @@ export default function ManageSkills() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-gray-300 text-sm mb-2 font-medium">Level ({newSkill.level}%)</label>
+                  <label className="block text-text-secondary text-sm mb-2 font-semibold">Level ({newSkill.level}%)</label>
                   <input
                     type="number"
                     min="0"
                     max="100"
                     value={newSkill.level}
                     onChange={(e) => setNewSkill({ ...newSkill, level: e.target.value })}
-                    className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 transition-all"
+                    className="w-full px-4 py-3 bg-bg-alt border border-border rounded-lg text-text focus:outline-none focus:border-accent transition-all"
                   />
                 </div>
               </div>
@@ -221,7 +221,7 @@ export default function ManageSkills() {
               <button
                 type="submit"
                 disabled={formLoading}
-                className="w-full flex justify-center items-center space-x-2 py-3 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 font-bold rounded-lg transition-all shadow-lg shadow-teal-accent/20 disabled:opacity-70"
+                className="w-full flex justify-center items-center space-x-2 py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg transition-all shadow-md shadow-accent/20 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {formLoading ? <span>Processing...</span> : (
                   <>
@@ -236,10 +236,10 @@ export default function ManageSkills() {
 
         {/* List Section */}
         <div className="lg:col-span-2">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm">
+          <div className="bg-surface border border-border/80 rounded-2xl p-6 shadow-md">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-white">Current Skills</h2>
-              <div className="text-gray-500 text-sm">{filteredSkills.length} skills found</div>
+              <h2 className="text-xl font-bold text-text">Current Skills</h2>
+              <div className="text-text-secondary text-sm font-semibold">{filteredSkills.length} skills found</div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -252,36 +252,36 @@ export default function ManageSkills() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="flex items-center justify-between p-4 bg-navy-950/20 border border-white/5 rounded-xl hover:border-teal-accent/30 transition-colors group"
+                    className="flex items-center justify-between p-4 bg-bg-alt/40 border border-border/40 rounded-xl hover:border-accent/40 hover:bg-bg-alt transition-all group"
                   >
                     <div className="flex items-center space-x-4 cursor-pointer" onClick={() => startEdit(skill)}>
-                      <div className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-lg border border-white/10 group-hover:border-teal-accent/30 transition-colors">
+                      <div className="w-10 h-10 flex items-center justify-center bg-surface rounded-lg border border-border group-hover:border-accent/30 transition-colors">
                         {getSkillIcon(skill)}
                       </div>
                       <div>
-                        <h3 className="font-semibold text-white">{skill.name}</h3>
+                        <h3 className="font-semibold text-text">{skill.name}</h3>
                         <div className="flex items-center space-x-2">
-                          <div className="w-24 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                          <div className="w-24 h-1.5 bg-border/60 rounded-full overflow-hidden">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${skill.level}%` }}
-                              className="h-full bg-gradient-to-r from-teal-accent to-emerald-400"
+                              className="h-full bg-accent"
                             />
                           </div>
-                          <span className="text-[10px] text-gray-500 uppercase font-medium">{skill.category}</span>
+                          <span className="text-[10px] text-text-secondary uppercase font-semibold">{skill.category}</span>
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => startEdit(skill)}
-                        className="p-2 text-teal-accent bg-teal-accent/10 hover:bg-teal-accent/20 rounded-lg transition-colors"
+                        className="p-2 text-accent bg-accent-light hover:bg-accent/20 rounded-lg transition-colors cursor-pointer"
                       >
                         <FaEdit />
                       </button>
                       <button
                         onClick={() => handleDelete(skill._id)}
-                        className="p-2 text-red-400 bg-red-400/10 hover:bg-red-400/20 rounded-lg transition-colors"
+                        className="p-2 text-red-600 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition-colors cursor-pointer"
                       >
                         <FaTrash />
                       </button>

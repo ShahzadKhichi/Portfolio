@@ -52,57 +52,57 @@ export default function AccountSettings() {
     }
   };
 
-  if (loading) return <div className="text-white text-center py-20">Loading account settings...</div>;
+  if (loading) return <div className="text-text text-center py-20 font-semibold">Loading account settings...</div>;
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <header>
-        <h1 className="text-3xl font-bold text-white mb-2">Account Settings</h1>
-        <p className="text-gray-400">Manage your administrative account details and credentials.</p>
+        <h1 className="text-3xl font-bold text-text mb-2">Account Settings</h1>
+        <p className="text-text-secondary">Manage your administrative account details and credentials.</p>
       </header>
 
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm shadow-xl">
+      <div className="bg-surface border border-border/80 rounded-2xl p-8 shadow-md">
         <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="block text-gray-300 text-sm font-medium">First Name</label>
+            <label className="block text-text-secondary text-sm font-semibold">First Name</label>
             <div className="relative">
-              <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+              <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary/60" />
               <input
                 type="text"
                 required
                 value={admin.firstname}
                 onChange={(e) => setAdmin({ ...admin, firstname: e.target.value })}
-                className="w-full pl-12 pr-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-xl text-white focus:outline-none focus:border-teal-accent/50 transition-all"
+                className="w-full pl-12 pr-4 py-3 bg-bg-alt border border-border rounded-xl text-text focus:outline-none focus:border-accent transition-all placeholder:text-text-secondary/50"
                 placeholder="First Name"
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <label className="block text-gray-300 text-sm font-medium">Last Name</label>
+            <label className="block text-text-secondary text-sm font-semibold">Last Name</label>
             <div className="relative">
-              <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+              <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary/60" />
               <input
                 type="text"
                 required
                 value={admin.lastname}
                 onChange={(e) => setAdmin({ ...admin, lastname: e.target.value })}
-                className="w-full pl-12 pr-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-xl text-white focus:outline-none focus:border-teal-accent/50 transition-all"
+                className="w-full pl-12 pr-4 py-3 bg-bg-alt border border-border rounded-xl text-text focus:outline-none focus:border-accent transition-all placeholder:text-text-secondary/50"
                 placeholder="Last Name"
               />
             </div>
           </div>
 
           <div className="md:col-span-2 space-y-2">
-            <label className="block text-gray-300 text-sm font-medium">Email Address</label>
+            <label className="block text-text-secondary text-sm font-semibold">Email Address</label>
             <div className="relative">
-              <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+              <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary/60" />
               <input
                 type="email"
                 required
                 value={admin.email}
                 onChange={(e) => setAdmin({ ...admin, email: e.target.value })}
-                className="w-full pl-12 pr-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-xl text-white focus:outline-none focus:border-teal-accent/50 transition-all"
+                className="w-full pl-12 pr-4 py-3 bg-bg-alt border border-border rounded-xl text-text focus:outline-none focus:border-accent transition-all placeholder:text-text-secondary/50"
                 placeholder="Email Address"
               />
             </div>
@@ -112,7 +112,7 @@ export default function AccountSettings() {
             <button
               type="submit"
               disabled={updateLoading}
-              className="w-full flex justify-center items-center space-x-2 py-4 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 rounded-xl font-bold transition-all shadow-lg shadow-teal-accent/20 disabled:opacity-70"
+              className="w-full flex justify-center items-center space-x-2 py-4 bg-accent hover:bg-accent-hover text-white rounded-xl font-bold transition-all shadow-md shadow-accent/20 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {updateLoading ? <span>Updating...</span> : (
                 <>
@@ -125,17 +125,17 @@ export default function AccountSettings() {
         </form>
       </div>
 
-      <div className="bg-red-500/5 border border-red-500/10 rounded-2xl p-8 backdrop-blur-sm">
+      <div className="bg-red-500/5 border border-red-500/10 rounded-2xl p-8">
         <div className="flex items-start space-x-4">
           <div className="p-3 bg-red-500/10 rounded-lg">
-            <FaLock className="text-red-400 text-xl" />
+            <FaLock className="text-red-600 text-xl" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-white mb-2">Security</h3>
-            <p className="text-gray-400 mb-4">To change your password, please use the "Forgot Password" flow on the login page. This ensures high security via OTP verification.</p>
+            <h3 className="text-xl font-bold text-text mb-2">Security</h3>
+            <p className="text-text-secondary mb-4">To change your password, please use the "Forgot Password" flow on the login page. This ensures high security via OTP verification.</p>
             <button 
               onClick={() => toast.error("Please use 'Forgot Password' on the login screen.")}
-              className="text-red-400 font-semibold hover:underline"
+              className="text-red-600 font-semibold hover:underline cursor-pointer"
             >
               Learn more about security procedures
             </button>

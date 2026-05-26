@@ -41,10 +41,10 @@ export default function ResetPassword() {
   const handleOtpChange = (e, index) => {
     const val = e.target.value.replace(/[^0-9]/g, "");
     if (!val && e.target.value !== "") return;
-    
+
     // Take only the last character entered if someone types fast
     const digit = val.slice(-1);
-    
+
     const newOtp = [...otp];
     newOtp[index] = digit;
     setOtp(newOtp);
@@ -74,13 +74,13 @@ export default function ResetPassword() {
     e.preventDefault();
     const pasteData = e.clipboardData.getData("text/plain").replace(/[^0-9]/g, "").slice(0, 6);
     if (!pasteData) return;
-    
+
     const newOtp = [...otp];
     for (let i = 0; i < pasteData.length; i++) {
-        newOtp[i] = pasteData[i];
+      newOtp[i] = pasteData[i];
     }
     setOtp(newOtp);
-    
+
     // Focus last filled input or end
     const focusIndex = Math.min(pasteData.length, 5);
     inputRefs.current[focusIndex]?.focus();
@@ -104,7 +104,7 @@ export default function ResetPassword() {
           setStep(3);
           setIsSuccess(false);
           setLoading(false);
-        }, 1000); 
+        }, 1000);
       }
     } catch (error) {
       console.error("Verify OTP error:", error);
@@ -122,17 +122,17 @@ export default function ResetPassword() {
 
     setLoading(true);
     try {
-      const response = await authApi.resetPassword({ 
-        email, 
-        otp: otp.join(""), 
-        newPassword 
+      const response = await authApi.resetPassword({
+        email,
+        otp: otp.join(""),
+        newPassword
       });
       if (response.data.success) {
         toast.success("Password reset successfully! Please log in.");
         navigate("/admin/login");
       }
     } catch (error) {
-           console.error("Reset password error:", error);
+      console.error("Reset password error:", error);
       toast.error(error.response?.data?.message || "Failed to reset password.");
     } finally {
       setLoading(false);
@@ -140,19 +140,19 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent flex items-center justify-center p-4 relative z-10 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-teal-accent/5 via-transparent to-teal-dark/5 blur-3xl -z-10" />
+    <div className="min-h-screen bg-bg flex items-center justify-center p-4 relative z-10 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-accent-hover/5 blur-3xl -z-10" />
       
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-md bg-navy-800/60 backdrop-blur-xl border border-teal-accent/15 rounded-2xl p-8 shadow-2xl shadow-teal-accent/5"
+        className="w-full max-w-md bg-surface border border-border rounded-2xl p-8 shadow-xl"
       >
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-accent to-emerald-400 bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-accent to-accent-hover bg-clip-text text-transparent mb-2">
             Reset Password
           </h1>
-          <p className="text-gray-400 text-sm">
+          <p className="text-text-secondary text-sm">
             {step === 1 && "Enter your email to receive an OTP."}
             {step === 2 && "Enter the 6-digit OTP sent to your email."}
             {step === 3 && "Create a new strong password."}
@@ -162,19 +162,19 @@ export default function ResetPassword() {
         {step === 1 && (
           <form onSubmit={handleSendOtp} className="space-y-6">
             <div>
-              <label className="block text-gray-300 text-sm font-medium mb-2">Email Address</label>
+              <label className="block text-text-secondary text-sm font-medium mb-2">Email Address</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 focus:ring-1 focus:ring-teal-accent/50 transition-all placeholder:text-gray-500"
+                className="w-full px-4 py-3 bg-bg-alt border border-border rounded-lg text-text focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-text-secondary/50"
                 placeholder="admin@example.com"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 font-bold rounded-lg transition-all shadow-lg shadow-teal-accent/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              className={`w-full py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg transition-all shadow-md shadow-accent/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
               {loading ? "Sending..." : "Send OTP"}
             </button>
@@ -184,7 +184,7 @@ export default function ResetPassword() {
         {step === 2 && (
           <form onSubmit={handleVerifyOtp} className="space-y-6">
             <div>
-              <label className="block text-gray-300 text-sm font-medium mb-2">6-Digit OTP</label>
+              <label className="block text-text-secondary text-sm font-medium mb-2">6-Digit OTP</label>
               <div className="flex justify-between gap-2" onPaste={handleOtpPaste}>
                 {otp.map((digit, index) => (
                   <input
@@ -195,10 +195,10 @@ export default function ResetPassword() {
                     value={digit}
                     onChange={(e) => handleOtpChange(e, index)}
                     onKeyDown={(e) => handleOtpKeyDown(e, index)}
-                    className={`w-12 h-14 text-center text-xl font-bold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-teal-accent/50
+                    className={`w-12 h-14 text-center text-xl font-bold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2
                       ${isSuccess 
-                        ? "bg-green-500/20 border-green-500 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.3)]" 
-                        : "bg-navy-950/40 border border-teal-accent/15 text-white focus:border-teal-accent/50"
+                        ? "bg-green-500/20 border-green-500 text-green-600 shadow-[0_0_15px_rgba(34,197,94,0.3)]" 
+                        : "bg-bg-alt border border-border text-text focus:border-accent focus:ring-accent/50"
                       }
                     `}
                     disabled={loading || isSuccess}
@@ -215,7 +215,7 @@ export default function ResetPassword() {
               className={`w-full py-3 text-white rounded-lg font-bold transition-all duration-500 shadow-lg 
                 ${isSuccess 
                   ? "bg-green-600 shadow-green-500/30 scale-[1.02]" 
-                  : (loading ? "bg-teal-accent opacity-70 cursor-not-allowed" : "bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 shadow-teal-accent/20")
+                  : (loading ? "bg-accent opacity-70 cursor-not-allowed" : "bg-accent hover:bg-accent-hover shadow-accent/20")
                 }
               `}
             >
@@ -227,12 +227,12 @@ export default function ResetPassword() {
         {step === 3 && (
           <form onSubmit={handleResetPassword} className="space-y-6">
             <div>
-              <label className="block text-gray-300 text-sm font-medium mb-2">New Password</label>
+              <label className="block text-text-secondary text-sm font-medium mb-2">New Password</label>
               <input
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-navy-950/40 border border-teal-accent/15 rounded-lg text-white focus:outline-none focus:border-teal-accent/50 focus:ring-1 focus:ring-teal-accent/50 transition-all placeholder:text-gray-500"
+                className="w-full px-4 py-3 bg-bg-alt border border-border rounded-lg text-text focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder:text-text-secondary/50"
                 placeholder="••••••••"
                 disabled={loading}
               />
@@ -240,7 +240,7 @@ export default function ResetPassword() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-3 bg-gradient-to-r from-teal-accent to-teal-dark hover:from-teal-dark hover:to-teal-accent text-navy-950 font-bold rounded-lg transition-all shadow-lg shadow-teal-accent/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              className={`w-full py-3 bg-accent hover:bg-accent-hover text-white font-bold rounded-lg transition-all shadow-md shadow-accent/20 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
               {loading ? "Resetting..." : "Reset Password"}
             </button>
@@ -248,7 +248,7 @@ export default function ResetPassword() {
         )}
 
         <div className="mt-8 text-center">
-          <Link to="/admin/login" className="text-gray-400 hover:text-teal-accent text-sm transition-colors">
+          <Link to="/admin/login" className="text-text-secondary hover:text-accent text-sm transition-colors font-semibold">
             &larr; Back to Login
           </Link>
         </div>
