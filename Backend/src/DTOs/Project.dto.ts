@@ -14,7 +14,7 @@ export class ProjectDTO {
     public static toResponse(project: IProject): ProjectResponseDTO {
 
         return {
-            _id: project._id as string,
+            _id: project._id.toString(),
             title: project.title,
             description: project.description,
             image: project.image?.secureUrl,

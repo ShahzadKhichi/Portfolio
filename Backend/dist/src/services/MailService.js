@@ -15,12 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MailService = void 0;
 const tsyringe_1 = require("tsyringe");
 const types_1 = require("../interfaces/types");
+const mailQueue_1 = require("../Utils/mailQueue");
 let MailService = class MailService {
     constructor(mailRepository, mailSender) {
         this.mailRepository = mailRepository;
         this.mailSender = mailSender;
     }
     async processIncomingMail(email, name, message) {
+        // Try queueing first
+        const queued = await (0, mailQueue_1.addMailJob)(email, name, message);
+        if (queued) {
+            console.log("Email job successfully added to BullMQ.");
+            return;
+        }
+        // Fallback to synchronous sending if Redis is down
+        console.warn("Queue unavailable. Falling back to synchronous email sending.");
         await this.mailSender.sendMail(email, "you have an email from " + email, "message: " + message);
         await this.mailRepository.createMail(email, name, message);
     }

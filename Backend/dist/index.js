@@ -17,11 +17,15 @@ const profile_route_1 = __importDefault(require("./src/Routes/profile.route"));
 const skill_route_1 = __importDefault(require("./src/Routes/skill.route"));
 const message_route_1 = __importDefault(require("./src/Routes/message.route"));
 const typewriter_route_1 = __importDefault(require("./src/Routes/typewriter.route"));
+const rateLimiter_1 = require("./src/Middlewares/rateLimiter");
+require("./src/Utils/mailQueue");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 4000;
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
+// Apply rate limiter to all API routes
+app.use("/api", rateLimiter_1.apiLimiter);
 // routers
 app.use("/api", public_route_1.default);
 app.use("/api/user", user_route_1.default);

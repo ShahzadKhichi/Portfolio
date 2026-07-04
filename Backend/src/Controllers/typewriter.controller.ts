@@ -3,6 +3,7 @@ import { injectable, inject } from "tsyringe";
 import { TYPES } from "../interfaces/types";
 import { ITypewriterService } from "../interfaces/ITypewriterService";
 import { TypewriterDTO } from "../DTOs/Typewriter.dto";
+import { getCache, setCache, deleteCache } from "../Utils/cache";
 
 @injectable()
 export class TypewriterController {
@@ -12,8 +13,19 @@ export class TypewriterController {
 
     public getAllTypewriters = async (req: Request, res: Response): Promise<void> => {
         try {
+            const cacheKey = "portfolio:typewriters";
+            const cachedTypewriters = await getCache<any[]>(cacheKey);
+            if (cachedTypewriters) {
+                res.status(200).json({ success: true, typewriters: cachedTypewriters });
+                return;
+            }
+
             const typewriters = await this.typewriterService.getAllTypewriters();
-            res.status(200).json({ success: true, typewriters: TypewriterDTO.toResponseList(typewriters) });
+            const responseList = TypewriterDTO.toResponseList(typewriters);
+
+            await setCache(cacheKey, responseList, 3600);
+
+            res.status(200).json({ success: true, typewriters: responseList });
         } catch (error) {
             console.error("Get Typewriters Error:", error);
             res.status(500).json({ success: false, message: "Internal server error" });
@@ -23,6 +35,10 @@ export class TypewriterController {
     public createTypewriter = async (req: Request, res: Response): Promise<void> => {
         try {
             const typewriter = await this.typewriterService.createTypewriter(req.body);
+            
+            // Invalidate typewriters cache
+            await deleteCache("portfolio:typewriters");
+
             res.status(201).json({ success: true, typewriter: TypewriterDTO.toResponse(typewriter) });
         } catch (error) {
             console.error("Create Typewriter Error:", error);
@@ -38,6 +54,10 @@ export class TypewriterController {
                 res.status(404).json({ success: false, message: "Typewriter text not found" });
                 return;
             }
+
+            // Invalidate typewriters cache
+            await deleteCache("portfolio:typewriters");
+
             res.status(200).json({ success: true, typewriter: TypewriterDTO.toResponse(updatedTypewriter) });
         } catch (error) {
             console.error("Update Typewriter Error:", error);
@@ -53,6 +73,10 @@ export class TypewriterController {
                 res.status(404).json({ success: false, message: "Typewriter text not found" });
                 return;
             }
+
+            // Invalidate typewriters cache
+            await deleteCache("portfolio:typewriters");
+
             res.status(200).json({ success: true, message: "Typewriter text deleted successfully" });
         } catch (error) {
             console.error("Delete Typewriter Error:", error);

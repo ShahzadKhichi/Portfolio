@@ -11,7 +11,7 @@ export interface SkillResponseDTO {
 export class SkillDTO {
     public static toResponse(skill: ISkill): SkillResponseDTO {
         return {
-            _id: skill._id as string,
+            _id: skill._id.toString(),
             name: skill.name,
             level: skill.level,
             category: skill.category,

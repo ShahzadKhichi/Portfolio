@@ -14,6 +14,8 @@ import profileRoutes from "./src/Routes/profile.route";
 import skillRoutes from "./src/Routes/skill.route";
 import messageRoutes from "./src/Routes/message.route";
 import typewriterRoutes from "./src/Routes/typewriter.route";
+import { apiLimiter } from "./src/Middlewares/rateLimiter";
+import "./src/Utils/mailQueue";
 
 const app: express.Application = express();
 const port = process.env.PORT || 4000;
@@ -21,6 +23,9 @@ const port = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+
+// Apply rate limiter to all API routes
+app.use("/api", apiLimiter);
 
 // routers
 app.use("/api", publicRoutes);

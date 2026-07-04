@@ -4,7 +4,7 @@ exports.TypewriterDTO = void 0;
 class TypewriterDTO {
     static toResponse(typewriter) {
         return {
-            _id: typewriter._id,
+            _id: typewriter._id.toString(),
             text: typewriter.text,
         };
     }

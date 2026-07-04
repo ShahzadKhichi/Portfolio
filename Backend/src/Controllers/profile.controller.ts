@@ -4,6 +4,7 @@ import { TYPES } from "../interfaces/types";
 import { IProfileService } from "../interfaces/IProfileService";
 import { uploadToCloudinary, deleteFromCloudinary, extractPublicId } from "../Utils/cloudinary";
 import { ProfileDTO } from "../DTOs/Profile.dto";
+import { getCache, setCache, deleteCache } from "../Utils/cache";
 
 @injectable()
 export class ProfileController {
@@ -13,12 +14,23 @@ export class ProfileController {
 
   public getProfile = async (req: Request, res: Response): Promise<void> => {
     try {
+      const cacheKey = "portfolio:profile";
+      const cachedProfile = await getCache<any>(cacheKey);
+      if (cachedProfile) {
+        res.status(200).json({ success: true, profile: cachedProfile });
+        return;
+      }
+
       const profile = await this.profileService.getProfile();
       if (!profile) {
         res.status(404).json({ success: false, message: "Profile not found" });
         return;
       }
-      res.status(200).json({ success: true, profile: ProfileDTO.toResponse(profile) });
+
+      const responseData = ProfileDTO.toResponse(profile);
+      await setCache(cacheKey, responseData, 3600);
+
+      res.status(200).json({ success: true, profile: responseData });
     } catch (error) {
       console.error("Get Profile Error:", error);
       res.status(500).json({ success: false, message: "Internal server error" });
@@ -60,6 +72,10 @@ export class ProfileController {
         res.status(404).json({ success: false, message: "Profile not found" });
         return;
       }
+
+      // Invalidate profile cache
+      await deleteCache("portfolio:profile");
+
       res.status(200).json({ success: true, profile: ProfileDTO.toResponse(updatedProfile) });
     } catch (error) {
       console.error("Update Profile Error:", error);
@@ -70,6 +86,10 @@ export class ProfileController {
   public incrementViews = async (req: Request, res: Response): Promise<void> => {
     try {
       await this.profileService.incrementViews();
+      
+      // Invalidate profile cache
+      await deleteCache("portfolio:profile");
+
       res.status(200).json({ success: true, message: "Views incremented" });
     } catch (error) {
       console.error("Increment Views Error:", error);

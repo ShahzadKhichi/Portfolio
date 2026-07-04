@@ -17,6 +17,7 @@ const tsyringe_1 = require("tsyringe");
 const types_1 = require("../interfaces/types");
 const cloudinary_1 = require("../Utils/cloudinary");
 const Project_dto_1 = require("../DTOs/Project.dto");
+const cache_1 = require("../Utils/cache");
 let ProjectController = class ProjectController {
     constructor(projectService) {
         this.projectService = projectService;
@@ -44,6 +45,8 @@ let ProjectController = class ProjectController {
                 const projectData = { ...req.body, image: imageData };
                 delete projectData.imagePublicId;
                 const project = await this.projectService.createProject(projectData);
+                // Invalidate projects cache
+                await (0, cache_1.deleteCache)("portfolio:projects");
                 res.status(201).json({ success: true, project: Project_dto_1.ProjectDTO.toResponse(project) });
             }
             catch (error) {
@@ -53,8 +56,16 @@ let ProjectController = class ProjectController {
         };
         this.getAllProjects = async (req, res) => {
             try {
+                const cacheKey = "portfolio:projects";
+                const cachedProjects = await (0, cache_1.getCache)(cacheKey);
+                if (cachedProjects) {
+                    res.status(200).json({ success: true, projects: cachedProjects });
+                    return;
+                }
                 const projects = await this.projectService.getAllProjects();
-                res.status(200).json({ success: true, projects: Project_dto_1.ProjectDTO.toResponseList(projects) });
+                const responseList = Project_dto_1.ProjectDTO.toResponseList(projects);
+                await (0, cache_1.setCache)(cacheKey, responseList, 3600); // cache for 1 hour
+                res.status(200).json({ success: true, projects: responseList });
             }
             catch (error) {
                 console.error("Get Projects Error:", error);
@@ -64,12 +75,20 @@ let ProjectController = class ProjectController {
         this.getProjectById = async (req, res) => {
             try {
                 const id = req.params.id;
+                const cacheKey = `portfolio:project:${id}`;
+                const cachedProject = await (0, cache_1.getCache)(cacheKey);
+                if (cachedProject) {
+                    res.status(200).json({ success: true, project: cachedProject });
+                    return;
+                }
                 const project = await this.projectService.getProjectById(id);
                 if (!project) {
                     res.status(404).json({ message: "Project not found", success: false });
                     return;
                 }
-                res.status(200).json({ success: true, project: Project_dto_1.ProjectDTO.toResponse(project) });
+                const responseData = Project_dto_1.ProjectDTO.toResponse(project);
+                await (0, cache_1.setCache)(cacheKey, responseData, 3600);
+                res.status(200).json({ success: true, project: responseData });
             }
             catch (error) {
                 console.error("Get Project Error:", error);
@@ -107,6 +126,8 @@ let ProjectController = class ProjectController {
                     res.status(404).json({ success: false, message: "Project not found" });
                     return;
                 }
+                // Invalidate projects cache
+                await (0, cache_1.deleteCache)(["portfolio:projects", `portfolio:project:${id}`]);
                 res.status(200).json({ success: true, project: Project_dto_1.ProjectDTO.toResponse(project) });
             }
             catch (error) {
@@ -127,6 +148,8 @@ let ProjectController = class ProjectController {
                     await (0, cloudinary_1.deleteFromCloudinary)(project.image.publicId);
                 }
                 await this.projectService.deleteProject(id);
+                // Invalidate projects cache
+                await (0, cache_1.deleteCache)(["portfolio:projects", `portfolio:project:${id}`]);
                 res.status(200).json({ success: true, message: "Project deleted successfully" });
             }
             catch (error) {

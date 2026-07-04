@@ -4,10 +4,10 @@ exports.ProjectDTO = void 0;
 class ProjectDTO {
     static toResponse(project) {
         return {
-            _id: project._id,
+            _id: project._id.toString(),
             title: project.title,
             description: project.description,
-            image: project.image.secureUrl,
+            image: project.image?.secureUrl,
             tags: project.tags || [],
             github: project.github,
             live: project.live,

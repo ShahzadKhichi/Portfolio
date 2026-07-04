@@ -19,7 +19,7 @@ export interface ProfileResponseDTO {
 export class ProfileDTO {
     public static toResponse(profile: IProfile): ProfileResponseDTO {
         return {
-            _id: profile._id as string,
+            _id: profile._id.toString(),
             bio: profile.bio,
             profileImage: profile.image.secureUrl,
             phoneNumber: profile.phoneNumber,

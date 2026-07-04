@@ -8,7 +8,7 @@ export interface TypewriterResponseDTO {
 export class TypewriterDTO {
     public static toResponse(typewriter: ITypewriter): TypewriterResponseDTO {
         return {
-            _id: typewriter._id as string,
+            _id: typewriter._id.toString(),
             text: typewriter.text,
         };
     }

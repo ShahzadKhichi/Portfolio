@@ -4,6 +4,7 @@ import { TYPES } from "../interfaces/types";
 import { IProjectService } from "../interfaces/IProjectService";
 import { uploadToCloudinary, deleteFromCloudinary, extractPublicId } from "../Utils/cloudinary";
 import { ProjectDTO } from "../DTOs/Project.dto";
+import { getCache, setCache, deleteCache } from "../Utils/cache";
 
 @injectable()
 export class ProjectController {
@@ -39,6 +40,10 @@ export class ProjectController {
       delete projectData.imagePublicId;
 
       const project = await this.projectService.createProject(projectData);
+
+      // Invalidate projects cache
+      await deleteCache("portfolio:projects");
+
       res.status(201).json({ success: true, project: ProjectDTO.toResponse(project) });
     } catch (error) {
       console.error("Create Project Error:", error);
@@ -48,8 +53,19 @@ export class ProjectController {
 
   public getAllProjects = async (req: Request, res: Response): Promise<void> => {
     try {
+      const cacheKey = "portfolio:projects";
+      const cachedProjects = await getCache<any[]>(cacheKey);
+      if (cachedProjects) {
+        res.status(200).json({ success: true, projects: cachedProjects });
+        return;
+      }
+
       const projects = await this.projectService.getAllProjects();
-      res.status(200).json({ success: true, projects: ProjectDTO.toResponseList(projects) });
+      const responseList = ProjectDTO.toResponseList(projects);
+      
+      await setCache(cacheKey, responseList, 3600); // cache for 1 hour
+
+      res.status(200).json({ success: true, projects: responseList });
     } catch (error) {
       console.error("Get Projects Error:", error);
       res.status(500).json({ message: "internal server error", success: false });
@@ -59,12 +75,23 @@ export class ProjectController {
   public getProjectById = async (req: Request, res: Response): Promise<void> => {
     try {
       const id = req.params.id as string;
+      const cacheKey = `portfolio:project:${id}`;
+      const cachedProject = await getCache<any>(cacheKey);
+      if (cachedProject) {
+        res.status(200).json({ success: true, project: cachedProject });
+        return;
+      }
+
       const project = await this.projectService.getProjectById(id);
       if (!project) {
         res.status(404).json({ message: "Project not found", success: false });
         return;
       }
-      res.status(200).json({ success: true, project: ProjectDTO.toResponse(project) });
+
+      const responseData = ProjectDTO.toResponse(project);
+      await setCache(cacheKey, responseData, 3600);
+
+      res.status(200).json({ success: true, project: responseData });
     } catch (error) {
       console.error("Get Project Error:", error);
       res.status(500).json({ message: "internal server error", success: false });
@@ -107,6 +134,10 @@ export class ProjectController {
         res.status(404).json({ success: false, message: "Project not found" });
         return;
       }
+
+      // Invalidate projects cache
+      await deleteCache(["portfolio:projects", `portfolio:project:${id}`]);
+
       res.status(200).json({ success: true, project: ProjectDTO.toResponse(project) });
     } catch (error) {
       console.error("Update Project Error:", error);
@@ -130,6 +161,10 @@ export class ProjectController {
       }
 
       await this.projectService.deleteProject(id);
+
+      // Invalidate projects cache
+      await deleteCache(["portfolio:projects", `portfolio:project:${id}`]);
+
       res.status(200).json({ success: true, message: "Project deleted successfully" });
     } catch (error) {
       console.error("Delete Project Error:", error);

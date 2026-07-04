@@ -4,6 +4,7 @@ import { TYPES } from "../interfaces/types";
 import { ISkillService } from "../interfaces/ISkillService";
 import { uploadToCloudinary, deleteFromCloudinary, extractPublicId } from "../Utils/cloudinary";
 import { SkillDTO } from "../DTOs/Skill.dto";
+import { getCache, setCache, deleteCache } from "../Utils/cache";
 
 @injectable()
 export class SkillController {
@@ -13,8 +14,19 @@ export class SkillController {
 
   public getAllSkills = async (req: Request, res: Response): Promise<void> => {
     try {
+      const cacheKey = "portfolio:skills";
+      const cachedSkills = await getCache<any[]>(cacheKey);
+      if (cachedSkills) {
+        res.status(200).json({ success: true, skills: cachedSkills });
+        return;
+      }
+
       const skills = await this.skillService.getAllSkills();
-      res.status(200).json({ success: true, skills: SkillDTO.toResponseList(skills) });
+      const responseList = SkillDTO.toResponseList(skills);
+      
+      await setCache(cacheKey, responseList, 3600);
+
+      res.status(200).json({ success: true, skills: responseList });
     } catch (error) {
       console.error("Get Skills Error:", error);
       res.status(500).json({ success: false, message: "Internal server error" });
@@ -54,6 +66,10 @@ export class SkillController {
       delete skillData.iconPublicId;
 
       const skill = await this.skillService.createSkill(skillData);
+
+      // Invalidate skills cache
+      await deleteCache("portfolio:skills");
+
       res.status(201).json({ success: true, skill: SkillDTO.toResponse(skill) });
     } catch (error) {
       console.error("Create Skill Error:", error);
@@ -102,6 +118,10 @@ export class SkillController {
         res.status(404).json({ success: false, message: "Skill not found" });
         return;
       }
+
+      // Invalidate skills cache
+      await deleteCache("portfolio:skills");
+
       res.status(200).json({ success: true, skill: SkillDTO.toResponse(updatedSkill) });
     } catch (error) {
       console.error("Update Skill Error:", error);
@@ -124,6 +144,10 @@ export class SkillController {
       }
 
       await this.skillService.deleteSkill(id);
+
+      // Invalidate skills cache
+      await deleteCache("portfolio:skills");
+
       res.status(200).json({ success: true, message: "Skill deleted successfully" });
     } catch (error) {
       console.error("Delete Skill Error:", error);

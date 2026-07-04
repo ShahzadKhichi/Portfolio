@@ -4,7 +4,7 @@ exports.SkillDTO = void 0;
 class SkillDTO {
     static toResponse(skill) {
         return {
-            _id: skill._id,
+            _id: skill._id.toString(),
             name: skill.name,
             level: skill.level,
             category: skill.category,

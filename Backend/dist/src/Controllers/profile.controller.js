@@ -17,17 +17,26 @@ const tsyringe_1 = require("tsyringe");
 const types_1 = require("../interfaces/types");
 const cloudinary_1 = require("../Utils/cloudinary");
 const Profile_dto_1 = require("../DTOs/Profile.dto");
+const cache_1 = require("../Utils/cache");
 let ProfileController = class ProfileController {
     constructor(profileService) {
         this.profileService = profileService;
         this.getProfile = async (req, res) => {
             try {
+                const cacheKey = "portfolio:profile";
+                const cachedProfile = await (0, cache_1.getCache)(cacheKey);
+                if (cachedProfile) {
+                    res.status(200).json({ success: true, profile: cachedProfile });
+                    return;
+                }
                 const profile = await this.profileService.getProfile();
                 if (!profile) {
                     res.status(404).json({ success: false, message: "Profile not found" });
                     return;
                 }
-                res.status(200).json({ success: true, profile: Profile_dto_1.ProfileDTO.toResponse(profile) });
+                const responseData = Profile_dto_1.ProfileDTO.toResponse(profile);
+                await (0, cache_1.setCache)(cacheKey, responseData, 3600);
+                res.status(200).json({ success: true, profile: responseData });
             }
             catch (error) {
                 console.error("Get Profile Error:", error);
@@ -64,6 +73,8 @@ let ProfileController = class ProfileController {
                     res.status(404).json({ success: false, message: "Profile not found" });
                     return;
                 }
+                // Invalidate profile cache
+                await (0, cache_1.deleteCache)("portfolio:profile");
                 res.status(200).json({ success: true, profile: Profile_dto_1.ProfileDTO.toResponse(updatedProfile) });
             }
             catch (error) {
@@ -74,6 +85,8 @@ let ProfileController = class ProfileController {
         this.incrementViews = async (req, res) => {
             try {
                 await this.profileService.incrementViews();
+                // Invalidate profile cache
+                await (0, cache_1.deleteCache)("portfolio:profile");
                 res.status(200).json({ success: true, message: "Views incremented" });
             }
             catch (error) {

@@ -4,7 +4,7 @@ exports.ProfileDTO = void 0;
 class ProfileDTO {
     static toResponse(profile) {
         return {
-            _id: profile._id,
+            _id: profile._id.toString(),
             bio: profile.bio,
             profileImage: profile.image.secureUrl,
             phoneNumber: profile.phoneNumber,
