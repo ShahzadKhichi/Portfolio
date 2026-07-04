@@ -108,3 +108,18 @@ body {
 .typewriter-text {
   color: var(--color-typewriter) !important;
 }
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-placeholder {
+  background: linear-gradient(90deg, #d4e0ec 25%, #c8d8e8 50%, #d4e0ec 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}

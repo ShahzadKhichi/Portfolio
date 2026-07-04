@@ -1,50 +1,40 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { FaEnvelope, FaProjectDiagram, FaCode, FaEye, FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import * as projectApi from "../../api/project.api";
-import * as skillApi from "../../api/skill.api";
-import * as messageApi from "../../api/message.api";
-import * as profileApi from "../../api/profile.api";
+import { DashboardShimmer } from "../../components/ui/Shimmer";
+import { fetchProjects } from "../../store/slices/projectSlice";
+import { fetchSkills } from "../../store/slices/skillSlice";
+import { fetchMessages } from "../../store/slices/messageSlice";
+import { fetchProfile } from "../../store/slices/profileSlice";
 
 export default function Dashboard() {
-  const [stats, setStats] = useState([
-    { title: "Total Views", value: "---", icon: <FaEye />, color: "text-accent", bg: "bg-accent-light", link: "#" },
-    { title: "Messages", value: "0", icon: <FaEnvelope />, color: "text-emerald-600", bg: "bg-emerald-50", link: "/admin/messages" },
-    { title: "Active Projects", value: "0", icon: <FaProjectDiagram />, color: "text-indigo-600", bg: "bg-indigo-50", link: "/admin/projects" },
-    { title: "Skills", value: "0", icon: <FaCode />, color: "text-pink-600", bg: "bg-pink-50", link: "/admin/skills" },
-  ]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { items: projects, loading: projLoading } = useSelector((s) => s.projects);
+  const { items: skills, loading: skillLoading } = useSelector((s) => s.skills);
+  const { items: messages, loading: msgLoading } = useSelector((s) => s.messages);
+  const { data: profile, loading: profLoading } = useSelector((s) => s.profile);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const [projRes, skillRes, msgRes, profRes] = await Promise.all([
-          projectApi.getAllProjects(),
-          skillApi.getAllSkills(),
-          messageApi.getAllMessages(),
-          profileApi.getProfile()
-        ]);
+    dispatch(fetchProjects());
+    dispatch(fetchSkills());
+    dispatch(fetchMessages());
+    dispatch(fetchProfile());
+  }, [dispatch]);
 
-        const newStats = [...stats];
-        if (projRes.data.success) newStats[2].value = projRes.data.projects.length;
-        if (skillRes.data.success) newStats[3].value = skillRes.data.skills.length;
-        if (msgRes.data.success) newStats[1].value = msgRes.data.messages.length;
-        
-        if (profRes.data.success) {
-          newStats[0].value = profRes.data.profile.views?.toLocaleString() || "0";
-        }
+  const loading = projLoading || skillLoading || msgLoading || profLoading;
 
-        setStats(newStats);
-      } catch (error) {
-        console.error("Dashboard data fetch error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  if (loading) {
+    return <DashboardShimmer />;
+  }
 
-    fetchDashboardData();
-  }, []);
+  const stats = [
+    { title: "Total Views", value: profile?.views?.toLocaleString() || "0", icon: <FaEye />, color: "text-accent", bg: "bg-accent-light", link: "#" },
+    { title: "Messages", value: messages.length, icon: <FaEnvelope />, color: "text-emerald-600", bg: "bg-emerald-50", link: "/admin/messages" },
+    { title: "Active Projects", value: projects.length, icon: <FaProjectDiagram />, color: "text-indigo-600", bg: "bg-indigo-50", link: "/admin/projects" },
+    { title: "Skills", value: skills.length, icon: <FaCode />, color: "text-pink-600", bg: "bg-pink-50", link: "/admin/skills" },
+  ];
 
   return (
     <div className="space-y-6">
@@ -65,9 +55,7 @@ export default function Dashboard() {
             <div className="flex justify-between items-start mb-4">
               <div>
                 <p className="text-text-secondary text-sm mb-1">{stat.title}</p>
-                <h3 className="text-3xl font-bold text-text">
-                  {loading ? <span className="opacity-20 animate-pulse">---</span> : stat.value}
-                </h3>
+                <h3 className="text-3xl font-bold text-text">{stat.value}</h3>
               </div>
               <div className={`p-3 rounded-xl ${stat.bg} ${stat.color} text-2xl group-hover:scale-110 transition-transform`}>
                 {stat.icon}
@@ -99,18 +87,19 @@ export default function Dashboard() {
           <h3 className="text-lg font-bold text-text mb-6">Quick Actions</h3>
           <div className="space-y-3">
             {[
-                { label: "Update Bio", path: "/admin/profile" },
-                { label: "Post New Project", path: "/admin/projects" },
-                { label: "Add New Skill", path: "/admin/skills" },
-            ].map(action => (
-                <Link 
-                    key={action.label} 
-                    to={action.path}
-                    className="flex items-center justify-between p-4 bg-bg-alt rounded-xl border border-border/60 hover:border-accent/40 hover:bg-black/5 transition-all font-semibold text-text-secondary hover:text-text"
-                >
-                    {action.label}
-                    <FaArrowRight className="text-xs text-text-secondary/50" />
-                </Link>
+              { label: "Add New Project", to: "/admin/projects" },
+              { label: "Manage Skills", to: "/admin/skills" },
+              { label: "Update Profile", to: "/admin/profile" },
+              { label: "View Messages", to: "/admin/messages" },
+            ].map((action) => (
+              <Link
+                key={action.label}
+                to={action.to}
+                className="flex items-center justify-between p-4 rounded-xl bg-bg-alt/40 border border-border/40 hover:border-accent/40 hover:bg-bg-alt transition-all group"
+              >
+                <span className="text-text font-medium text-sm group-hover:text-accent transition-colors">{action.label}</span>
+                <FaArrowRight className="text-text-secondary group-hover:text-accent transition-colors text-xs" />
+              </Link>
             ))}
           </div>
         </div>

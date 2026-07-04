@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Typewriter from "typewriter-effect";
 import { motion } from "framer-motion";
 import SocialLinks from "../ui/SocialLinks";
-import * as typewriterApi from "../../api/typewriter.api";
+import { fetchTypewriters } from "../../store/slices/typewriterSlice";
 
 export default function AboutSection({ image, bio, socialLinks, name }) {
-  const [typewriterStrings, setTypewriterStrings] = useState([]);
+  const dispatch = useDispatch();
+  const { items: typewriters } = useSelector((state) => state.typewriters);
 
   useEffect(() => {
-    const fetchTypewriterStrings = async () => {
-      try {
-        const response = await typewriterApi.getAllTypewriters();
-        if (response.data.success && response.data.typewriters.length > 0) {
-          setTypewriterStrings(response.data.typewriters.map(t => t.text));
-        }
-      } catch (error) {
-        console.error("Error fetching typewriter strings:", error);
-      }
-    };
-    fetchTypewriterStrings();
-  }, []);
+    dispatch(fetchTypewriters());
+  }, [dispatch]);
 
+  const typewriterStrings = typewriters.map((t) => t.text);
   const displayName = name || "Shahzad Khichi";
   const [firstName, ...rest] = displayName.split(" ");
   const lastName = rest.join(" ");

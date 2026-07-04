@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTrash, FaPlus, FaCode, FaServer, FaDatabase, FaTools, FaCloudUploadAlt, FaSearch, FaEdit, FaTimes } from "react-icons/fa";
 import toast from "react-hot-toast";
-import * as skillApi from "../../api/skill.api";
+import { SkillsShimmer } from "../../components/ui/Shimmer";
+import { fetchSkills, createSkill, updateSkill, deleteSkill } from "../../store/slices/skillSlice";
 
 const CATEGORIES = ["Frontend", "Backend", "DevOps", "Database", "Mobile", "Other"];
 
 export default function ManageSkills() {
-  const [skills, setSkills] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { items: skills, loading } = useSelector((state) => state.skills);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [editingSkill, setEditingSkill] = useState(null);
   const [newSkill, setNewSkill] = useState({
@@ -21,22 +24,8 @@ export default function ManageSkills() {
   const [formLoading, setFormLoading] = useState(false);
 
   useEffect(() => {
-    fetchSkills();
-  }, []);
-
-  const fetchSkills = async () => {
-    try {
-      const response = await skillApi.getAllSkills();
-      if (response.data.success) {
-        setSkills(response.data.skills);
-      }
-    } catch (error) {
-      console.error("Fetch skills error:", error);
-      toast.error("Failed to load skills");
-    } finally {
-      setLoading(false);
-    }
-  };
+    dispatch(fetchSkills());
+  }, [dispatch]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -62,26 +51,22 @@ export default function ManageSkills() {
     formData.append("name", newSkill.name);
     formData.append("level", newSkill.level);
     formData.append("category", newSkill.category);
-    formData.append("icon", iconFile);
+    if (iconFile) {
+      formData.append("icon", iconFile);
+    }
 
     try {
-      let response;
       if (editingSkill) {
-        response = await skillApi.updateSkill(editingSkill._id, formData);
-        if (response.data.success) {
-          toast.success(`${newSkill.name} updated!`);
-        }
+        await dispatch(updateSkill({ id: editingSkill._id, formData })).unwrap();
+        toast.success(`${newSkill.name} updated!`);
       } else {
-        response = await skillApi.createSkill(formData);
-        if (response.data.success) {
-          toast.success(`${newSkill.name} added!`);
-        }
+        await dispatch(createSkill(formData)).unwrap();
+        toast.success(`${newSkill.name} added!`);
       }
       resetForm();
-      fetchSkills();
     } catch (error) {
       console.error("Submit skill error:", error);
-      toast.error(error.response?.data?.message || "Operation failed");
+      toast.error(error || "Operation failed");
     } finally {
       setFormLoading(false);
     }
@@ -90,14 +75,11 @@ export default function ManageSkills() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure?")) return;
     try {
-      const response = await skillApi.deleteSkill(id);
-      if (response.data.success) {
-        toast.success("Skill removed.");
-        setSkills(skills.filter((s) => s._id !== id));
-      }
+      await dispatch(deleteSkill(id)).unwrap();
+      toast.success("Skill removed.");
     } catch (error) {
       console.error("Delete skill error:", error);
-      toast.error("Failed to remove skill");
+      toast.error(error || "Failed to remove skill");
     }
   };
 
@@ -129,7 +111,7 @@ export default function ManageSkills() {
     skill.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <div className="text-text text-center py-20 font-semibold">Loading skills...</div>;
+  if (loading) return <SkillsShimmer />;
 
   return (
     <div className="space-y-6">

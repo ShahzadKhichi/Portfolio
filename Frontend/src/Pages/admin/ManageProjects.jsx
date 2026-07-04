@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaEdit, FaTrash, FaPlus, FaTimes, FaCloudUploadAlt, FaSearch } from "react-icons/fa";
 import toast from "react-hot-toast";
-import * as projectApi from "../../api/project.api";
+import { ProjectsShimmer } from "../../components/ui/Shimmer";
+import { fetchProjects, createProject, updateProject, deleteProject } from "../../store/slices/projectSlice";
 
 export default function ManageProjects() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { items: projects, loading } = useSelector((state) => state.projects);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,34 +27,18 @@ export default function ManageProjects() {
   const [formLoading, setFormLoading] = useState(false);
 
   useEffect(() => {
-    fetchProjects();
-  }, []);
-
-  const fetchProjects = async () => {
-    try {
-      const response = await projectApi.getAllProjects();
-      if (response.data.success) {
-        setProjects(response.data.projects);
-      }
-    } catch (error) {
-      console.error("Fetch projects error:", error);
-      toast.error("Failed to load projects");
-    } finally {
-      setLoading(false);
-    }
-  };
+    dispatch(fetchProjects());
+  }, [dispatch]);
 
   const handleOpenModal = (project = null) => {
-    console.log(project);
-
     if (project) {
       setEditingProject(project);
       setFormData({
-        title: project?.title,
-        description: project?.description,
-        tags: project?.tags?.join(", "),
-        github: project?.links?.github || "",
-        live: project?.links?.live || "",
+        title: project?.title || "",
+        description: project?.description || "",
+        tags: project?.tags?.join(", ") || "",
+        github: project?.github || "",
+        live: project?.live || "",
       });
       setImagePreview(project.image);
     } else {
@@ -86,14 +73,11 @@ export default function ManageProjects() {
     if (!window.confirm("Are you sure you want to delete this project?")) return;
 
     try {
-      const response = await projectApi.deleteProject(id);
-      if (response.data.success) {
-        toast.success("Project deleted");
-        setProjects(projects.filter(p => p._id !== id));
-      }
+      await dispatch(deleteProject(id)).unwrap();
+      toast.success("Project deleted");
     } catch (error) {
       console.error("Delete project error:", error);
-      toast.error("Failed to delete project");
+      toast.error(error || "Failed to delete project");
     }
   };
 
@@ -112,33 +96,29 @@ export default function ManageProjects() {
     }
 
     try {
-      let response;
       if (editingProject) {
-        response = await projectApi.updateProject(editingProject._id, data);
+        await dispatch(updateProject({ id: editingProject._id, formData: data })).unwrap();
+        toast.success("Project updated");
       } else {
         if (!selectedFile) {
           toast.error("Image is required for new projects");
           setFormLoading(false);
           return;
         }
-        response = await projectApi.createProject(data);
+        await dispatch(createProject(data)).unwrap();
+        toast.success("Project added");
       }
-
-      if (response.data.success) {
-        toast.success(editingProject ? "Project updated" : "Project added");
-        setIsModalOpen(false);
-        fetchProjects();
-      }
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Save project error:", error);
-      toast.error(error.response?.data?.message || "Failed to save project");
+      toast.error(error || "Failed to save project");
     } finally {
       setFormLoading(false);
     }
   };
 
   if (loading) {
-    return <div className="text-text text-center py-20 font-semibold">Loading projects...</div>;
+    return <ProjectsShimmer />;
   }
 
   return (

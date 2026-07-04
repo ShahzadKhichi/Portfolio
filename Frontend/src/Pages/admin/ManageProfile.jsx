@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { FaSave, FaUpload, FaCloudUploadAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
-import * as profileApi from "../../api/profile.api";
+import { ProfileShimmer } from "../../components/ui/Shimmer";
+import { fetchProfile, updateProfile } from "../../store/slices/profileSlice";
 
 export default function ManageProfile() {
+  const dispatch = useDispatch();
+  const { data: profileData, loading } = useSelector((state) => state.profile);
+
   const [profile, setProfile] = useState({
     bio: "",
     image: "",
@@ -14,38 +19,30 @@ export default function ManageProfile() {
       email: ""
     }
   });
-  const [loading, setLoading] = useState(true);
+
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [saveLoading, setSaveLoading] = useState(false);
 
   useEffect(() => {
-    fetchProfile();
-  }, []);
+    dispatch(fetchProfile());
+  }, [dispatch]);
 
-  const fetchProfile = async () => {
-    try {
-      const response = await profileApi.getProfile();
-      if (response.data.success) {
-        setProfile(response.data.profile||{
-    bio: "",
-    image: "",
-    socialLinks: {
-      github: "",
-      linkedin: "",
-      twitter: "",
-      email: ""
+  useEffect(() => {
+    if (profileData) {
+      setProfile({
+        bio: profileData.bio || "",
+        image: profileData.image || "",
+        socialLinks: {
+          github: profileData.socialLinks?.github || "",
+          linkedin: profileData.socialLinks?.linkedin || "",
+          twitter: profileData.socialLinks?.twitter || "",
+          email: profileData.socialLinks?.email || ""
+        }
+      });
+      setPreviewUrl(profileData.profileImage);
     }
-  });
-        setPreviewUrl(response.data.profile.profileImage);
-      }
-    } catch (error) {
-      console.error("Fetch profile error:", error);
-      toast.error("Failed to load profile");
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [profileData]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -67,21 +64,18 @@ export default function ManageProfile() {
     }
 
     try {
-      const response = await profileApi.updateProfile(formData);
-      if (response.data.success) {
-        toast.success("Profile updated successfully!");
-        fetchProfile();
-        setSelectedFile(null);
-      }
+      await dispatch(updateProfile(formData)).unwrap();
+      toast.success("Profile updated successfully!");
+      setSelectedFile(null);
     } catch (error) {
-           console.error("Update profile error:", error);
-      toast.error(error.response?.data?.message || "Failed to update profile");
+      console.error("Update profile error:", error);
+      toast.error(error || "Failed to update profile");
     } finally {
       setSaveLoading(false);
     }
   };
 
-  if (loading) return <div className="text-text text-center py-20 font-semibold">Loading profile...</div>;
+  if (loading) return <ProfileShimmer />;
 
   return (
     <div className="space-y-6 max-w-4xl">

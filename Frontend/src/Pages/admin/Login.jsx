@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import * as authApi from "../../api/auth.api";
+import { setCredentials } from "../../store/slices/authSlice";
 
 export default function Login() {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -21,9 +24,7 @@ export default function Login() {
     try {
       const response = await authApi.login(email, password);
       if (response.data.success) {
-        localStorage.setItem("accessToken", response.data.accessToken);
-        // refreshToken is usually handled by HTTP-only cookies in backend, 
-        // but let's store it if it comes back in the body for simpler demo logic if needed
+        dispatch(setCredentials(response.data.accessToken));
         if (response.data.refreshToken) {
           localStorage.setItem("refreshToken", response.data.refreshToken);
         }

@@ -1,42 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTrash, FaReply, FaEnvelope, FaUser, FaCalendarAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
-import * as messageApi from "../../api/message.api";
+import { MessagesShimmer } from "../../components/ui/Shimmer";
+import { fetchMessages, deleteMessage } from "../../store/slices/messageSlice";
 
 export default function Messages() {
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { items: messages, loading } = useSelector((state) => state.messages);
 
   useEffect(() => {
-    fetchMessages();
-  }, []);
-
-  const fetchMessages = async () => {
-    try {
-      const response = await messageApi.getAllMessages();
-      if (response.data.success) {
-        setMessages(response.data.messages);
-      }
-    } catch (error) {
-      console.error("Fetch messages error:", error);
-      toast.error("Failed to load messages");
-    } finally {
-      setLoading(false);
-    }
-  };
+    dispatch(fetchMessages());
+  }, [dispatch]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this message?")) return;
     try {
-      const response = await messageApi.deleteMessage(id);
-      if (response.data.success) {
-        toast.success("Message deleted.");
-        setMessages(messages.filter((msg) => msg._id !== id));
-      }
+      await dispatch(deleteMessage(id)).unwrap();
+      toast.success("Message deleted.");
     } catch (error) {
       console.error("Delete message error:", error);
-      toast.error("Failed to delete message");
+      toast.error(error || "Failed to delete message");
     }
   };
 
@@ -50,7 +35,7 @@ export default function Messages() {
     });
   };
 
-  if (loading) return <div className="text-text text-center py-20 font-semibold">Loading messages...</div>;
+  if (loading) return <MessagesShimmer />;
 
   return (
     <div className="space-y-6">

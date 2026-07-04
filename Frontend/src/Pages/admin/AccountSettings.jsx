@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { FaUser, FaEnvelope, FaSave, FaLock } from "react-icons/fa";
 import toast from "react-hot-toast";
 import apiClient from "../../api/apiClient";
+import { SettingsShimmer } from "../../components/ui/Shimmer";
 
 export default function AccountSettings() {
   const [admin, setAdmin] = useState({
@@ -52,7 +53,7 @@ export default function AccountSettings() {
     }
   };
 
-  if (loading) return <div className="text-text text-center py-20 font-semibold">Loading account settings...</div>;
+  if (loading) return <SettingsShimmer />;
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">

@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { FaTachometerAlt, FaEnvelope, FaProjectDiagram, FaCode, FaUserEdit, FaSignOutAlt, FaCog, FaKeyboard } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { logout } from "../store/slices/authSlice";
 
 export default function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/admin/login");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleLogout = () => {
+    dispatch(logout());
     toast.success("Logged out successfully");
     navigate("/admin/login");
   };
+
+  if (!isAuthenticated) return null;
 
   const navItems = [
     { name: "Dashboard", path: "/admin", icon: <FaTachometerAlt /> },

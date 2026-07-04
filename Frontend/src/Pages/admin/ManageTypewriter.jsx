@@ -1,34 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTrash, FaPlus, FaSearch, FaEdit, FaTimes, FaKeyboard } from "react-icons/fa";
 import toast from "react-hot-toast";
-import * as typewriterApi from "../../api/typewriter.api";
+import { TypewriterShimmer } from "../../components/ui/Shimmer";
+import { fetchTypewriters, createTypewriter, updateTypewriter, deleteTypewriter } from "../../store/slices/typewriterSlice";
 
 export default function ManageTypewriter() {
-  const [texts, setTexts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { items: texts, loading } = useSelector((state) => state.typewriters);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [editingText, setEditingText] = useState(null);
   const [newText, setNewText] = useState("");
   const [formLoading, setFormLoading] = useState(false);
 
   useEffect(() => {
-    fetchTexts();
-  }, []);
-
-  const fetchTexts = async () => {
-    try {
-      const response = await typewriterApi.getAllTypewriters();
-      if (response.data.success) {
-        setTexts(response.data.typewriters);
-      }
-    } catch (error) {
-      console.error("Fetch typewriter texts error:", error);
-      toast.error("Failed to load typewriter texts");
-    } finally {
-      setLoading(false);
-    }
-  };
+    dispatch(fetchTypewriters());
+  }, [dispatch]);
 
   const resetForm = () => {
     setNewText("");
@@ -41,23 +30,17 @@ export default function ManageTypewriter() {
 
     setFormLoading(true);
     try {
-      let response;
       if (editingText) {
-        response = await typewriterApi.updateTypewriter(editingText._id, { text: newText });
-        if (response.data.success) {
-          toast.success("Text updated!");
-        }
+        await dispatch(updateTypewriter({ id: editingText._id, data: { text: newText } })).unwrap();
+        toast.success("Text updated!");
       } else {
-        response = await typewriterApi.createTypewriter({ text: newText });
-        if (response.data.success) {
-          toast.success("Text added!");
-        }
+        await dispatch(createTypewriter({ text: newText })).unwrap();
+        toast.success("Text added!");
       }
       resetForm();
-      fetchTexts();
     } catch (error) {
       console.error("Submit typewriter text error:", error);
-      toast.error(error.response?.data?.message || "Operation failed");
+      toast.error(error || "Operation failed");
     } finally {
       setFormLoading(false);
     }
@@ -66,14 +49,11 @@ export default function ManageTypewriter() {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure?")) return;
     try {
-      const response = await typewriterApi.deleteTypewriter(id);
-      if (response.data.success) {
-        toast.success("Text removed.");
-        setTexts(texts.filter((t) => t._id !== id));
-      }
+      await dispatch(deleteTypewriter(id)).unwrap();
+      toast.success("Text removed.");
     } catch (error) {
       console.error("Delete typewriter text error:", error);
-      toast.error("Failed to remove text");
+      toast.error(error || "Failed to remove text");
     }
   };
 
@@ -87,7 +67,7 @@ export default function ManageTypewriter() {
     t.text.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <div className="text-text text-center py-20 font-semibold">Loading...</div>;
+  if (loading) return <TypewriterShimmer />;
 
   return (
     <div className="space-y-6">

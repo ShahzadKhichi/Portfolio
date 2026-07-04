@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import Navbar from "../components/layout/Navbar";
 import AboutSection from "../components/sections/AboutSection";
@@ -7,45 +8,26 @@ import SkillsSection from "../components/sections/SkillsSection";
 import GitHubContributionsGraph from "../components/sections/GitHubContributionsGraph";
 import ContactSection from "../components/sections/ContactSection";
 import Footer from "../components/layout/Footer";
-import * as projectApi from "../api/project.api";
-import * as profileApi from "../api/profile.api";
+import { PublicShimmer } from "../components/ui/Shimmer";
+import { fetchProjects } from "../store/slices/projectSlice";
+import { fetchProfile, incrementViews } from "../store/slices/profileSlice";
 
 const Home = () => {
-  const [projects, setProjects] = useState([]);
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { items: projects, loading: projectsLoading } = useSelector((state) => state.projects);
+  const { data: profile, loading: profileLoading } = useSelector((state) => state.profile);
 
   useEffect(() => {
-    const incrementViews = async () => {
-      try {
-        await profileApi.incrementViews();
-      } catch (error) {
-        console.error("Error incrementing views:", error);
-      }
-    };
-    incrementViews();
+    dispatch(incrementViews());
+    dispatch(fetchProjects());
+    dispatch(fetchProfile());
+  }, [dispatch]);
 
-    const fetchData = async () => {
-      try {
-        const [projRes, profRes] = await Promise.all([
-          projectApi.getAllProjects(),
-          profileApi.getProfile()
-        ]);
+  const loading = projectsLoading || profileLoading;
 
-        if (projRes.data.success) {
-          setProjects(projRes.data.projects);
-        }
-        if (profRes.data.success) {
-          setProfile(profRes.data.profile);
-        }
-      } catch (error) {
-        console.error("Error fetching home data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+  if (loading) {
+    return <PublicShimmer />;
+  }
 
   return (
     <motion.div
@@ -70,4 +52,3 @@ const Home = () => {
 };
 
 export default Home;
-
