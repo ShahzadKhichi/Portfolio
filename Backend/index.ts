@@ -20,6 +20,9 @@ import "./src/Utils/mailQueue";
 const app: express.Application = express();
 const port = process.env.PORT || 4000;
 
+// Trust proxy for rate limiting (Vercel/reverse proxies)
+app.set("trust proxy", 1);
+
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
