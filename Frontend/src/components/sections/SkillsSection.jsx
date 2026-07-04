@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { FaCode } from "react-icons/fa";
-import * as skillApi from "../../api/skill.api";
 
 const SkillCard = ({ skill }) => {
   const radius = 38;
@@ -96,37 +95,18 @@ const SkillGroup = ({ title, skills }) => {
   );
 };
 
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSkills } from "../../store/slices/skillSlice";
+
 export default function SkillsSection() {
-  const [skills, setSkills] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { items: skills, loading } = useSelector((state) => state.skills);
 
   useEffect(() => {
-    const fetchSkills = async () => {
-      try {
-        const response = await skillApi.getAllSkills();
-        if (response.data.success) {
-          // Filter unique skills by name (keep the one with higher level or just the first one)
-          const uniqueSkillsMap = new Map();
-          response.data.skills.forEach(skill => {
-            if (!uniqueSkillsMap.has(skill.name) || skill.level > uniqueSkillsMap.get(skill.name).level) {
-              uniqueSkillsMap.set(skill.name, skill);
-            }
-          });
-
-          const uniqueSkills = Array.from(uniqueSkillsMap.values());
-          // Sort by level (desc) then name (asc)
-          uniqueSkills.sort((a, b) => b.level - a.level || a.name.localeCompare(b.name));
-
-          setSkills(uniqueSkills);
-        }
-      } catch (error) {
-        console.error("Error fetching skills:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchSkills();
-  }, []);
+    if (skills.length === 0) {
+      dispatch(fetchSkills());
+    }
+  }, [dispatch, skills.length]);
 
   if (loading) return null;
 

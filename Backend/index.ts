@@ -23,7 +23,11 @@ const port = process.env.PORT || 4000;
 // Trust proxy for rate limiting (Vercel/reverse proxies)
 app.set("trust proxy", 1);
 
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true,
+  maxAge: 86400 // Cache preflight OPTIONS requests for 24 hours
+}));
 app.use(express.json());
 app.use(cookieParser());
 
