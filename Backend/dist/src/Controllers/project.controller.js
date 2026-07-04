@@ -45,8 +45,13 @@ let ProjectController = class ProjectController {
                 const projectData = { ...req.body, image: imageData };
                 delete projectData.imagePublicId;
                 const project = await this.projectService.createProject(projectData);
-                // Invalidate projects cache
-                await (0, cache_1.deleteCache)("portfolio:projects");
+                const projectId = String(project._id ?? project.id ?? "");
+                await (0, cache_1.deleteCache)(["portfolio:projects", `portfolio:project:${projectId}`]);
+                const freshProjects = await this.projectService.getAllProjects();
+                await (0, cache_1.setCache)("portfolio:projects", Project_dto_1.ProjectDTO.toResponseList(freshProjects), cache_1.DEFAULT_CACHE_TTL_SECONDS);
+                if (projectId) {
+                    await (0, cache_1.setCache)(`portfolio:project:${projectId}`, Project_dto_1.ProjectDTO.toResponse(project), cache_1.DEFAULT_CACHE_TTL_SECONDS);
+                }
                 res.status(201).json({ success: true, project: Project_dto_1.ProjectDTO.toResponse(project) });
             }
             catch (error) {
@@ -64,7 +69,7 @@ let ProjectController = class ProjectController {
                 }
                 const projects = await this.projectService.getAllProjects();
                 const responseList = Project_dto_1.ProjectDTO.toResponseList(projects);
-                await (0, cache_1.setCache)(cacheKey, responseList, 3600); // cache for 1 hour
+                await (0, cache_1.setCache)(cacheKey, responseList);
                 res.status(200).json({ success: true, projects: responseList });
             }
             catch (error) {
@@ -87,7 +92,7 @@ let ProjectController = class ProjectController {
                     return;
                 }
                 const responseData = Project_dto_1.ProjectDTO.toResponse(project);
-                await (0, cache_1.setCache)(cacheKey, responseData, 3600);
+                await (0, cache_1.setCache)(cacheKey, responseData);
                 res.status(200).json({ success: true, project: responseData });
             }
             catch (error) {
@@ -126,8 +131,10 @@ let ProjectController = class ProjectController {
                     res.status(404).json({ success: false, message: "Project not found" });
                     return;
                 }
-                // Invalidate projects cache
                 await (0, cache_1.deleteCache)(["portfolio:projects", `portfolio:project:${id}`]);
+                const freshProjects = await this.projectService.getAllProjects();
+                await (0, cache_1.setCache)("portfolio:projects", Project_dto_1.ProjectDTO.toResponseList(freshProjects), cache_1.DEFAULT_CACHE_TTL_SECONDS);
+                await (0, cache_1.setCache)(`portfolio:project:${id}`, Project_dto_1.ProjectDTO.toResponse(project), cache_1.DEFAULT_CACHE_TTL_SECONDS);
                 res.status(200).json({ success: true, project: Project_dto_1.ProjectDTO.toResponse(project) });
             }
             catch (error) {
@@ -148,8 +155,9 @@ let ProjectController = class ProjectController {
                     await (0, cloudinary_1.deleteFromCloudinary)(project.image.publicId);
                 }
                 await this.projectService.deleteProject(id);
-                // Invalidate projects cache
                 await (0, cache_1.deleteCache)(["portfolio:projects", `portfolio:project:${id}`]);
+                const freshProjects = await this.projectService.getAllProjects();
+                await (0, cache_1.setCache)("portfolio:projects", Project_dto_1.ProjectDTO.toResponseList(freshProjects), cache_1.DEFAULT_CACHE_TTL_SECONDS);
                 res.status(200).json({ success: true, message: "Project deleted successfully" });
             }
             catch (error) {

@@ -5,6 +5,7 @@ import { IUserRepository } from "../interfaces/IUserRepository";
 import { IMailSender } from "../interfaces/IMailSender";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { addMailJob } from "../Utils/mailQueue";
 
 @injectable()
 export class UserService implements IUserService {
@@ -43,11 +44,21 @@ export class UserService implements IUserService {
         await this.userRepository.updateAdmin(email, { resetOtp: otp, resetOtpExpiry: otpExpiry });
 
         try {
-            await this.mailSender.sendMail(
+            const queued = await addMailJob(
                 email,
                 "Your Password Reset OTP",
-                `<p>Your OTP for password reset is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`
+                `<p>Your OTP for password reset is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`,
+                "otp"
             );
+
+            if (!queued) {
+                await this.mailSender.sendMail(
+                    email,
+                    "Your Password Reset OTP",
+                    `<p>Your OTP for password reset is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`,
+                    "otp"
+                );
+            }
             
         } catch (error) {
             console.error("Failed to send forgot password email:", error);
@@ -119,11 +130,21 @@ export class UserService implements IUserService {
         }
 
         try {
-            await this.mailSender.sendMail(
+            const queued = await addMailJob(
                 adminData.email,
                 "Verify your Admin Registration",
-                `<p>Your OTP for registration verification is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`
+                `<p>Your OTP for registration verification is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`,
+                "otp"
             );
+
+            if (!queued) {
+                await this.mailSender.sendMail(
+                    adminData.email,
+                    "Verify your Admin Registration",
+                    `<p>Your OTP for registration verification is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`,
+                    "otp"
+                );
+            }
         } catch (error) {
             console.error("Failed to send registration email:", error);
             // We can leave the unverified model in the DB, because if they try again, 

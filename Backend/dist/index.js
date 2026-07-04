@@ -21,7 +21,13 @@ const rateLimiter_1 = require("./src/Middlewares/rateLimiter");
 require("./src/Utils/mailQueue");
 const app = (0, express_1.default)();
 const port = process.env.PORT || 4000;
-app.use((0, cors_1.default)());
+// Trust proxy for rate limiting (Vercel/reverse proxies)
+app.set("trust proxy", 1);
+app.use((0, cors_1.default)({
+    origin: true,
+    credentials: true,
+    maxAge: 86400 // Cache preflight OPTIONS requests for 24 hours
+}));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 // Apply rate limiter to all API routes

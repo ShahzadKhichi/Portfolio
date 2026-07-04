@@ -35,7 +35,7 @@ let ProfileController = class ProfileController {
                     return;
                 }
                 const responseData = Profile_dto_1.ProfileDTO.toResponse(profile);
-                await (0, cache_1.setCache)(cacheKey, responseData, 3600);
+                await (0, cache_1.setCache)(cacheKey, responseData);
                 res.status(200).json({ success: true, profile: responseData });
             }
             catch (error) {
@@ -73,8 +73,8 @@ let ProfileController = class ProfileController {
                     res.status(404).json({ success: false, message: "Profile not found" });
                     return;
                 }
-                // Invalidate profile cache
                 await (0, cache_1.deleteCache)("portfolio:profile");
+                await (0, cache_1.setCache)("portfolio:profile", Profile_dto_1.ProfileDTO.toResponse(updatedProfile), cache_1.DEFAULT_CACHE_TTL_SECONDS);
                 res.status(200).json({ success: true, profile: Profile_dto_1.ProfileDTO.toResponse(updatedProfile) });
             }
             catch (error) {
@@ -85,8 +85,11 @@ let ProfileController = class ProfileController {
         this.incrementViews = async (req, res) => {
             try {
                 await this.profileService.incrementViews();
-                // Invalidate profile cache
                 await (0, cache_1.deleteCache)("portfolio:profile");
+                const refreshedProfile = await this.profileService.getProfile();
+                if (refreshedProfile) {
+                    await (0, cache_1.setCache)("portfolio:profile", Profile_dto_1.ProfileDTO.toResponse(refreshedProfile), cache_1.DEFAULT_CACHE_TTL_SECONDS);
+                }
                 res.status(200).json({ success: true, message: "Views incremented" });
             }
             catch (error) {

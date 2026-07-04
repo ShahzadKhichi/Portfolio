@@ -30,7 +30,7 @@ let TypewriterController = class TypewriterController {
                 }
                 const typewriters = await this.typewriterService.getAllTypewriters();
                 const responseList = Typewriter_dto_1.TypewriterDTO.toResponseList(typewriters);
-                await (0, cache_1.setCache)(cacheKey, responseList, 3600);
+                await (0, cache_1.setCache)(cacheKey, responseList);
                 res.status(200).json({ success: true, typewriters: responseList });
             }
             catch (error) {
@@ -41,8 +41,13 @@ let TypewriterController = class TypewriterController {
         this.createTypewriter = async (req, res) => {
             try {
                 const typewriter = await this.typewriterService.createTypewriter(req.body);
-                // Invalidate typewriters cache
-                await (0, cache_1.deleteCache)("portfolio:typewriters");
+                const typewriterId = String(typewriter._id ?? typewriter.id ?? "");
+                await (0, cache_1.deleteCache)(["portfolio:typewriters", `portfolio:typewriter:${typewriterId}`]);
+                const freshTypewriters = await this.typewriterService.getAllTypewriters();
+                await (0, cache_1.setCache)("portfolio:typewriters", Typewriter_dto_1.TypewriterDTO.toResponseList(freshTypewriters), cache_1.DEFAULT_CACHE_TTL_SECONDS);
+                if (typewriterId) {
+                    await (0, cache_1.setCache)(`portfolio:typewriter:${typewriterId}`, Typewriter_dto_1.TypewriterDTO.toResponse(typewriter), cache_1.DEFAULT_CACHE_TTL_SECONDS);
+                }
                 res.status(201).json({ success: true, typewriter: Typewriter_dto_1.TypewriterDTO.toResponse(typewriter) });
             }
             catch (error) {
@@ -58,8 +63,10 @@ let TypewriterController = class TypewriterController {
                     res.status(404).json({ success: false, message: "Typewriter text not found" });
                     return;
                 }
-                // Invalidate typewriters cache
-                await (0, cache_1.deleteCache)("portfolio:typewriters");
+                await (0, cache_1.deleteCache)(["portfolio:typewriters", `portfolio:typewriter:${id}`]);
+                const freshTypewriters = await this.typewriterService.getAllTypewriters();
+                await (0, cache_1.setCache)("portfolio:typewriters", Typewriter_dto_1.TypewriterDTO.toResponseList(freshTypewriters), cache_1.DEFAULT_CACHE_TTL_SECONDS);
+                await (0, cache_1.setCache)(`portfolio:typewriter:${id}`, Typewriter_dto_1.TypewriterDTO.toResponse(updatedTypewriter), cache_1.DEFAULT_CACHE_TTL_SECONDS);
                 res.status(200).json({ success: true, typewriter: Typewriter_dto_1.TypewriterDTO.toResponse(updatedTypewriter) });
             }
             catch (error) {
@@ -75,8 +82,9 @@ let TypewriterController = class TypewriterController {
                     res.status(404).json({ success: false, message: "Typewriter text not found" });
                     return;
                 }
-                // Invalidate typewriters cache
-                await (0, cache_1.deleteCache)("portfolio:typewriters");
+                await (0, cache_1.deleteCache)(["portfolio:typewriters", `portfolio:typewriter:${id}`]);
+                const freshTypewriters = await this.typewriterService.getAllTypewriters();
+                await (0, cache_1.setCache)("portfolio:typewriters", Typewriter_dto_1.TypewriterDTO.toResponseList(freshTypewriters), cache_1.DEFAULT_CACHE_TTL_SECONDS);
                 res.status(200).json({ success: true, message: "Typewriter text deleted successfully" });
             }
             catch (error) {

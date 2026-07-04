@@ -23,14 +23,14 @@ let MailService = class MailService {
     }
     async processIncomingMail(email, name, message) {
         // Try queueing first
-        const queued = await (0, mailQueue_1.addMailJob)(email, name, message);
+        const queued = await (0, mailQueue_1.addMailJob)(email, `New message from ${name}`, message, "message", name);
         if (queued) {
             console.log("Email job successfully added to BullMQ.");
             return;
         }
         // Fallback to synchronous sending if Redis is down
         console.warn("Queue unavailable. Falling back to synchronous email sending.");
-        await this.mailSender.sendMail(email, "you have an email from " + email, "message: " + message);
+        await this.mailSender.sendMail(email, `New message from ${name}`, message, "message", name);
         await this.mailRepository.createMail(email, name, message);
     }
 };

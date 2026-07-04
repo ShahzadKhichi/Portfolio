@@ -20,6 +20,7 @@ const tsyringe_1 = require("tsyringe");
 const types_1 = require("../interfaces/types");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const mailQueue_1 = require("../Utils/mailQueue");
 let UserService = class UserService {
     constructor(userRepository, mailSender) {
         this.userRepository = userRepository;
@@ -49,7 +50,10 @@ let UserService = class UserService {
         otpExpiry.setMinutes(otpExpiry.getMinutes() + 10); // 10 minutes expiry
         await this.userRepository.updateAdmin(email, { resetOtp: otp, resetOtpExpiry: otpExpiry });
         try {
-            await this.mailSender.sendMail(email, "Your Password Reset OTP", `<p>Your OTP for password reset is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`);
+            const queued = await (0, mailQueue_1.addMailJob)(email, "Your Password Reset OTP", `<p>Your OTP for password reset is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`, "otp");
+            if (!queued) {
+                await this.mailSender.sendMail(email, "Your Password Reset OTP", `<p>Your OTP for password reset is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`, "otp");
+            }
         }
         catch (error) {
             console.error("Failed to send forgot password email:", error);
@@ -111,7 +115,10 @@ let UserService = class UserService {
             });
         }
         try {
-            await this.mailSender.sendMail(adminData.email, "Verify your Admin Registration", `<p>Your OTP for registration verification is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`);
+            const queued = await (0, mailQueue_1.addMailJob)(adminData.email, "Verify your Admin Registration", `<p>Your OTP for registration verification is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`, "otp");
+            if (!queued) {
+                await this.mailSender.sendMail(adminData.email, "Verify your Admin Registration", `<p>Your OTP for registration verification is: <strong>${otp}</strong>. It is valid for 10 minutes.</p>`, "otp");
+            }
         }
         catch (error) {
             console.error("Failed to send registration email:", error);

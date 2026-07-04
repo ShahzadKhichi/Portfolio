@@ -31,7 +31,7 @@ let SkillController = class SkillController {
                 }
                 const skills = await this.skillService.getAllSkills();
                 const responseList = Skill_dto_1.SkillDTO.toResponseList(skills);
-                await (0, cache_1.setCache)(cacheKey, responseList, 3600);
+                await (0, cache_1.setCache)(cacheKey, responseList);
                 res.status(200).json({ success: true, skills: responseList });
             }
             catch (error) {
@@ -68,8 +68,13 @@ let SkillController = class SkillController {
                 delete skillData.icon;
                 delete skillData.iconPublicId;
                 const skill = await this.skillService.createSkill(skillData);
-                // Invalidate skills cache
-                await (0, cache_1.deleteCache)("portfolio:skills");
+                const skillId = String(skill._id ?? skill.id ?? "");
+                await (0, cache_1.deleteCache)(["portfolio:skills", `portfolio:skill:${skillId}`]);
+                const freshSkills = await this.skillService.getAllSkills();
+                await (0, cache_1.setCache)("portfolio:skills", Skill_dto_1.SkillDTO.toResponseList(freshSkills), cache_1.DEFAULT_CACHE_TTL_SECONDS);
+                if (skillId) {
+                    await (0, cache_1.setCache)(`portfolio:skill:${skillId}`, Skill_dto_1.SkillDTO.toResponse(skill), cache_1.DEFAULT_CACHE_TTL_SECONDS);
+                }
                 res.status(201).json({ success: true, skill: Skill_dto_1.SkillDTO.toResponse(skill) });
             }
             catch (error) {
@@ -112,8 +117,10 @@ let SkillController = class SkillController {
                     res.status(404).json({ success: false, message: "Skill not found" });
                     return;
                 }
-                // Invalidate skills cache
-                await (0, cache_1.deleteCache)("portfolio:skills");
+                await (0, cache_1.deleteCache)(["portfolio:skills", `portfolio:skill:${id}`]);
+                const freshSkills = await this.skillService.getAllSkills();
+                await (0, cache_1.setCache)("portfolio:skills", Skill_dto_1.SkillDTO.toResponseList(freshSkills), cache_1.DEFAULT_CACHE_TTL_SECONDS);
+                await (0, cache_1.setCache)(`portfolio:skill:${id}`, Skill_dto_1.SkillDTO.toResponse(updatedSkill), cache_1.DEFAULT_CACHE_TTL_SECONDS);
                 res.status(200).json({ success: true, skill: Skill_dto_1.SkillDTO.toResponse(updatedSkill) });
             }
             catch (error) {
@@ -133,8 +140,9 @@ let SkillController = class SkillController {
                     await (0, cloudinary_1.deleteFromCloudinary)(skill.image.publicId);
                 }
                 await this.skillService.deleteSkill(id);
-                // Invalidate skills cache
-                await (0, cache_1.deleteCache)("portfolio:skills");
+                await (0, cache_1.deleteCache)(["portfolio:skills", `portfolio:skill:${id}`]);
+                const freshSkills = await this.skillService.getAllSkills();
+                await (0, cache_1.setCache)("portfolio:skills", Skill_dto_1.SkillDTO.toResponseList(freshSkills), cache_1.DEFAULT_CACHE_TTL_SECONDS);
                 res.status(200).json({ success: true, message: "Skill deleted successfully" });
             }
             catch (error) {

@@ -7,4 +7,5 @@ const rateLimiter_1 = require("../Middlewares/rateLimiter");
 const router = (0, express_1.Router)();
 const publicController = container_1.container.resolve(types_1.TYPES.PublicController);
 router.post("/sendMail", rateLimiter_1.mailLimiter, publicController.sendMail);
+router.post("/public/sendMail", rateLimiter_1.mailLimiter, publicController.sendMail);
 exports.default = router;

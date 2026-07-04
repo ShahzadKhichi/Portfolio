@@ -6,6 +6,14 @@ import { TYPES } from "../interfaces/types";
 import { IMailSender } from "../interfaces/IMailSender";
 import { IMailRepository } from "../interfaces/IMailRepository";
 
+interface MailJobData {
+  email: string;
+  title: string;
+  body: string;
+  templateType?: "message" | "otp" | "default";
+  senderName?: string;
+}
+
 dotenv.config();
 
 const redisUrl = process.env.REDIS_URL;
@@ -33,11 +41,7 @@ if (redisUrl) {
     mailWorker = new Worker(
       "mailQueue",
       async (job: Job) => {
-        const { email, name, message } = job.data as {
-          email: string;
-          name: string;
-          message: string;
-        };
+        const { email, title, body, templateType, senderName } = job.data as MailJobData;
 
         console.log(`Processing mail job ${job.id} for ${email}`);
 
@@ -45,9 +49,11 @@ if (redisUrl) {
         const mailSender = container.resolve<IMailSender>(TYPES.IMailSender);
         const mailRepository = container.resolve<IMailRepository>(TYPES.IMailRepository);
 
-        // Send mail and save to DB
-        await mailSender.sendMail(email, "You have an email from " + email, "message: " + message);
-        await mailRepository.createMail(email, name, message);
+        await mailSender.sendMail(email, title, body, templateType, senderName);
+
+        if (templateType === "message" && senderName) {
+          await mailRepository.createMail(email, senderName, body);
+        }
 
         console.log(`Mail job ${job.id} processed successfully`);
       },
@@ -72,10 +78,16 @@ if (redisUrl) {
   console.warn("REDIS_URL not found. BullMQ queue is disabled. Falling back to synchronous email sending.");
 }
 
-export async function addMailJob(email: string, name: string, message: string): Promise<boolean> {
+export async function addMailJob(
+  email: string,
+  title: string,
+  body: string,
+  templateType: "message" | "otp" | "default" = "default",
+  senderName?: string
+): Promise<boolean> {
   if (mailQueue) {
     try {
-      await mailQueue.add("sendMail", { email, name, message }, {
+      await mailQueue.add("sendMail", { email, title, body, templateType, senderName }, {
         attempts: 3, // retry up to 3 times on failure
         backoff: {
           type: "exponential",
