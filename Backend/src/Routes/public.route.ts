@@ -8,5 +8,6 @@ const router = Router();
 const publicController = container.resolve<PublicController>(TYPES.PublicController);
 
 router.post("/sendMail", mailLimiter, publicController.sendMail);
+router.post("/public/sendMail", mailLimiter, publicController.sendMail);
 
 export default router;

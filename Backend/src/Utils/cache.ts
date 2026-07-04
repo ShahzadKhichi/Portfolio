@@ -1,5 +1,7 @@
 import redis from "./redis";
 
+export const DEFAULT_CACHE_TTL_SECONDS = 7 * 24 * 60 * 60;
+
 export async function getCache<T>(key: string): Promise<T | null> {
   if (!redis) return null;
   try {
@@ -13,7 +15,7 @@ export async function getCache<T>(key: string): Promise<T | null> {
   return null;
 }
 
-export async function setCache(key: string, data: any, ttlSeconds: number = 3600): Promise<void> {
+export async function setCache(key: string, data: any, ttlSeconds: number = DEFAULT_CACHE_TTL_SECONDS): Promise<void> {
   if (!redis) return;
   try {
     const value = JSON.stringify(data);

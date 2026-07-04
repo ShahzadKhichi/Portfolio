@@ -4,7 +4,7 @@ import { TYPES } from "../interfaces/types";
 import { IProfileService } from "../interfaces/IProfileService";
 import { uploadToCloudinary, deleteFromCloudinary, extractPublicId } from "../Utils/cloudinary";
 import { ProfileDTO } from "../DTOs/Profile.dto";
-import { getCache, setCache, deleteCache } from "../Utils/cache";
+import { getCache, setCache, deleteCache, DEFAULT_CACHE_TTL_SECONDS } from "../Utils/cache";
 
 @injectable()
 export class ProfileController {
@@ -28,7 +28,7 @@ export class ProfileController {
       }
 
       const responseData = ProfileDTO.toResponse(profile);
-      await setCache(cacheKey, responseData, 3600);
+      await setCache(cacheKey, responseData);
 
       res.status(200).json({ success: true, profile: responseData });
     } catch (error) {
@@ -73,8 +73,8 @@ export class ProfileController {
         return;
       }
 
-      // Invalidate profile cache
       await deleteCache("portfolio:profile");
+      await setCache("portfolio:profile", ProfileDTO.toResponse(updatedProfile), DEFAULT_CACHE_TTL_SECONDS);
 
       res.status(200).json({ success: true, profile: ProfileDTO.toResponse(updatedProfile) });
     } catch (error) {
@@ -87,8 +87,11 @@ export class ProfileController {
     try {
       await this.profileService.incrementViews();
       
-      // Invalidate profile cache
       await deleteCache("portfolio:profile");
+      const refreshedProfile = await this.profileService.getProfile();
+      if (refreshedProfile) {
+        await setCache("portfolio:profile", ProfileDTO.toResponse(refreshedProfile), DEFAULT_CACHE_TTL_SECONDS);
+      }
 
       res.status(200).json({ success: true, message: "Views incremented" });
     } catch (error) {

@@ -4,7 +4,7 @@ import { TYPES } from "../interfaces/types";
 import { ISkillService } from "../interfaces/ISkillService";
 import { uploadToCloudinary, deleteFromCloudinary, extractPublicId } from "../Utils/cloudinary";
 import { SkillDTO } from "../DTOs/Skill.dto";
-import { getCache, setCache, deleteCache } from "../Utils/cache";
+import { getCache, setCache, deleteCache, DEFAULT_CACHE_TTL_SECONDS } from "../Utils/cache";
 
 @injectable()
 export class SkillController {
@@ -24,7 +24,7 @@ export class SkillController {
       const skills = await this.skillService.getAllSkills();
       const responseList = SkillDTO.toResponseList(skills);
       
-      await setCache(cacheKey, responseList, 3600);
+      await setCache(cacheKey, responseList);
 
       res.status(200).json({ success: true, skills: responseList });
     } catch (error) {
@@ -66,9 +66,14 @@ export class SkillController {
       delete skillData.iconPublicId;
 
       const skill = await this.skillService.createSkill(skillData);
+      const skillId = String((skill as any)._id ?? (skill as any).id ?? "");
 
-      // Invalidate skills cache
-      await deleteCache("portfolio:skills");
+      await deleteCache(["portfolio:skills", `portfolio:skill:${skillId}`]);
+      const freshSkills = await this.skillService.getAllSkills();
+      await setCache("portfolio:skills", SkillDTO.toResponseList(freshSkills), DEFAULT_CACHE_TTL_SECONDS);
+      if (skillId) {
+        await setCache(`portfolio:skill:${skillId}`, SkillDTO.toResponse(skill), DEFAULT_CACHE_TTL_SECONDS);
+      }
 
       res.status(201).json({ success: true, skill: SkillDTO.toResponse(skill) });
     } catch (error) {
@@ -119,8 +124,10 @@ export class SkillController {
         return;
       }
 
-      // Invalidate skills cache
-      await deleteCache("portfolio:skills");
+      await deleteCache(["portfolio:skills", `portfolio:skill:${id}`]);
+      const freshSkills = await this.skillService.getAllSkills();
+      await setCache("portfolio:skills", SkillDTO.toResponseList(freshSkills), DEFAULT_CACHE_TTL_SECONDS);
+      await setCache(`portfolio:skill:${id}`, SkillDTO.toResponse(updatedSkill), DEFAULT_CACHE_TTL_SECONDS);
 
       res.status(200).json({ success: true, skill: SkillDTO.toResponse(updatedSkill) });
     } catch (error) {
@@ -145,8 +152,9 @@ export class SkillController {
 
       await this.skillService.deleteSkill(id);
 
-      // Invalidate skills cache
-      await deleteCache("portfolio:skills");
+      await deleteCache(["portfolio:skills", `portfolio:skill:${id}`]);
+      const freshSkills = await this.skillService.getAllSkills();
+      await setCache("portfolio:skills", SkillDTO.toResponseList(freshSkills), DEFAULT_CACHE_TTL_SECONDS);
 
       res.status(200).json({ success: true, message: "Skill deleted successfully" });
     } catch (error) {

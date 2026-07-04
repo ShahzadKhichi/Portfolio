@@ -3,7 +3,7 @@ import { injectable, inject } from "tsyringe";
 import { TYPES } from "../interfaces/types";
 import { ITypewriterService } from "../interfaces/ITypewriterService";
 import { TypewriterDTO } from "../DTOs/Typewriter.dto";
-import { getCache, setCache, deleteCache } from "../Utils/cache";
+import { getCache, setCache, deleteCache, DEFAULT_CACHE_TTL_SECONDS } from "../Utils/cache";
 
 @injectable()
 export class TypewriterController {
@@ -23,7 +23,7 @@ export class TypewriterController {
             const typewriters = await this.typewriterService.getAllTypewriters();
             const responseList = TypewriterDTO.toResponseList(typewriters);
 
-            await setCache(cacheKey, responseList, 3600);
+            await setCache(cacheKey, responseList);
 
             res.status(200).json({ success: true, typewriters: responseList });
         } catch (error) {
@@ -35,9 +35,14 @@ export class TypewriterController {
     public createTypewriter = async (req: Request, res: Response): Promise<void> => {
         try {
             const typewriter = await this.typewriterService.createTypewriter(req.body);
-            
-            // Invalidate typewriters cache
-            await deleteCache("portfolio:typewriters");
+            const typewriterId = String((typewriter as any)._id ?? (typewriter as any).id ?? "");
+
+            await deleteCache(["portfolio:typewriters", `portfolio:typewriter:${typewriterId}`]);
+            const freshTypewriters = await this.typewriterService.getAllTypewriters();
+            await setCache("portfolio:typewriters", TypewriterDTO.toResponseList(freshTypewriters), DEFAULT_CACHE_TTL_SECONDS);
+            if (typewriterId) {
+                await setCache(`portfolio:typewriter:${typewriterId}`, TypewriterDTO.toResponse(typewriter), DEFAULT_CACHE_TTL_SECONDS);
+            }
 
             res.status(201).json({ success: true, typewriter: TypewriterDTO.toResponse(typewriter) });
         } catch (error) {
@@ -55,8 +60,10 @@ export class TypewriterController {
                 return;
             }
 
-            // Invalidate typewriters cache
-            await deleteCache("portfolio:typewriters");
+            await deleteCache(["portfolio:typewriters", `portfolio:typewriter:${id}`]);
+            const freshTypewriters = await this.typewriterService.getAllTypewriters();
+            await setCache("portfolio:typewriters", TypewriterDTO.toResponseList(freshTypewriters), DEFAULT_CACHE_TTL_SECONDS);
+            await setCache(`portfolio:typewriter:${id}`, TypewriterDTO.toResponse(updatedTypewriter), DEFAULT_CACHE_TTL_SECONDS);
 
             res.status(200).json({ success: true, typewriter: TypewriterDTO.toResponse(updatedTypewriter) });
         } catch (error) {
@@ -74,8 +81,9 @@ export class TypewriterController {
                 return;
             }
 
-            // Invalidate typewriters cache
-            await deleteCache("portfolio:typewriters");
+            await deleteCache(["portfolio:typewriters", `portfolio:typewriter:${id}`]);
+            const freshTypewriters = await this.typewriterService.getAllTypewriters();
+            await setCache("portfolio:typewriters", TypewriterDTO.toResponseList(freshTypewriters), DEFAULT_CACHE_TTL_SECONDS);
 
             res.status(200).json({ success: true, message: "Typewriter text deleted successfully" });
         } catch (error) {
